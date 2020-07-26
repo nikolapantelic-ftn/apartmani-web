@@ -13,8 +13,6 @@ import com.google.gson.reflect.TypeToken;
 
 import beans.User;
 
-
-
 public class UserDAO {
 	private Map<String,User> users;
 	private Gson gson;
@@ -27,10 +25,8 @@ public class UserDAO {
 	}
 	
 	public void save(User user) throws JsonIOException, IOException {
-		
 		users.put(user.getUsername(),user);
 		saveAll();
-		
 	}
 	
 	public void loadUsers() throws IOException {
@@ -39,7 +35,6 @@ public class UserDAO {
 		for (User user : usersList) {
 			users.put(user.getUsername(), user);
 		}
-		
 	}
 	
 	public void saveAll() throws JsonIOException, IOException {
@@ -52,6 +47,9 @@ public class UserDAO {
 		return users;
 	}
 
-	
+	public void delete(String username) throws JsonIOException, IOException {
+		users.remove(username);
+		saveAll();
+	}
 	
 }
