@@ -1,39 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Insert title here</title>
-<script src="jquery-3.5.1.min.js"></script>
-<script src="index.js"></script>
+	<meta charset="utf-8">
+	<title>Apartmani</title>
+	<link rel="stylesheet" href="css/index.css">
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
-    <nav><button onclick="viewLoginForm()" name="viewloginbtn">Prijavi se</button><button onclick="viewRegisterForm()" name="viewregisterbtn">Registruj se</button></nav>
-    <form method="post" name="register" style="display: none;">
-        <table>
-            <tr><th>Registracija</th></tr>
-            <tr><td>Ime</td><td><input type="text" name="firstname"/></td></tr>
-            <tr><td>Prezime</td><td><input type="text" name="lastname"/></td></tr>
-            <tr><td>Pol</td>
-                <td>
-                    <input type="radio" id="male" name="gender" value="male">
-                    <label for="male">Muški</label>
-                    <input type="radio" id="female" name="gender" value="female">
-                    <label for="female">Ženski</label>
-                </td>
-            </tr>
-            <tr><td>Korisničko ime</td><td><input type="text" name="uname"/></td></tr>
-            <tr><td>Lozinka</td><td><input type="password" name="psw"/></td></tr>
-            <tr><td>Ponovljena lozinka</td><td><input type="password" name="psw-repeat"/></td></tr>
-            <tr><td colspan="2"><input type="submit" value="Registruj se"/></td></tr>
-        </table>
-    </form>
-    <form method="post" name="login" style="display: none;">
-        <table>
-            <tr><th>Prijava</th></tr>
-            <tr><td>Korisničko ime</td><td><input type="text"/></td></tr>
-            <tr><td>Lozinka</td><td><input type="password"/></td></tr>
-            <tr><td colspan="2"><input type="submit" value="Prijavi se"/></td></tr>
-        </table>
-    </form>
+	<div id="user-form">
+		<nav>
+			<button v-on:click="register = false">Prijavi se</button>
+			<button v-on:click="register = true">Registruj se</button>
+		</nav>
+	    <form method="post" name="register" v-if="register">
+	        <table>
+	            <tr><th>Registracija</th></tr>
+	            <tr><td>Ime</td><td><input type="text" name="firstname"/></td></tr>
+	            <tr><td>Prezime</td><td><input type="text" name="lastname"/></td></tr>
+	            <tr><td>Pol</td>
+	                <td>
+	                    <input type="radio" id="male" name="gender" value="male">
+	                    <label for="male">Muški</label>
+	                    <input type="radio" id="female" name="gender" value="female">
+	                    <label for="female">Ženski</label>
+	                </td>
+	            </tr>
+	            <tr><td>Korisničko ime</td><td><input type="text" name="uname"/></td></tr>
+	            <tr><td>Lozinka</td><td><input type="password" name="psw"/></td></tr>
+	            <tr><td>Ponovljena lozinka</td><td><input type="password" name="psw-repeat"/></td></tr>
+	            <tr><td colspan="2"><input type="submit" value="Registruj se"/></td></tr>
+	        </table>
+	    </form>
+	    <form method="post" name="login" v-else>
+	        <table>
+	            <tr><th>Prijava</th></tr>
+	            <tr><td>Korisničko ime</td><td><input type="text"/></td></tr>
+	            <tr><td>Lozinka</td><td><input type="password"/></td></tr>
+	            <tr><td colspan="2"><input type="submit" value="Prijavi se"/></td></tr>
+	        </table>
+	    </form>
+    </div>
+    <script src="index.js"></script>
 </body>
 </html>
