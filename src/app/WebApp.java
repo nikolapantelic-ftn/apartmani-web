@@ -5,5 +5,5 @@ import javax.ws.rs.core.Application;
 
 @ApplicationPath("/rest")
 public class WebApp extends Application {
-	public static final String USERS_PATH = "db";
+	public static final String GUESTS_PATH = "guestdb.json";
 }

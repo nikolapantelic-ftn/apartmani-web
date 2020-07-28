@@ -3,7 +3,7 @@ package beans;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Guest extends User {
+public class Guest extends User implements Identifiable<String> {
 
 	private List<Apartment> rentedApartment;
 	private List<Reservation> reservations;
@@ -39,6 +39,8 @@ public class Guest extends User {
 		this.reservations = reservations;
 	}
 	
-	
+	public String id() {
+		return this.username;
+	}
 
 }

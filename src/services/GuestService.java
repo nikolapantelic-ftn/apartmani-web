@@ -18,42 +18,43 @@ import javax.ws.rs.core.MediaType;
 import com.google.gson.JsonIOException;
 
 import app.WebApp;
+import beans.Guest;
 import beans.User;
-import dao.UserDAO;
+import repository.GuestRepository;
 
-@Path("/userService")
-public class UserService {
+@Path("/guests")
+public class GuestService {
 	@Context
 	ServletContext ctx;
 	
-	public UserService() {
+	public GuestService() {
 		
 	}
 	
 	@PostConstruct
 	public void init() {
-		if(ctx.getAttribute("userDAO") == null) {
-			ctx.setAttribute("userDAO", new UserDAO(WebApp.USERS_PATH));
+		if(ctx.getAttribute("guestRepository") == null) {
+			ctx.setAttribute("guestRepository", new GuestRepository(WebApp.GUESTS_PATH));
 		}
 	}
 	
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<User> getAll() {
-		UserDAO userDAO = (UserDAO)ctx.getAttribute("userDAO");
-		return userDAO.getUsers().values();
+	public Collection<Guest> getAll() {
+		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
+		return guestRepository.getAll().values();
 	}
 	
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public User create(User user) {
-		UserDAO userDAO = (UserDAO)ctx.getAttribute("userDAO");
+	public Guest create(Guest guest) {
+		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
 		try {
-			userDAO.save(user);
-			return user;
+			guestRepository.save(guest);
+			return guest;
 		} catch (JsonIOException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -66,16 +67,16 @@ public class UserService {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public User find(@PathParam("id") String username) {
-		UserDAO userDAO = (UserDAO)ctx.getAttribute("userDAO");
-		return userDAO.getUsers().get(username);
+		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
+		return guestRepository.getAll().get(username);
 	}
 	
 	@DELETE
 	@Path("/{id}")
 	public void delete(@PathParam("id") String username) {
-		UserDAO userDAO = (UserDAO)ctx.getAttribute("userDAO");
+		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
 		try {
-			userDAO.delete(username);
+			guestRepository.delete(username);
 		} catch (JsonIOException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
