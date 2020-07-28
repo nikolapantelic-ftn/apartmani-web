@@ -3,6 +3,7 @@ package repository;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -11,7 +12,6 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
-import com.google.gson.reflect.TypeToken;
 
 import beans.Identifiable;
 
@@ -24,6 +24,7 @@ abstract class AbstractRepository<T extends Identifiable<ID>, ID> implements Rep
 		entities = new HashMap<ID, T>();
 		gson = new Gson();
 		filepath = path;
+		init();
 	}
 
 	@Override
@@ -33,9 +34,9 @@ abstract class AbstractRepository<T extends Identifiable<ID>, ID> implements Rep
 	}
 
 	@Override
-	public void loadEntities() throws IOException {
+	public void loadEntities(Type type) throws IOException {
 		Reader reader = Files.newBufferedReader(Paths.get(filepath));
-		List<T> entitiesList = new Gson().fromJson(reader, new TypeToken<List<T>>() {}.getType());
+		List<T> entitiesList = gson.fromJson(reader, type);
 		for (T entity : entitiesList) {
 			entities.put(entity.id(), entity);
 		}

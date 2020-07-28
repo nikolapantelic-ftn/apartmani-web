@@ -19,7 +19,6 @@ import com.google.gson.JsonIOException;
 
 import app.WebApp;
 import beans.Guest;
-import beans.User;
 import repository.GuestRepository;
 
 @Path("/guests")
@@ -64,11 +63,22 @@ public class GuestService {
 	}
 	
 	@GET
-	@Path("/{id}")
+	@Path("/search/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public User find(@PathParam("id") String username) {
+	public Guest find(@PathParam("id") String username) {
 		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
 		return guestRepository.getAll().get(username);
+	}
+	
+	@POST
+	@Path("/login")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Guest login(Guest guest) {
+		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
+		Guest g = guestRepository.getAll().get(guest.getUsername());
+		if (g.getPassword().equals(guest.getPassword())) {
+			return g;
+		} else return null;
 	}
 	
 	@DELETE
