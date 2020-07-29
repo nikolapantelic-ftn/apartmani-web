@@ -15,9 +15,8 @@ public class Guest extends User implements Identifiable<String>{
 		this.reservations=new ArrayList<Reservation>();
 	}
 	
-	public Guest(String username, String password, String firstName, String lastName, Role role, Gender gender) {
-		super(username, password, firstName, lastName, role, gender);
-		this.role=Role.Guest;
+	public Guest(String username, String password, String firstName, String lastName,  Gender gender) {
+		super(username, password, firstName, lastName, Role.Guest, gender);
 		this.rentedApartment=new ArrayList<Apartment>();
 		this.reservations=new ArrayList<Reservation>();
 		
