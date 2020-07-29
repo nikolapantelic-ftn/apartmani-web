@@ -1,6 +1,6 @@
 package beans;
 
-public class Amenities {
+public class Amenities implements Identifiable<Long> {
 	
 	private long id;
 	private String naziv;
@@ -29,6 +29,11 @@ public class Amenities {
 
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
+	}
+
+	@Override
+	public Long id() {
+		return id;
 	}
 	
 	

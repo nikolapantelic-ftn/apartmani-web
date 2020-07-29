@@ -1,7 +1,8 @@
 package beans;
 
-public class Address {
+public class Address implements Identifiable<Long>{
 	
+	private long id;
 	private String streetAndNumber;
 	private String place;
 	private String zipCode;
@@ -38,6 +39,13 @@ public class Address {
 	}
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
+	}
+
+
+
+	@Override
+	public Long id() {
+		return id;
 	}
 	
 	

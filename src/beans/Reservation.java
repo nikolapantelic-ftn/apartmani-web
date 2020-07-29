@@ -2,8 +2,9 @@ package beans;
 
 import java.util.Date;
 
-public class Reservation {
+public class Reservation implements Identifiable<Long> {
 
+	private long id;
 	private Apartment apartment;
 	private Date startDate;
 	private int nigtsNumber=1;
@@ -82,6 +83,11 @@ public class Reservation {
 
 	public void setStatus(ReservationStatus status) {
 		this.status = status;
+	}
+	
+	@Override
+	public Long id() {
+		return id;
 	}
 	
 	

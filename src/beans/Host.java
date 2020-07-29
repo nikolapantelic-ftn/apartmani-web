@@ -3,7 +3,7 @@ package beans;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Host extends User{
+public class Host extends User implements Identifiable<String>{
 	
 	private List<Apartment> apartments;
 	
@@ -19,6 +19,11 @@ public class Host extends User{
 
 	public void setApartments(List<Apartment> apartments) {
 		this.apartments = apartments;
+	}
+
+	@Override
+	public String id() {
+		return username;
 	}
 	
 	

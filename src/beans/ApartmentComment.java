@@ -1,7 +1,8 @@
 package beans;
 
-public class ApartmentComment {
+public class ApartmentComment implements Identifiable<Long> {
 
+	private long id;
 	private Guest guest;
 	private Apartment apartment;
 	private String text;
@@ -49,6 +50,11 @@ public class ApartmentComment {
 
 	public void setMark(int mark) {
 		this.mark = mark;
+	}
+
+	@Override
+	public Long id() {
+		return id;
 	}
 	
 	

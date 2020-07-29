@@ -1,7 +1,8 @@
 package beans;
 
-public class Location {
+public class Location implements Identifiable<Long> {
 	
+	private long id;
 	private String longitude;
 	private String latitude;
 	private Address address;
@@ -34,6 +35,10 @@ public class Location {
 	}
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+	@Override
+	public Long id() {
+		return id;
 	}
 	
 	

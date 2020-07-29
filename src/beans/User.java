@@ -1,7 +1,7 @@
 package beans;
 
 
-public class User {
+public class User implements Identifiable<String> {
 	
 	protected String username;
 	protected String password;
@@ -59,6 +59,11 @@ public class User {
 	}
 	public void setGender(Gender gender) {
 		this.gender = gender;
+	}
+
+	@Override
+	public String id() {
+		return username;
 	}
 
 }

@@ -4,8 +4,9 @@ import java.awt.Image;
 import java.util.Date;
 import java.util.List;
 
-public class Apartment {
+public class Apartment implements Identifiable<Long> {
 	
+	private long id;
 	private ApartmentType type;
 	private int numberOfRooms;
 	private int numberOfGuests;
@@ -146,6 +147,13 @@ public class Apartment {
 
 	public void setReservations(List<Reservation> reservations) {
 		this.reservations = reservations;
+	}
+
+
+
+	@Override
+	public Long id() {
+		return id;
 	}
 		
 	
