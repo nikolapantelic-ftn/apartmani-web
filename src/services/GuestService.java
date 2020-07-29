@@ -70,16 +70,7 @@ public class GuestService {
 		return guestRepository.getAll().get(username);
 	}
 	
-	@POST
-	@Path("/login")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Guest login(Guest guest) {
-		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
-		Guest g = guestRepository.getAll().get(guest.getUsername());
-		if (g.getPassword().equals(guest.getPassword())) {
-			return g;
-		} else return null;
-	}
+
 	
 	@DELETE
 	@Path("/{id}")
