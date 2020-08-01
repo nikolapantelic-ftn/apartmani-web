@@ -28,9 +28,10 @@ abstract class AbstractRepository<T extends Identifiable<ID>, ID> implements Rep
 	}
 
 	@Override
-	public void save(T entity) throws JsonIOException, IOException {
+	public T save(T entity) throws JsonIOException, IOException {
 		entities.put(entity.id(), entity);
 		saveAll();
+		return entity;
 	}
 
 	@Override

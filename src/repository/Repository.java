@@ -8,7 +8,7 @@ import com.google.gson.JsonIOException;
 
 interface Repository<T, ID> {
 	
-	public void save(T entity) throws JsonIOException, IOException;
+	public T save(T entity) throws JsonIOException, IOException;
 
 	public void loadEntities(Type type) throws IOException;
 
