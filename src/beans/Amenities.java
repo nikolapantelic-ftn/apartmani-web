@@ -35,6 +35,11 @@ public class Amenities implements Identifiable<Long> {
 	public Long id() {
 		return id;
 	}
+
+	@Override
+	public void updateId(Long id) {
+		this.id = id;
+	}
 	
 	
 	

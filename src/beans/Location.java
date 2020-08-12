@@ -41,5 +41,9 @@ public class Location implements Identifiable<Long> {
 		return id;
 	}
 	
+	@Override
+	public void updateId(Long id) {
+		this.id = id;
+	}
 	
 }

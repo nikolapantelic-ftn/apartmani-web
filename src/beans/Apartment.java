@@ -148,15 +148,15 @@ public class Apartment implements Identifiable<Long> {
 	public void setReservations(List<Reservation> reservations) {
 		this.reservations = reservations;
 	}
-
-
-
+	
 	@Override
 	public Long id() {
 		return id;
 	}
 		
-	
-	
-	
+	@Override
+	public void updateId(Long id) {
+		this.id = id;
+	}
+
 }

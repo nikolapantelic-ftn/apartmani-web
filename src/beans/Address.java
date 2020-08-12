@@ -41,11 +41,15 @@ public class Address implements Identifiable<Long>{
 		this.zipCode = zipCode;
 	}
 
-
-
 	@Override
 	public Long id() {
 		return id;
+	}
+
+	@Override
+	public void updateId(Long id) {
+		this.id = id;
+		
 	}
 	
 	
