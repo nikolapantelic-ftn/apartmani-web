@@ -66,4 +66,10 @@ public class User implements Identifiable<String> {
 		return username;
 	}
 
+	@Override
+	public void updateId(String id) {
+		setUsername(id);
+	}
+
+	
 }
