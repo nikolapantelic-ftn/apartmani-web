@@ -6,15 +6,12 @@ var app = new Vue({
 		searchField: ""
 	},
 	mounted () {
-		console.log("asd");
 		axios
-			.get('rest/currentuser')
+			.get('rest/currentUser')
 			.then(function (response) {
-				this.user = response.data;
-				console.log("asd");
-				if (this.user) {
-					isLoggedIn = true;
-					console.log(user);
+				app.user = response.data;
+				if (app.user) {
+					app.isLoggedIn = true;
 				}
 			});
 	}
