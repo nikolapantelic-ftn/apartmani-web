@@ -36,7 +36,7 @@
 	        	<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" v-if="isLoggedIn">
 	          		<a class="dropdown-item" href="#">Profil</a>
 	          		<div class="dropdown-divider"></div>
-	          		<a class="dropdown-item" href="#">Odjavi se</a>
+	          		<a class="dropdown-item" v-on:click="logout">Odjavi se</a>
 	        	</div>
 	            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" v-else>
 	          		<a class="dropdown-item" href="login.html">Prijavi se</a>

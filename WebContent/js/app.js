@@ -14,5 +14,12 @@ var app = new Vue({
 					app.isLoggedIn = true;
 				}
 			});
+	},
+	methods: {
+		logout: function(e) {
+			axios
+			.get('rest/logout')
+			.then(response => (window.location.href = '/apartmani-web'));
+		}
 	}
 })

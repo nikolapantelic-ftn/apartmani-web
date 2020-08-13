@@ -38,8 +38,10 @@ abstract class AbstractRepository<T extends Identifiable<ID>, ID> implements Rep
 	public void loadEntities(Type type) throws IOException {
 		Reader reader = Files.newBufferedReader(Paths.get(filepath));
 		List<T> entitiesList = gson.fromJson(reader, type);
-		for (T entity : entitiesList) {
-			entities.put(entity.id(), entity);
+		if(entitiesList != null) {
+			for (T entity : entitiesList) {
+				entities.put(entity.id(), entity);
+			}
 		}
 	}
 

@@ -1,7 +1,10 @@
 package services;
 
+import java.io.IOException;
+
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -71,7 +74,7 @@ public class LoginService {
 	}
 	
 	
-	@POST
+	@GET
 	@Path("/logout")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
