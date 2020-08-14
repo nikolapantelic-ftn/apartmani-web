@@ -1,5 +1,6 @@
 package repository;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
@@ -36,6 +37,11 @@ abstract class AbstractRepository<T extends Identifiable<ID>, ID> implements Rep
 
 	@Override
 	public void loadEntities(Type type) throws IOException {
+		File tmp=new File(filepath);
+		if(!tmp.exists()) {
+			FileWriter file = new FileWriter(filepath);
+			file.close();
+		}
 		Reader reader = Files.newBufferedReader(Paths.get(filepath));
 		List<T> entitiesList = gson.fromJson(reader, type);
 		if(entitiesList != null) {
