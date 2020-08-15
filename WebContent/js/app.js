@@ -1,5 +1,16 @@
+const BookingForm = { template: '<booking-form></booking-form>' }
+
+
+const router = new VueRouter({
+	  mode: 'hash',
+	  routes: [
+	    { path: '/', component: BookingForm},
+	  ]
+});
+
 var app = new Vue({
-	el: '#navbar',
+	router,
+	el: '#app',
 	data: {
 		user: null,
 		isLoggedIn: false,
