@@ -24,7 +24,7 @@
 	background: #fff;
 	padding: 30px 15px 0px;
 	border-radius: 4px;
-	overflow: auto;
+	overflow: visible;
 }
 
 .booking-form .form-group {
