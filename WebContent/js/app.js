@@ -1,10 +1,11 @@
 const BookingForm = { template: '<booking-form></booking-form>' }
-
+const ApartmentSearch = { template: '<apartment-search></apartment-search>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
 	    { path: '/', component: BookingForm},
+		{ path : '/search', component: ApartmentSearch}
 	  ]
 });
 
@@ -21,6 +22,7 @@ var app = new Vue({
 			.get('rest/currentUser')
 			.then(function (response) {
 				app.user = response.data;
+				
 				if (app.user) {
 					app.isLoggedIn = true;
 				}

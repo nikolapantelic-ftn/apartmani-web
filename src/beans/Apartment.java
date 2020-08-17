@@ -7,6 +7,7 @@ import java.util.List;
 public class Apartment implements Identifiable<Long> {
 	
 	private long id;
+	private String name;
 	private ApartmentType type;
 	private int numberOfRooms;
 	private int numberOfGuests;
@@ -147,6 +148,13 @@ public class Apartment implements Identifiable<Long> {
 
 	public void setReservations(List<Reservation> reservations) {
 		this.reservations = reservations;
+	}
+	
+	public void setName(String name) {
+		this.name=name;
+	}
+	public String getName() {
+		return this.name;
 	}
 	
 	@Override
