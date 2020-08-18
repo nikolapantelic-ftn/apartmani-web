@@ -16,14 +16,6 @@ public class Amenity implements Identifiable<Long>, Deletable {
 		this.naziv = naziv;
 	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
 	public String getNaziv() {
 		return naziv;
 	}
@@ -33,12 +25,12 @@ public class Amenity implements Identifiable<Long>, Deletable {
 	}
 
 	@Override
-	public Long id() {
+	public Long getId() {
 		return id;
 	}
 
 	@Override
-	public void updateId(Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -87,12 +87,12 @@ public class Reservation implements Identifiable<Long>, Deletable {
 	}
 	
 	@Override
-	public Long id() {
+	public Long getId() {
 		return id;
 	}
 	
 	@Override
-	public void updateId(Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

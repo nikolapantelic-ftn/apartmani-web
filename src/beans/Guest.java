@@ -38,8 +38,4 @@ public class Guest extends User implements Identifiable<String>{
 		this.reservations = reservations;
 	}
 	
-	@Override
-	public String id() {
-		return username;
-	}
 }

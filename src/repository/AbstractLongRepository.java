@@ -21,11 +21,11 @@ abstract class AbstractLongRepository<T extends Identifiable<Long> & Deletable> 
 	
 	@Override
 	public T save(T newEntity) throws JsonIOException, IOException {
-		T entity = getAll().get(newEntity.id());
+		T entity = getAll().get(newEntity.getId());
 		if (entity == null) {
-			newEntity.updateId(sequencer.generateId());
+			newEntity.setId(sequencer.generateId());
 		}
-		getAll().put(newEntity.id(), newEntity);
+		getAll().put(newEntity.getId(), newEntity);
 		saveAll();
 		return newEntity;
 	}
@@ -37,8 +37,8 @@ abstract class AbstractLongRepository<T extends Identifiable<Long> & Deletable> 
 	private long getMaxId(Collection<T> entities) {
 		long maxId = 0;
 		for (T entity : entities) {
-			if (entity.id() > maxId) {
-				maxId = entity.id();
+			if (entity.getId() > maxId) {
+				maxId = entity.getId();
 			}
 		}
 		return maxId;

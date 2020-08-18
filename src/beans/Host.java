@@ -20,12 +20,5 @@ public class Host extends User implements Identifiable<String>{
 	public void setApartments(List<Apartment> apartments) {
 		this.apartments = apartments;
 	}
-
-	@Override
-	public String id() {
-		return username;
-	}
 	
-	
-
 }

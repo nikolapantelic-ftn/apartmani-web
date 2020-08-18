@@ -31,7 +31,7 @@ abstract class AbstractRepository<T extends Identifiable<ID> & Deletable, ID> im
 
 	@Override
 	public T save(T entity) throws JsonIOException, IOException {
-		entities.put(entity.id(), entity);
+		entities.put(entity.getId(), entity);
 		saveAll();
 		return entity;
 	}
@@ -47,7 +47,7 @@ abstract class AbstractRepository<T extends Identifiable<ID> & Deletable, ID> im
 		List<T> entitiesList = gson.fromJson(reader, type);
 		if(entitiesList != null) {
 			for (T entity : entitiesList) {
-				entities.put(entity.id(), entity);
+				entities.put(entity.getId(), entity);
 			}
 		}
 	}

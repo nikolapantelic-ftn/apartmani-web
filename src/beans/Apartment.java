@@ -157,22 +157,15 @@ public class Apartment implements Identifiable<Long>, Deletable {
 	public String getName() {
 		return this.name;
 	}
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id=id;
-	}
 	
 	@Override
-	public Long id() {
+	public Long getId() {
 		return id;
 	}
 	
 		
 	@Override
-	public void updateId(Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

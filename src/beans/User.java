@@ -63,12 +63,12 @@ public class User implements Identifiable<String>, Deletable {
 	}
 
 	@Override
-	public String id() {
-		return username;
+	public String getId() {
+		return getUsername();
 	}
 
 	@Override
-	public void updateId(String id) {
+	public void setId(String id) {
 		setUsername(id);
 	}
 
