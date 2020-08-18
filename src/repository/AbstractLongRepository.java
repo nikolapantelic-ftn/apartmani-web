@@ -25,6 +25,7 @@ abstract class AbstractLongRepository<T extends Identifiable<Long>> extends Abst
 			newEntity.updateId(sequencer.generateId());
 		}
 		getAll().put(newEntity.id(), newEntity);
+		saveAll();
 		return newEntity;
 	}
 	
