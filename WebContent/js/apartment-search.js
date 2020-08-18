@@ -1,12 +1,22 @@
 Vue.component('apartment-search',{
 	data:function(){
 		return{
-			apartmentList:[]
+			apartmentList:null,
+			location:this.$route.query.location,
+			startDate:this.$route.query.sDate,
+			endDate:this.$route.query.eDate,
+			guests:this.$route.query.guests,
+			rooms:this.$route.query.rooms
+			
 		}
 	},
 	mounted(){
+		if(this.location==("")){
+			this.location=" ";
+		}
+		alert(this.location);
 		axios
-		.get('rest/apartments')
+		.get('rest/apartments/searchF/'+this.location+'/'+this.rooms)
 		.then(response => (this.apartmentList = response.data))
 	},
 	template:

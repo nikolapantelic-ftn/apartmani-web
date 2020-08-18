@@ -1,7 +1,9 @@
 package services;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -19,6 +21,7 @@ import com.google.gson.JsonIOException;
 
 import app.WebApp;
 import beans.Apartment;
+import beans.Location;
 import repository.ApartmentRepository;
 
 
@@ -86,15 +89,27 @@ public class ApartmentService {
 	}
 	
 	@GET
-	@Path("/searchName/{name}")
+	@Path("/searchF/{location}/{name}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Apartment findByName(@PathParam("name") String name) {
+	public List<Apartment> findByParams(@PathParam("location") String location,@PathParam("name") String name) {
 		ApartmentRepository apartmentRepository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");
+		List<Apartment> ret=new ArrayList<Apartment>();
 		for (Apartment a : apartmentRepository.getAll().values()) {
-			if(a.getName().equals(name))
-			return a;
+			if(a.getName().equals(location))
+			ret.add(a);
 		}
-		return null;
+		return ret;
 	}
+	
+	public boolean equalLocation(String string,Location location) {
+		if(string.equals(" "))
+			return true;
+		if(string.equals(location.getAddress().getPlace()))
+			return true;
+		return false;
+	}
+	
+	
+	
 	
 }
