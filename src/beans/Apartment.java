@@ -156,11 +156,19 @@ public class Apartment implements Identifiable<Long> {
 	public String getName() {
 		return this.name;
 	}
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id=id;
+	}
 	
 	@Override
 	public Long id() {
 		return id;
 	}
+	
 		
 	@Override
 	public void updateId(Long id) {
