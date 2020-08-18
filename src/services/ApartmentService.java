@@ -68,14 +68,14 @@ public class ApartmentService {
 	@Path("/search/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Apartment find(@PathParam("id") long id) {
-		ApartmentRepository apartmentRepository = (ApartmentRepository)ctx.getAttribute("ApartmentRepository");
+		ApartmentRepository apartmentRepository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");
 		return apartmentRepository.getAll().get(id);
 	}
 	
 	@DELETE
 	@Path("/{id}")
 	public void delete(@PathParam("id") long id) {
-		ApartmentRepository apartmentRepository = (ApartmentRepository)ctx.getAttribute("ApartmentRepository");
+		ApartmentRepository apartmentRepository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");
 		try {
 			apartmentRepository.delete(id);
 		} catch (JsonIOException e) {
@@ -84,4 +84,17 @@ public class ApartmentService {
 			e.printStackTrace();
 		}
 	}
+	
+	@GET
+	@Path("/searchName/{name}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Apartment findByName(@PathParam("name") String name) {
+		ApartmentRepository apartmentRepository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");
+		for (Apartment a : apartmentRepository.getAll().values()) {
+			if(a.getName().equals(name))
+			return a;
+		}
+		return null;
+	}
+	
 }
