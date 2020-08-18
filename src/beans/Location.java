@@ -1,11 +1,12 @@
 package beans;
 
-public class Location implements Identifiable<Long> {
+public class Location implements Identifiable<Long>, Deletable {
 	
 	private long id;
 	private String longitude;
 	private String latitude;
 	private Address address;
+	private boolean deleted;
 	
 	public Location() {
 		
@@ -44,6 +45,14 @@ public class Location implements Identifiable<Long> {
 	@Override
 	public void updateId(Long id) {
 		this.id = id;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 	
 }

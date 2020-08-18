@@ -1,12 +1,13 @@
 package beans;
 
-public class ApartmentComment implements Identifiable<Long> {
+public class ApartmentComment implements Identifiable<Long>, Deletable {
 
 	private long id;
 	private Guest guest;
 	private Apartment apartment;
 	private String text;
 	private int mark;
+	private boolean deleted;
 	
 	public ApartmentComment() {
 		
@@ -60,6 +61,14 @@ public class ApartmentComment implements Identifiable<Long> {
 	@Override
 	public void updateId(Long id) {
 		this.id = id;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 }

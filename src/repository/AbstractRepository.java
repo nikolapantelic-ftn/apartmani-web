@@ -14,9 +14,10 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 
+import beans.Deletable;
 import beans.Identifiable;
 
-abstract class AbstractRepository<T extends Identifiable<ID>, ID> implements Repository<T, ID> {
+abstract class AbstractRepository<T extends Identifiable<ID> & Deletable, ID> implements Repository<T, ID> {
 	private Map<ID, T> entities;
 	private Gson gson;
 	private String filepath;
@@ -65,7 +66,7 @@ abstract class AbstractRepository<T extends Identifiable<ID>, ID> implements Rep
 
 	@Override
 	public void delete(ID id) throws JsonIOException, IOException {
-		entities.remove(id);
+		entities.get(id).setDeleted(true);
 		saveAll();
 	}
 

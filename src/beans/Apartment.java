@@ -4,7 +4,7 @@ import java.awt.Image;
 import java.util.Date;
 import java.util.List;
 
-public class Apartment implements Identifiable<Long> {
+public class Apartment implements Identifiable<Long>, Deletable {
 	
 	private long id;
 	private String name;
@@ -21,8 +21,9 @@ public class Apartment implements Identifiable<Long> {
 	private String checkInTime; 
 	private String checkOutTime;
 	private ApartmentStatus status;
-	private List<Amenities> amenities;
+	private List<Amenity> amenities;
 	private List<Reservation> reservations;
+	private boolean deleted;
 	
 	public Apartment() {
 		
@@ -134,11 +135,11 @@ public class Apartment implements Identifiable<Long> {
 		this.status = status;
 	}
 
-	public List<Amenities> getAmenities() {
+	public List<Amenity> getAmenities() {
 		return amenities;
 	}
 
-	public void setAmenities(List<Amenities> amenities) {
+	public void setAmenities(List<Amenity> amenities) {
 		this.amenities = amenities;
 	}
 
@@ -173,6 +174,18 @@ public class Apartment implements Identifiable<Long> {
 	@Override
 	public void updateId(Long id) {
 		this.id = id;
+	}
+
+
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 }

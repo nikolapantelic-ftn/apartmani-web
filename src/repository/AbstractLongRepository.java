@@ -5,10 +5,11 @@ import java.util.Collection;
 
 import com.google.gson.JsonIOException;
 
+import beans.Deletable;
 import beans.Identifiable;
 import repository.sequencer.LongSequencer;
 
-abstract class AbstractLongRepository<T extends Identifiable<Long>> extends AbstractRepository<T, Long> {
+abstract class AbstractLongRepository<T extends Identifiable<Long> & Deletable> extends AbstractRepository<T, Long> {
 
 	private LongSequencer sequencer;
 	

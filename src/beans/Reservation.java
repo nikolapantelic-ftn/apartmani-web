@@ -2,7 +2,7 @@ package beans;
 
 import java.util.Date;
 
-public class Reservation implements Identifiable<Long> {
+public class Reservation implements Identifiable<Long>, Deletable {
 
 	private long id;
 	private Apartment apartment;
@@ -12,6 +12,7 @@ public class Reservation implements Identifiable<Long> {
 	private String message;
 	private Guest guest;
 	private ReservationStatus status;
+	private boolean deleted;
 	
 	public Reservation() {
 		
@@ -93,6 +94,14 @@ public class Reservation implements Identifiable<Long> {
 	@Override
 	public void updateId(Long id) {
 		this.id = id;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 	
 }

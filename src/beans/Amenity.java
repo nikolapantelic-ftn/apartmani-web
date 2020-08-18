@@ -1,15 +1,16 @@
 package beans;
 
-public class Amenities implements Identifiable<Long> {
+public class Amenity implements Identifiable<Long>, Deletable {
 	
 	private long id;
 	private String naziv;
+	private boolean deleted;
 	
-	public Amenities() {
+	public Amenity() {
 		
 	}
 	
-	public Amenities(long id, String naziv) {
+	public Amenity(long id, String naziv) {
 		super();
 		this.id = id;
 		this.naziv = naziv;
@@ -39,6 +40,14 @@ public class Amenities implements Identifiable<Long> {
 	@Override
 	public void updateId(Long id) {
 		this.id = id;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 	
 	

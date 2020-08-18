@@ -1,11 +1,12 @@
 package beans;
 
-public class Address implements Identifiable<Long>{
+public class Address implements Identifiable<Long>, Deletable {
 	
 	private long id;
 	private String streetAndNumber;
 	private String place;
 	private String zipCode;
+	private boolean deleted;
 	
 	public Address() {
 		
@@ -50,6 +51,18 @@ public class Address implements Identifiable<Long>{
 	public void updateId(Long id) {
 		this.id = id;
 		
+	}
+
+
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 	
 	
