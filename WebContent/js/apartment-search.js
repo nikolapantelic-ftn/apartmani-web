@@ -30,7 +30,9 @@ Vue.component('apartment-search',{
             <h4 class="card-title">{{a.name}}</h4>
             <p class="card-text">Cena: {{a.price}}</p>
             <div class="text-right">
-            	<a href="#" class="btn btn-primary">Zakazivanje</a>
+				<router-link v-bind:to="'/apartment/'+a.id"> 	
+            	<a class="btn btn-primary">Zakazivanje</a>
+				</router-link>
             </div>
         </div>
         <div class="w-100"></div>

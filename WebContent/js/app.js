@@ -1,11 +1,13 @@
 const BookingForm = { template: '<booking-form></booking-form>' }
 const ApartmentSearch = { template: '<apartment-search></apartment-search>' }
+const ApartmentDetails = { template: '<apartment-details></apartment-details>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
 	    { path: '/', component: BookingForm},
-		{ path : '/search', component: ApartmentSearch}
+		{ path : '/search', component: ApartmentSearch},
+		{ path : '/apartment/:id', component: ApartmentDetails}
 	  ]
 });
 
