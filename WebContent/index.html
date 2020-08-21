@@ -49,6 +49,18 @@
 	        	<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" v-if="isLoggedIn">
 	          		<a class="dropdown-item" href="#">Profil</a>
 	          		<div class="dropdown-divider"></div>
+	          		<div v-if="user.role === 'Guest'">
+	          		<a class="dropdown-item" href="#">Moje rezervacije</a>
+	          		<div class="dropdown-divider"></div>
+	          		</div>
+	          		<div v-if="user.role === 'Guest'">
+	          		<a class="dropdown-item" href="#">Iznajmljeni apartmani </a>
+	          		<div class="dropdown-divider"></div>
+	          		</div>
+	          		<div v-if="user.role === 'Host'">
+	          		<a class="dropdown-item" href="#">Moji apartmani </a>
+	          		<div class="dropdown-divider"></div>
+	          		</div>
 	          		<a class="dropdown-item" v-on:click="logout">Odjavi se</a>
 	        	</div>
 	            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" v-else>
