@@ -6,12 +6,13 @@ import java.util.List;
 import com.google.gson.reflect.TypeToken;
 
 import beans.ApartmentComment;
+import repository.sequencer.LongSequencer;
 
 
-public class ApartmentCommentRepository extends AbstractRepository< ApartmentComment, Long> {
+public class ApartmentCommentRepository extends AbstractLongRepository< ApartmentComment> {
 
 	public ApartmentCommentRepository(String path) {
-		super(path);
+		super(path, new LongSequencer());
 
 	}
 

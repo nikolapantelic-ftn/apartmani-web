@@ -4,7 +4,7 @@ public class ApartmentComment implements Identifiable<Long>, Deletable {
 
 	private long id;
 	private Guest guest;
-	private Apartment apartment;
+	private long apartmentId;
 	private String text;
 	private int mark;
 	private boolean deleted;
@@ -13,10 +13,10 @@ public class ApartmentComment implements Identifiable<Long>, Deletable {
 		
 	}
 
-	public ApartmentComment(Guest guest, Apartment apartment, String text, int mark) {
+	public ApartmentComment(Guest guest, long apartmentId, String text, int mark) {
 		super();
 		this.guest = guest;
-		this.apartment = apartment;
+		this.apartmentId = apartmentId;
 		this.text = text;
 		this.mark = mark;
 	}
@@ -29,12 +29,12 @@ public class ApartmentComment implements Identifiable<Long>, Deletable {
 		this.guest = guest;
 	}
 
-	public Apartment getApartment() {
-		return apartment;
+	public long getApartmentId() {
+		return apartmentId;
 	}
 
-	public void setApartment(Apartment apartment) {
-		this.apartment = apartment;
+	public void setApartmentId(long apartmentId) {
+		this.apartmentId = apartmentId;
 	}
 
 	public String getText() {

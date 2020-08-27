@@ -57,8 +57,7 @@ public class ApartmentService {
 	public Apartment create(Apartment apartment) {
 		ApartmentRepository apartmentRepository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");
 		try {
-			apartmentRepository.save(apartment);
-			return apartment;
+			return apartmentRepository.save(apartment);
 		} catch (JsonIOException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
