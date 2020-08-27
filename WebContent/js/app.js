@@ -1,11 +1,11 @@
-const BookingForm = { template: '<booking-form></booking-form>' }
 const ApartmentSearch = { template: '<apartment-search></apartment-search>' }
 const ApartmentDetails = { template: '<apartment-details></apartment-details>' }
+const Index = { template: '<index></index>'}
 
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
-	    { path: '/', component: BookingForm},
+	    { path: '/', component: Index},
 		{ path : '/search', component: ApartmentSearch},
 		{ path : '/apartment/:id', component: ApartmentDetails}
 	  ]
@@ -17,7 +17,8 @@ var app = new Vue({
 	data: {
 		user: null,
 		isLoggedIn: false,
-		searchField: ""
+		searchField: "",
+		apartments: []
 	},
 	mounted () {
 		axios
