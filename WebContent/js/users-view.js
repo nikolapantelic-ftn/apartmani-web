@@ -6,6 +6,16 @@ Vue.component('users-view',{
 			search:''
 		}
 	},
+	beforeMount(){
+		axios
+		.post('rest/users/isAdmin')
+		.then()
+		.catch(e=>{
+			if(e.response.status==403){
+			this.$router.push('forbidden');	
+			}
+		})
+	},
 	mounted(){
 		axios
 		.get('rest/users')
