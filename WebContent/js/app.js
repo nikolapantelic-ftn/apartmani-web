@@ -1,13 +1,15 @@
 const ApartmentSearch = { template: '<apartment-search></apartment-search>' }
 const ApartmentDetails = { template: '<apartment-details></apartment-details>' }
 const Index = { template: '<index></index>'}
+const UsersView = { template: '<users-view></users-view>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
 	    { path: '/', component: Index},
 		{ path : '/search', component: ApartmentSearch},
-		{ path : '/apartment/:id', component: ApartmentDetails}
+		{ path : '/apartment/:id', component: ApartmentDetails},
+		{ path: '/users', component: UsersView }
 	  ]
 });
 
