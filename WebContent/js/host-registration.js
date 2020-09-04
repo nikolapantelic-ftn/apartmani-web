@@ -10,6 +10,16 @@ Vue.component("host-registration",{
 			registerErrors: []
 		}
 	},
+	beforeMount(){
+		axios
+		.post('rest/users/isAdmin')
+		.then()
+		.catch(e=>{
+			if(e.response.status==403){
+			this.$router.push('forbidden');	
+			}
+		})
+	},
 	methods:{
 		checkRegisterForm: function (e) {
 			if (!this.registerFirstName) {
