@@ -1,7 +1,7 @@
 Vue.component('apartment-search',{
 	data:function(){
 		return{
-			apartmentList:null,
+			apartmentList:[],
 			location:this.$route.query.location,
 			startDate:this.$route.query.sDate,
 			endDate:this.$route.query.eDate,
@@ -19,8 +19,16 @@ Vue.component('apartment-search',{
 			this.location=" ";
 		}
 		axios
-		.get('rest/apartments/searchF/'+this.location+'/'+this.rooms)
+		.get('rest/apartments')
 		.then(response => (this.apartmentList = response.data))
+	},
+	computed: {
+    filteredApartments() {
+      return this.apartmentList.filter(apartment => {
+       if(apartment.price<=this.max)
+		return apartment;
+      })
+    }
 	},
 	template:
 	`
@@ -31,15 +39,33 @@ Vue.component('apartment-search',{
      <div class="row d-flex justify-content-center">
          
              <div class="card w-100">
+				<article class="filter-group">
+                     <header class="card-header"> <a href="#" data-toggle="collapse" data-target="#collapse_aside0" data-abc="true" aria-expanded="false" class="collapsed"> <i class="icon-control fa fa-chevron-down"></i>
+                             <h6 class="title">Lokacija</h6>
+                         </a> </header>
+                     <div class="filter-content collapse show" id="collapse_aside0" style="">
+                         <div class="card-body">
+                           <input class="form-control mr-sm-2" type="search" v-model="location" aria-label="Search">  	
+                         </div>
+                     </div>
+                 </article>
                  <article class="filter-group">
                      <header class="card-header"> <a href="#" data-toggle="collapse" data-target="#collapse_aside1" data-abc="true" aria-expanded="false" class="collapsed"> <i class="icon-control fa fa-chevron-down"></i>
-                             <h6 class="title">Kategorija </h6>
+                             <h6 class="title">Datum prijave </h6>
                          </a> </header>
-                     <div class="filter-content collapse" id="collapse_aside1" style="">
+                     <div class="filter-content collapse show" id="collapse_aside1" style="">
                          <div class="card-body">
-                             <ul class="list-menu">
-                                
-                             </ul>
+                             <input class="form-control" type="date"  v-model="startDate">
+                         </div>
+                     </div>
+                 </article>
+				<article class="filter-group">
+                     <header class="card-header"> <a href="#" data-toggle="collapse" data-target="#collapse_aside1-2" data-abc="true" aria-expanded="false" class="collapsed "> <i class="icon-control fa fa-chevron-down"></i>
+                             <h6 class="title">Datum odjave </h6>
+                         </a> </header>
+                     <div class="filter-content collapse show" id="collapse_aside1-2" style="">
+                         <div class="card-body">
+                             <input class="form-control" type="date"  v-model="endDate">
                          </div>
                      </div>
                  </article>
@@ -47,12 +73,12 @@ Vue.component('apartment-search',{
                      <header class="card-header"> <a href="#" data-toggle="collapse" data-target="#collapse_aside2" data-abc="true" aria-expanded="false" class="collapsed"> <i class="icon-control fa fa-chevron-down"></i>
                              <h6 class="title">Cena </h6>
                          </a> </header>
-                     <div class="filter-content collapse" id="collapse_aside2" style="">
+                     <div class="filter-content collapse show" id="collapse_aside2" style="">
                          <div class="card-body"> <input type="range" class="custom-range" v-model="cena" min="0" v-bind:max="max" name="">
                              <div class="form-row">
                                  <div class="form-group col-md-6"> <label>Min</label> <input class="form-control" placeholder="$0" v-model="cena" type="number"> </div>
                                  <div class="form-group text-right col-md-6"> <label>Max</label> <input class="form-control" v-model="max" placeholder="$1,0000" type="number"> </div>
-                             </div> <a href="#" class="highlight-button btn btn-medium button xs-margin-bottom-five" data-abc="true">Potvrdi</a>
+                             </div> 
                          </div>
                      </div>
                  </article>
@@ -109,8 +135,8 @@ Vue.component('apartment-search',{
      
  </div>
 </div>
-<div class="col">
-    <div class="card  flex-row flex-wrap" v-for="a in apartmentList">	
+<div class="col ">
+    <div class="card mb-2 flex-row flex-wrap" v-for="a in filteredApartments">	
         <div class="card-header border-0">
             <img src="//placehold.it/200" alt="">
         </div>
