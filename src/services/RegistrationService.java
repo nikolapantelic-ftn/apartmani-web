@@ -16,6 +16,7 @@ import com.google.gson.JsonIOException;
 
 import app.WebApp;
 import beans.Guest;
+import beans.Host;
 import beans.User;
 import repository.AdminRepository;
 import repository.GuestRepository;
@@ -67,6 +68,39 @@ public class RegistrationService {
 		
 		try {
 			guestRepository.save(guest);
+			return Response.status(200).build();
+		} catch (JsonIOException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return Response.status(400).entity("Unknown exception occured!").build();
+	}
+	
+	@POST
+	@Path("/host")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response registerHost(Host host) {
+		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
+		HostRepository hostRepository = (HostRepository)ctx.getAttribute("hostRepository");
+		AdminRepository adminRepository = (AdminRepository)ctx.getAttribute("adminRepository");
+		User user = guestRepository.getAll().get(host.getUsername());
+		if (user != null) {
+			return Response.status(400).entity("User already exists!").build();
+		}
+		user = hostRepository.getAll().get(host.getUsername());
+		if (user != null) {
+			return Response.status(400).entity("User already exists!").build();
+		}
+		user = adminRepository.getAll().get(host.getUsername());
+		if (user != null) {
+			return Response.status(400).entity("User already exists!").build();
+		}
+		
+		try {
+			hostRepository.save(host);
 			return Response.status(200).build();
 		} catch (JsonIOException e) {
 			e.printStackTrace();

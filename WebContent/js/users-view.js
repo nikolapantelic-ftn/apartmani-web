@@ -33,11 +33,17 @@ Vue.component('users-view',{
   `
   
 	<div class="container">
-	<div class="row">
+	<div class="row justify-content-around">
+		<div class="col-4">
 		 <div class="search-wrapper">
-			<label>Pretraga korisnika:</label>
-  		    <input type="text" v-model="search" placeholder="Search "/>
+  		    <input type="text" v-model="search" placeholder="Pretraga korisnika "/>
   		</div>
+		</div>
+		<div class="col-4">
+		<div class="col col-rg">
+		<a href="#/addHost" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Dodaj domacina</a>
+		</div>
+		</div>
 	</div>
 	<div class="row">
 	
