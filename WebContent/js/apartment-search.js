@@ -7,10 +7,10 @@ Vue.component('apartment-search',{
 			endDate:this.$route.query.eDate,
 			guests:this.$route.query.guests,
 			rooms:this.$route.query.rooms,
-			cena:0,
+			min:0,
 			max:100,
-			klima:'',
-			tv:''
+			amenities:[],
+			checkedAmanities:[]
 			
 		}
 	},
@@ -18,18 +18,50 @@ Vue.component('apartment-search',{
 		if(this.location==("")){
 			this.location=" ";
 		}
+		
 		axios
 		.get('rest/apartments')
-		.then(response => (this.apartmentList = response.data))
+		.then(response => {
+		this.apartmentList = response.data})
+		axios
+		.get('rest/amenities')
+		.then(response => {
+		this.amenities = response.data})
+		
+			
+		
 	},
 	computed: {
+	filterAmanities(apartment){
+		this.checkedAmanities.forEach(a=>{
+			apartment.amenities.forEach(am=>{
+				if(am.naziv==a){
+					return true;
+				}
+			})
+		})
+		return false;
+	},
     filteredApartments() {
       return this.apartmentList.filter(apartment => {
-       if(apartment.price<=this.max)
+		var appAmenities=[];
+		apartment.amenities.forEach(a=>{
+			appAmenities.push(a.naziv);
+		})
+		var hasAmenities=true;
+		
+		this.checkedAmanities.forEach(a=>{
+			if(!appAmenities.includes(a))
+			hasAmenities=false;
+		})
+       if(apartment.price<=this.max && apartment.price>=this.min && hasAmenities)
 		return apartment;
       })
-    }
+
+    
+	}
 	},
+	
 	template:
 	`
 	<div class="containter">
@@ -74,9 +106,9 @@ Vue.component('apartment-search',{
                              <h6 class="title">Cena </h6>
                          </a> </header>
                      <div class="filter-content collapse show" id="collapse_aside2" style="">
-                         <div class="card-body"> <input type="range" class="custom-range" v-model="cena" min="0" v-bind:max="max" name="">
+                         <div class="card-body"> <input type="range" class="custom-range" v-model="min" min="0" v-bind:max="max" name="">
                              <div class="form-row">
-                                 <div class="form-group col-md-6"> <label>Min</label> <input class="form-control" placeholder="$0" v-model="cena" type="number"> </div>
+                                 <div class="form-group col-md-6"> <label>Min</label> <input class="form-control" placeholder="$0" v-model="min" type="number"> </div>
                                  <div class="form-group text-right col-md-6"> <label>Max</label> <input class="form-control" v-model="max" placeholder="$1,0000" type="number"> </div>
                              </div> 
                          </div>
@@ -121,12 +153,11 @@ Vue.component('apartment-search',{
                          </a> </header>
                      <div class="filter-content collapse" id="collapse_aside5" style="">
                          <div class="card-body"> 
-							<label class="custom-control"> <input type="checkbox" v-model="tv" class="custom-control-input">
-                                 <div class="custom-control-label">TV </div>
+							<label class="custom-control" v-for="amanity in amenities"> 
+								<input type="checkbox" v-bind:value="amanity.naziv" v-model="checkedAmanities" class="custom-control-input">
+                                 <div class="custom-control-label">{{amanity.naziv}} </div>
                              </label> 
-							<label class="custom-control"> <input type="checkbox"  v-model="klima" class="custom-control-input">
-                                 <div class="custom-control-label">Klima </div>
-                             </label>
+						
 						</div>
                      </div>
                  </article>
@@ -143,6 +174,10 @@ Vue.component('apartment-search',{
         <div class="card-block px-2">
             <h4 class="card-title">{{a.name}}</h4>
             <p class="card-text">Cena: {{a.price}}</p>
+            
+        </div>
+		<div class="card-block px-2" v-for="amenity in a.amenities" >
+            <p class="card-text">{{amenity.naziv}}</p>
             
         </div>
 		<div class="card-block px-2">

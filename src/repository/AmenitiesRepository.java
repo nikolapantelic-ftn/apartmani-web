@@ -6,11 +6,14 @@ import java.util.List;
 import com.google.gson.reflect.TypeToken;
 
 import beans.Amenity;
+import repository.sequencer.LongSequencer;
 
-public class AmenitiesRepository extends AbstractRepository<Amenity, Long>{
+
+public class AmenitiesRepository extends AbstractLongRepository<Amenity> {
+
 
 	public AmenitiesRepository(String path) {
-		super(path);
+		super(path, new LongSequencer());
 	}
 
 	@Override

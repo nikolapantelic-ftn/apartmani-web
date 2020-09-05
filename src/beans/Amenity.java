@@ -10,11 +10,6 @@ public class Amenity implements Identifiable<Long>, Deletable {
 		
 	}
 	
-	public Amenity(long id, String naziv) {
-		super();
-		this.id = id;
-		this.naziv = naziv;
-	}
 
 	public String getNaziv() {
 		return naziv;
