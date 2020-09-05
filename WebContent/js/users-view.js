@@ -3,7 +3,9 @@ Vue.component('users-view',{
 		return{
 			currentUser:null,
 			users:[],
-			search:''
+			search:'',
+			checkedGender:['Male','Female'],
+			checkedRole:['Admin','Guest','Host']
 		}
 	},
 	beforeMount(){
@@ -24,7 +26,13 @@ Vue.component('users-view',{
 	computed: {
     filteredUsers() {
       return this.users.filter(user => {
-       if(user.firstName.toLowerCase().match(this.search.toLowerCase())||user.lastName.toLowerCase().match(this.search.toLowerCase())|| user.username.toLowerCase().match(this.search.toLowerCase()))
+		var role=false;
+		if(this.checkedRole.includes(user.role))
+			role=true;
+		var gender=false;
+			if(this.checkedGender.includes(user.gender))
+			gender=true;
+       if((user.firstName.toLowerCase().match((this.search.toLowerCase())||user.lastName.toLowerCase().match(this.search.toLowerCase())|| user.username.toLowerCase().match(this.search.toLowerCase())))&& role && gender)
 		return user;
       })
     }
@@ -33,17 +41,52 @@ Vue.component('users-view',{
   `
   
 	<div class="container">
-	<div class="row justify-content-around">
-		<div class="col-4">
-		 <div class="search-wrapper">
+	<div class="row justify-content-around align-items-center d-flex">
+		<div class="col-3 align-items-center">
+		 <div class="search-wrapper ">
   		    <input type="text" v-model="search" placeholder="Pretraga korisnika "/>
   		</div>
 		</div>
-		<div class="col-4">
+		<div class="col-3">
+			<div class="row">
+			<label class="custom-control" > 
+								<input type="checkbox" value="Male" v-model="checkedGender" class="custom-control-input">
+                                 <div class="custom-control-label">Muski </div>
+            </label>
+			</div>
+			<div class="row">
+			<label class="custom-control" > 
+								<input type="checkbox" value="Female" v-model="checkedGender" class="custom-control-input">
+                                 <div class="custom-control-label">Zenski </div>
+            </label>
+			</div>
+		</div>
+		<div class="col-3">
+			<div class="row">
+			<label class="custom-control" > 
+								<input type="checkbox" value="Guest" v-model="checkedRole" checked="true" class="custom-control-input">
+                                 <div class="custom-control-label">Gost </div>
+            </label>
+			</div>
+			<div class="row">
+			<label class="custom-control" > 
+								<input type="checkbox" value="Host" v-model="checkedRole" class="custom-control-input">
+                                 <div class="custom-control-label">Domacin </div>
+            </label>
+			</div>
+			<div class="row">
+			<label class="custom-control" > 
+								<input type="checkbox" value="Admin" v-model="checkedRole" class="custom-control-input">
+                                 <div class="custom-control-label">Admin </div>
+            </label>
+			</div>
+		</div>
+		<div class="col-3">
 		<div class="col col-rg">
 		<a href="#/addHost" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Dodaj domacina</a>
 		</div>
 		</div>
+		
 	</div>
 	<div class="row">
 	
