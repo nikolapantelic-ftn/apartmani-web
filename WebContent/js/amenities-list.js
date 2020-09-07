@@ -92,7 +92,7 @@ Vue.component('amenities-list',{
 				deleted:'false'
 			})
 			.then(response=>{
-				var index=this.amenities.findIndex(a => a.name === this.selected.name);
+				var index=this.amenities.findIndex(a => a.id === this.selected.id);
 				this.amenities.splice(index, 1, response.data);
 			})
 			.catch(e=>{
