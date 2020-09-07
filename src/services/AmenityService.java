@@ -6,21 +6,23 @@ import java.util.Collection;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+
 
 import com.google.gson.JsonIOException;
 
 import app.WebApp;
 import beans.Amenity;
-import beans.Guest;
+
 import repository.AmenitiesRepository;
-import repository.GuestRepository;
+
 
 @Path("/amenities")
 public class AmenityService {
@@ -61,5 +63,18 @@ public class AmenityService {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	@DELETE
+	@Path("/{id}")
+	public void delete(@PathParam("id") long id) {
+		AmenitiesRepository amenitiesRepository = (AmenitiesRepository)ctx.getAttribute("amenitiesRepository");
+		try {
+			amenitiesRepository.delete(id);
+		} catch (JsonIOException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -35,7 +35,7 @@ Vue.component('apartment-search',{
 	filterAmanities(apartment){
 		this.checkedAmanities.forEach(a=>{
 			apartment.amenities.forEach(am=>{
-				if(am.naziv==a){
+				if(am.name==a){
 					return true;
 				}
 			})
@@ -46,7 +46,7 @@ Vue.component('apartment-search',{
       return this.apartmentList.filter(apartment => {
 		var appAmenities=[];
 		apartment.amenities.forEach(a=>{
-			appAmenities.push(a.naziv);
+			appAmenities.push(a.name);
 		})
 		var hasAmenities=true;
 		
@@ -120,7 +120,7 @@ Vue.component('apartment-search',{
                          </a> </header>
                      <div class="filter-content collapse" id="collapse_aside3" style="">
                          <div class="card-body">
-						 <select class="form-control  text-center" v-model="rooms" >
+						 <select class="d-flex form-control  text-center" v-model="rooms" >
   							<option>1</option>
 							<option>2</option>
 							<option>3</option>
@@ -154,8 +154,8 @@ Vue.component('apartment-search',{
                      <div class="filter-content collapse" id="collapse_aside5" style="">
                          <div class="card-body"> 
 							<label class="custom-control" v-for="amanity in amenities"> 
-								<input type="checkbox" v-bind:value="amanity.naziv" v-model="checkedAmanities" class="custom-control-input">
-                                 <div class="custom-control-label">{{amanity.naziv}} </div>
+								<input type="checkbox" v-bind:value="amanity.name" v-model="checkedAmanities" class="custom-control-input">
+                                 <div class="custom-control-label">{{amanity.name}} </div>
                              </label> 
 						
 						</div>
@@ -171,15 +171,21 @@ Vue.component('apartment-search',{
         <div class="card-header border-0">
             <img src="//placehold.it/200" alt="">
         </div>
-        <div class="card-block px-2">
+		
+		
+        <div class="card-block px-2 col">
             <h4 class="card-title">{{a.name}}</h4>
             <p class="card-text">Cena: {{a.price}}</p>
             
         </div>
-		<div class="card-block px-2" v-for="amenity in a.amenities" >
-            <p class="card-text">{{amenity.naziv}}</p>
+		
+		
+		<div class="card-block px-2 col" v-for="amenity in a.amenities" >
+            <p class="card-text">{{amenity.name}}</p>
             
         </div>
+		
+		
 		<div class="card-block px-2">
 		<div class="text-right">
 				<router-link v-bind:to="'/apartment/'+a.id"> 	
@@ -187,12 +193,14 @@ Vue.component('apartment-search',{
 				</router-link>
             </div>
 		</div>
-        <div class="w-100"></div>
+		
         <div class="card-footer w-100 text-muted">
             Kontakt informacije:
         </div>
+
 	</div>
     </div>
+	</div>
 	</div>
 	</div>
 	`

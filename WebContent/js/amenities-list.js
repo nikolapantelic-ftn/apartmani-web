@@ -5,10 +5,10 @@ Vue.component('amenities-list',{
 			amenities:[],
 			search:'',
 			name:'',
-			tableKey:0,
 			checkedGender:['Male','Female'],
 			checkedRole:['Admin','Guest','Host'],
-			test:[]
+			selected:'',
+			newName:''
 		}
 	},
 	beforeMount(){
@@ -30,7 +30,7 @@ Vue.component('amenities-list',{
 		createAmanity :function(){
 			axios
 			.post('rest/amenities',{
-				naziv:this.name,
+				name:this.name,
 			})
 			.then(response=>{
 				this.amenities.push(response.data)
@@ -44,6 +44,37 @@ Vue.component('amenities-list',{
 			
 			
 		},
+		selectAmanity:function(a){
+			this.selected=a
+			this.newName=''
+		},
+		
+		updateAmenity:function(){
+			axios
+			.post('rest/amenities',{
+				id:this.selected.id,
+				name:this.newName,
+			})
+			.then(response=>{
+				var index=this.amenities.findIndex(a => a.name === this.selected.name);
+				this.amenities.splice(index, 1, response.data);
+			})
+			.catch(e=>{
+				this.info=e.response.status;
+				if(e.response.status==400){
+					this.errors.push("Greska");
+				}
+			})
+			
+		},
+		deleteAmenity:function(){
+			axios
+			.delete('rest/amenities/'+this.selected.id)
+			.then(responese=>{
+				alert('uspesno')
+			})
+		}
+		
 		
 	},
 	template:
@@ -56,7 +87,7 @@ Vue.component('amenities-list',{
 			<div class="col">
 			<form>
  				 <div class="form-group">
-   					<label for="exampleInputEmail1">Naziv sadrzaja</label>
+   					<label>Naziv sadrzaja</label>
     				<input type="input" class="form-control" id="sadrzajNaziv" placeholder="Naziv" v-model="name">
     			</div>
 			</form>
@@ -67,8 +98,8 @@ Vue.component('amenities-list',{
   			</div>
 		</div>
 	
-	<div class="row flex ">
-	<table class="table" :key="tableKey">
+	<div class="row mx-5">
+	<table class="table">
   <thead>
     <tr>
       <th scope="col">IDa</th>
@@ -78,11 +109,64 @@ Vue.component('amenities-list',{
   <tbody>
     <tr v-for="a in amenities">
       <th scope="row">{{a.id}}</th>
-      <td>{{a.naziv}}</td>
+      <td>{{a.name}}</td>
+	<td>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" v-on:click="selectAmanity(a)">
+  										Izmeni
+		</button>
+	</td>
+	<td>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal" v-on:click="selectAmanity(a)">
+  										Obrisi
+		</button>
+	</td>
     </tr>
   </tbody>
 </table>
 	</div>
+	
+
+<!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Izmena sadrzaja {{selected.name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+ 				 <div class="form-group">
+   					<label>Novi naziv sadrzaja</label>
+    				<input type="input" class="form-control" id="sadrzajNaziv" placeholder="Naziv" v-model="newName">
+    			</div>
+			</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" v-on:click="updateAmenity" data-dismiss="modal">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Brisanje sadrzaja  {{selected.name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" v-on:click="deleteAmenity" data-dismiss="modal">Obrisi</button>
+      </div>
+    </div>
+  </div>
+</div>
 	</div>
 	</div>
 	

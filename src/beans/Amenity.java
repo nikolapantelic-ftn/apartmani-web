@@ -3,7 +3,7 @@ package beans;
 public class Amenity implements Identifiable<Long>, Deletable {
 	
 	private long id;
-	private String naziv;
+	private String name;
 	private boolean deleted;
 	
 	public Amenity() {
@@ -11,12 +11,12 @@ public class Amenity implements Identifiable<Long>, Deletable {
 	}
 	
 
-	public String getNaziv() {
-		return naziv;
+	public String getName() {
+		return name;
 	}
 
-	public void setNaziv(String naziv) {
-		this.naziv = naziv;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override
