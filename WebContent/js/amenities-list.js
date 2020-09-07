@@ -18,7 +18,7 @@ Vue.component('amenities-list',{
 		.then()
 		.catch(e=>{
 			if(e.response.status==403){
-			//this.$router.push('forbidden');	
+			this.$router.push('forbidden');	
 			}
 		})
 	},
@@ -107,27 +107,25 @@ Vue.component('amenities-list',{
 		
 	},
 	template:
-	`<div>
-		<div class="container text-center">
-			<div class="row">
-				<label> Dodavanje sadrzaja </label>
-			</div>
-			<div class="row">
+	`<div >
+		<div class="container text-center a border border-primary rounded mb-0 ">
+		
+			<div class="row ">
 			<div class="col">
 			<form>
  				 <div class="form-group">
-   					<label>Naziv sadrzaja</label>
-    				<input type="input" class="form-control" id="sadrzajNaziv" placeholder="Naziv" v-model="name">
+   					<label class="font-weight-bold text-primary">Dodaj novi sadrzaj</label>
+    				<input type="input" class="form-control" id="sadrzajNaziv" placeholder="Naziv sadrzaja" v-model="name">
     			</div>
 			</form>
 			</div>
-			<div class="col">
+			<div class="col align-self-center">
 				<button v-on:click="createAmanity" class="btn btn-primary btn-lg active"  aria-pressed="true">Potvrdi</button>
 			</div>
   			</div>
 		</div>
 	
-	<div class="row mx-5">
+	<div class="row mx-5 mt-3">
 	<table class="table ">
   <thead>
     <tr>
