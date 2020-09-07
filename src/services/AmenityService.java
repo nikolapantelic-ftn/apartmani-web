@@ -67,14 +67,17 @@ public class AmenityService {
 	
 	@DELETE
 	@Path("/{id}")
-	public void delete(@PathParam("id") long id) {
+	public Amenity delete(@PathParam("id") long id) {
 		AmenitiesRepository amenitiesRepository = (AmenitiesRepository)ctx.getAttribute("amenitiesRepository");
 		try {
+			Amenity tmp=amenitiesRepository.getAll().get(id);
 			amenitiesRepository.delete(id);
+			return tmp;
 		} catch (JsonIOException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 }

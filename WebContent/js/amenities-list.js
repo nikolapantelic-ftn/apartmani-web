@@ -8,7 +8,8 @@ Vue.component('amenities-list',{
 			checkedGender:['Male','Female'],
 			checkedRole:['Admin','Guest','Host'],
 			selected:'',
-			newName:''
+			newName:'',
+			disabled:true
 		}
 	},
 	beforeMount(){
@@ -70,16 +71,44 @@ Vue.component('amenities-list',{
 		deleteAmenity:function(){
 			axios
 			.delete('rest/amenities/'+this.selected.id)
-			.then(responese=>{
-				alert('uspesno')
+			.then(response=>{
+				var index=this.amenities.findIndex(a => a.name === this.selected.name);
+				var tmp=response.data
+				this.amenities.splice(index, 1,tmp );
 			})
+			.catch(e=>{
+				this.info=e.response.status;
+				if(e.response.status==400){
+					this.errors.push("Greska");
+				}
+			})
+		},
+		activateAmenity:function(a){
+			this.selectAmanity(a)
+			axios
+			.post('rest/amenities',{
+				id:a.id,
+				name:a.name,
+				deleted:'false'
+			})
+			.then(response=>{
+				var index=this.amenities.findIndex(a => a.name === this.selected.name);
+				this.amenities.splice(index, 1, response.data);
+			})
+			.catch(e=>{
+				this.info=e.response.status;
+				if(e.response.status==400){
+					this.errors.push("Greska");
+				}
+			})
+			
 		}
 		
 		
 	},
 	template:
 	`<div>
-		<div class="container">
+		<div class="container text-center">
 			<div class="row">
 				<label> Dodavanje sadrzaja </label>
 			</div>
@@ -99,7 +128,7 @@ Vue.component('amenities-list',{
 		</div>
 	
 	<div class="row mx-5">
-	<table class="table">
+	<table class="table ">
   <thead>
     <tr>
       <th scope="col">IDa</th>
@@ -109,15 +138,19 @@ Vue.component('amenities-list',{
   <tbody>
     <tr v-for="a in amenities">
       <th scope="row">{{a.id}}</th>
-      <td>{{a.name}}</td>
+      <td class="w-40">{{a.name}}</td>
 	<td>
 		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" v-on:click="selectAmanity(a)">
   										Izmeni
 		</button>
 	</td>
 	<td>
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal" v-on:click="selectAmanity(a)">
+		<button type="button" v-bind:disabled="a.deleted" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal" v-on:click="selectAmanity(a)">
   										Obrisi
+		</button>
+	</td><td>
+		<button type="button"  class="btn btn-primary" v-if="a.deleted" v-on:click="activateAmenity(a)">
+  										Aktiviraj
 		</button>
 	</td>
     </tr>

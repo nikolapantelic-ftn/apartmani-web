@@ -16,7 +16,7 @@ interface Repository<T, ID> {
 
 	public Map<ID, T> getAll();
 
-	public void delete(ID id) throws JsonIOException, IOException;
+	public T delete(ID id) throws JsonIOException, IOException;
 	
 	public void init();
 }

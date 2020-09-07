@@ -65,9 +65,10 @@ abstract class AbstractRepository<T extends Identifiable<ID> & Deletable, ID> im
 	}
 
 	@Override
-	public void delete(ID id) throws JsonIOException, IOException {
+	public T delete(ID id) throws JsonIOException, IOException {
 		entities.get(id).setDeleted(true);
 		saveAll();
+		return entities.get(id);
 	}
 
 }
