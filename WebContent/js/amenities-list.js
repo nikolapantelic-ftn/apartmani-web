@@ -72,7 +72,7 @@ Vue.component('amenities-list',{
 			axios
 			.delete('rest/amenities/'+this.selected.id)
 			.then(response=>{
-				var index=this.amenities.findIndex(a => a.name === this.selected.name);
+				var index=this.amenities.findIndex(a => a.id === this.selected.id);
 				var tmp=response.data
 				this.amenities.splice(index, 1,tmp );
 			})
