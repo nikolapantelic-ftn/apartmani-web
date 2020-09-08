@@ -1,21 +1,23 @@
 const ApartmentSearch = { template: '<apartment-search></apartment-search>' }
 const ApartmentDetails = { template: '<apartment-details></apartment-details>' }
-const Index = { template: '<index></index>'}
+const ApartmentAdd = { template: '<apartment-add></apartment-add>' }
+const Index = { template: '<index></index>' }
 const UsersView = { template: '<users-view></users-view>' }
-const HostRegistration={template: '<host-registration></host-registration>'}
-const Amenities={template: '<amenities-list></amenities-list>'}
+const HostRegistration={ template: '<host-registration></host-registration>' }
+const Amenities={ template: '<amenities-list></amenities-list>' }
 
 
 
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
-	    { path: '/', component: Index},
-		{ path : '/search', component: ApartmentSearch},
-		{ path : '/apartment/:id', component: ApartmentDetails},
+	    { path: '/', component: Index },
+		{ path : '/search', component: ApartmentSearch },
+		{ path : '/apartment/:id', component: ApartmentDetails },
 		{ path: '/users', component: UsersView },
-		{path :'/addHost',component: HostRegistration},
-		{path: '/amenities',component: Amenities}
+		{ path :'/addHost',component: HostRegistration },
+		{ path: '/amenities',component: Amenities },
+		{ path: '/apartmentAdd', component: ApartmentAdd }
 	  ]
 });
 
@@ -46,6 +48,10 @@ var app = new Vue({
 			axios
 			.get('rest/logout')
 			.then(response => (window.location.href = '/apartmani-web'));
+		},
+		addApartment: function () {
+			router.push('/apartmentAdd');
 		}
+		
 	}
 })

@@ -21,7 +21,7 @@ public class Apartment implements Identifiable<Long>, Deletable {
 	private String checkInTime; 
 	private String checkOutTime;
 	private ApartmentStatus status;
-	private List<Amenity> amenities;
+	private List<Long> amenityIds;
 	private List<Reservation> reservations;
 	private boolean deleted;
 	
@@ -135,12 +135,12 @@ public class Apartment implements Identifiable<Long>, Deletable {
 		this.status = status;
 	}
 
-	public List<Amenity> getAmenities() {
-		return amenities;
+	public List<Long> getAmenityIds() {
+		return amenityIds;
 	}
 
-	public void setAmenities(List<Amenity> amenities) {
-		this.amenities = amenities;
+	public void setAmenityIds(List<Long> amenityIds) {
+		this.amenityIds = amenityIds;
 	}
 
 	public List<Reservation> getReservations() {
