@@ -14,7 +14,8 @@ Vue.component('apartment-add', {
 			place: '',
 			zipCode: '',
 			longitude: '',
-			latitude: ''
+			latitude: '',
+			image: ''
 		}
 	},
 	mounted: function () {
@@ -81,6 +82,30 @@ Vue.component('apartment-add', {
 				.catch(e => {
 					console.log(e)
 				})
+		},
+		handleImageUpload() {
+			this.image = this.$refs.image.files[0];
+		},
+		submitImage(e) {
+			let formData = new FormData();
+			formData.append('image', this.image);
+			//Potrebna validacija da image stvarno sadrzi sliku
+			
+			axios
+				.post('/rest/images',
+				formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				})
+				.then(function () {
+					alert("Slika poslata.");
+				})
+				.catch(function () {
+					alert("Slika nije poslata.");
+				});
+				e.preventDefault();
 		}
 	},
 	template:
@@ -163,7 +188,8 @@ Vue.component('apartment-add', {
 					</div>
 			    	<div class="form-group">
 					    <label for="image-upload">Dodajte sliku</label>
-					    <input type="file" class="form-control-file" id="image-upload">
+					    <input type="file" ref="image" class="form-control-file" id="image-upload" v-on:change="handleImageUpload">
+						<button class="btn btn-primary" v-on:click="submitImage">Posalji</button>
 					</div>
 			    	<button type="submit" class="btn btn-primary" v-on:click="submitApartment">Prijavi</button>
 				</form>
