@@ -16,7 +16,8 @@ public class Apartment implements Identifiable<Long>, Deletable {
 	private List<Date> avaliableDates;
 	private Host host;
 	private List<ApartmentComment> comments;
-	private List<Image> images;
+	private String mainImage;
+	private List<String> images;
 	private double price;
 	private String checkInTime; 
 	private String checkOutTime;
@@ -95,11 +96,11 @@ public class Apartment implements Identifiable<Long>, Deletable {
 		this.comments = comments;
 	}
 
-	public List<Image> getImages() {
+	public List<String> getImages() {
 		return images;
 	}
 
-	public void setImages(List<Image> images) {
+	public void setImages(List<String> images) {
 		this.images = images;
 	}
 
@@ -179,6 +180,18 @@ public class Apartment implements Identifiable<Long>, Deletable {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+
+
+	public String getMainImage() {
+		return mainImage;
+	}
+
+
+
+	public void setMainImage(String mainImage) {
+		this.mainImage = mainImage;
 	}
 
 }

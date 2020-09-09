@@ -51,6 +51,9 @@ var app = new Vue({
 		},
 		addApartment: function () {
 			router.push('/apartmentAdd');
+		},
+		home: function () {
+			router.push('/')
 		}
 		
 	}
