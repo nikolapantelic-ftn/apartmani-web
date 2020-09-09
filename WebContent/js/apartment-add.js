@@ -8,8 +8,16 @@ Vue.component('apartment-add', {
 			price: '',
 			checkInTime: '',
 			checkOutTime: '',
-			amenitiyIds: [],
+			amenityIds: [],
+			availableAmenities: [],
 		}
+	},
+	mounted: function () {
+		axios
+			.get('rest/amenities')
+			.then(response => {
+				this.availableAmenities = response.data;
+			});
 	},
 	template:
 		`
@@ -17,7 +25,7 @@ Vue.component('apartment-add', {
 				<h1>Dodavanje apartmana</h1>
 				<form>
 					<div class="form-group">
-						<input type="text" class="form-control" id="name" placeholder="Naziv">
+						<input type="text" class="form-control" v-model="name" placeholder="Naziv">
 					</div>
 					<div class="form-group">
 			    		<label for="type">Tip apartmana</label>
@@ -34,7 +42,7 @@ Vue.component('apartment-add', {
 			    	</div>
 			    	<div class="form-group">
 			    		<div class="input-group">
-			    			<input type="text" class="form-control col-md-2" id="price" placeholder="Cena nocenja">
+			    			<input type="text" class="form-control col-md-2" v-model="price" placeholder="Cena nocenja">
 			    			<div class="input-group-append">
 			    				<div class="input-group-text">din.</div>
 			    			</div>
@@ -52,9 +60,13 @@ Vue.component('apartment-add', {
 			    			</select>
 			    		</div>
 			    	</div>
-			    	<div>
-			    		SADRZAJE APARTMANA DOBAVITI PREKO SERVISA
-			    	</div>
+			    	<div class="form-check">
+						<label for="amenities">Sadrzaj apartmana:</label>
+						<div v-for="amenity in availableAmenities" :key="amenity.id" id="amenities">
+							<input type="checkbox" class="form-check-input" v-bind:id="'amenity' + amenity.id" v-bind:value="amenity.id" v-model="amenityIds">
+							<label class="form-check-label" v-bind:for="'amenity' + amenity.id">{{ amenity.name }}</label>
+						</div>
+					</div>
 			    	<div class="form-group">
 					    <label for="image-upload">Dodajte sliku</label>
 					    <input type="file" class="form-control-file" id="image-upload">
