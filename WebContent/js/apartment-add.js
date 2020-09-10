@@ -11,12 +11,13 @@ Vue.component('apartment-add', {
 			amenityIds: [],
 			availableAmenities: [],
 			streetAndNumber: '',
+			images: [],
 			place: '',
 			zipCode: '',
 			longitude: '',
 			latitude: '',
 			image: '',
-			imageErrors: []
+			imageErrors: [],
 		}
 	},
 	mounted: function () {
@@ -67,6 +68,7 @@ Vue.component('apartment-add', {
 					},
 					deleted: 'false'
 				},
+				images: this.images,
 				host: app.currentUser,
 				price: this.price,
 				checkInTime: this.checkInTime,
@@ -107,7 +109,8 @@ Vue.component('apartment-add', {
 						'Content-Type': 'application/octet-stream'
 					}
 				})
-				.then(function () {
+				.then(response => {
+					this.images.push(response.data);
 					alert("Slika poslata.");
 				})
 				.catch(function () {

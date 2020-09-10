@@ -16,13 +16,14 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import app.WebApp;
 import util.ImageSequencer;
 
 @Path("/images")
 public class ImageService {
 	@Context
 	ServletContext ctx;
+	public static final String APP_PATH = System.getProperty("catalina.base") + "/wtpwebapps/apartmani-web/";
+	public static final String RELATIVE_IMAGES_PATH = "resources/images/";
 	
 	public ImageService() {
 		
@@ -31,7 +32,7 @@ public class ImageService {
 	@PostConstruct
 	public void init() {
 		if(ctx.getAttribute("imageSequencer") == null) {
-			ctx.setAttribute("imageSequencer", new ImageSequencer(WebApp.IMAGES_DIR));
+			ctx.setAttribute("imageSequencer", new ImageSequencer(APP_PATH + RELATIVE_IMAGES_PATH));
 		}
 	}
 
@@ -43,17 +44,19 @@ public class ImageService {
 			return Response.status(400).entity("Unsupported file type.").build();
 		}
 		ImageSequencer sequencer = (ImageSequencer)ctx.getAttribute("imageSequencer");
-		String fileLocation = WebApp.IMAGES_DIR + sequencer.generateId() + "." + type;
+		long imageId = sequencer.generateId();
+		String fileLocation = APP_PATH + RELATIVE_IMAGES_PATH + imageId + "." + type;
 		try {
 			writeToFile(stream, fileLocation);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return Response.status(200).build();
+		return Response.status(200).entity(RELATIVE_IMAGES_PATH + imageId + "." + type).build();
 	}
 	
 	private void writeToFile(InputStream stream, String fileLocation) throws IOException {
-		OutputStream out = new FileOutputStream(new File(fileLocation));
+		File file = new File(fileLocation);
+		OutputStream out = new FileOutputStream(file);
 		int read = 0;
 		byte[] bytes = new byte[1024];
 		

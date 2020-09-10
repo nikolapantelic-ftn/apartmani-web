@@ -10,7 +10,10 @@ Vue.component("apartment-item", {
 	template:
 		`
 		<div class="btn border border-primary rounded" @click="click(apartment.id)">
-			<img src="resources/images/no-image.jpg" alt="No image" style="width: 100%"><br>
+			<img v-bind:src="apartment.images[0]" alt="No image" style="width: 100%" v-if="apartment.images">
+			<img src="resources/images/0.jpg" alt="No image" style="width: 100%" v-else>
+			
+			<br>
 			<div class="container">
 				<div class="col">
 					{{ apartment.name }}
