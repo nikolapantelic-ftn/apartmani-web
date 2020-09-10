@@ -7,7 +7,7 @@ public class Reservation implements Identifiable<Long>, Deletable {
 	private long id;
 	private Apartment apartment;
 	private Date startDate;
-	private int nigtsNumber=1;
+	private int nightsNumber=1;
 	private double totalPrice;
 	private String message;
 	private Guest guest;
@@ -18,12 +18,12 @@ public class Reservation implements Identifiable<Long>, Deletable {
 		
 	}
 
-	public Reservation(Apartment apartment, Date startDate, int nigtsNumber, double totalPrice, String message,
+	public Reservation(Apartment apartment, Date startDate, int nightsNumber, double totalPrice, String message,
 			Guest guest, ReservationStatus status) {
 		super();
 		this.apartment = apartment;
 		this.startDate = startDate;
-		this.nigtsNumber = nigtsNumber;
+		this.nightsNumber = nightsNumber;
 		this.totalPrice = totalPrice;
 		this.message = message;
 		this.guest = guest;
@@ -46,12 +46,12 @@ public class Reservation implements Identifiable<Long>, Deletable {
 		this.startDate = startDate;
 	}
 
-	public int getNigtsNumber() {
-		return nigtsNumber;
+	public int getNightsNumber() {
+		return nightsNumber;
 	}
 
-	public void setNigtsNumber(int nigtsNumber) {
-		this.nigtsNumber = nigtsNumber;
+	public void setNightsNumber(int nightsNumber) {
+		this.nightsNumber = nightsNumber;
 	}
 
 	public double getTotalPrice() {

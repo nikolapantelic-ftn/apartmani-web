@@ -3,7 +3,8 @@ Vue.component('apartment-details',{
 		return{
 			apartment:null,
 			pictures:[],
-			id:this.$route.params.id
+			id:this.$route.params.id,
+			showModal: false
 		}
 	},
 	mounted(){
@@ -16,6 +17,12 @@ Vue.component('apartment-details',{
   
 	<div>
       <h1 class="display3 text-center">Apartman</h1>
+      <reservation-form v-if="showModal" @close="showModal = false"></reservation-form>
+      
+      <!-- Dugme za prikaz forme za rezervaciju apartmana. Mozes ga premestati bilo gde po stranici -->
+      <button class="btn btn-primary" id="show-modal" @click="showModal = true">Rezervisi</button>
+      
+      
       <div class="row">
         <div class="col">
           <div id="carouselExampleIndicators" class="carousel slide w-100 " data-ride="carousel">
