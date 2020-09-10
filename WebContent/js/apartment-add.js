@@ -87,16 +87,15 @@ Vue.component('apartment-add', {
 			this.image = this.$refs.image.files[0];
 		},
 		submitImage(e) {
-			let formData = new FormData();
-			formData.append('image', this.image);
-			//Potrebna validacija da image stvarno sadrzi sliku
-			
+
+			console.log(this.image)
+			let ext = this.image.name.split('.').pop();
 			axios
-				.post('/rest/images',
-				formData,
+				.post('rest/images/' + ext,
+				this.image,
 				{
 					headers: {
-						'Content-Type': 'multipart/form-data'
+						'Content-Type': 'application/octet-stream'
 					}
 				})
 				.then(function () {

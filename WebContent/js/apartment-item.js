@@ -15,7 +15,7 @@ Vue.component("apartment-item", {
 				<div class="col">
 					{{ apartment.name }}
 				</div>
-				<div class="col text-muted">
+				<div class="col text-muted" v-if="apartment.location">
 					{{ apartment.location.address.place }} {{ apartment.location.address.zipCode }}
 				</div>
 			</div>
