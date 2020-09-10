@@ -15,7 +15,8 @@ Vue.component('apartment-add', {
 			zipCode: '',
 			longitude: '',
 			latitude: '',
-			image: ''
+			image: '',
+			imageErrors: []
 		}
 	},
 	mounted: function () {
@@ -46,7 +47,7 @@ Vue.component('apartment-add', {
 		      });
 	},
 	methods: {
-		submitApartment: function (e) {
+		submitApartment: function () {
 			var data = {
 				id: '0',
 				name: this.name,
@@ -87,9 +88,17 @@ Vue.component('apartment-add', {
 			this.image = this.$refs.image.files[0];
 		},
 		submitImage(e) {
-
-			console.log(this.image)
-			let ext = this.image.name.split('.').pop();
+			e.preventDefault();
+			this.imageErrors = [];
+			if (!this.image) {
+				this.imageErrors.push("Morate izabrati sliku.");
+				return;
+			}
+			let ext = this.image.name.split('.').pop().toLowerCase();
+			if (ext !== 'jpg' && ext !== 'png') {
+				this.imageErrors.push("Format slike nije podrzan.");
+				return;
+			}
 			axios
 				.post('rest/images/' + ext,
 				this.image,
@@ -104,7 +113,6 @@ Vue.component('apartment-add', {
 				.catch(function () {
 					alert("Slika nije poslata.");
 				});
-				e.preventDefault();
 		}
 	},
 	template:
@@ -187,8 +195,11 @@ Vue.component('apartment-add', {
 					</div>
 			    	<div class="form-group">
 					    <label for="image-upload">Dodajte sliku</label>
-					    <input type="file" ref="image" class="form-control-file" id="image-upload" v-on:change="handleImageUpload">
+					    <input type="file" accept="image/x-png,image/jpeg" ref="image" class="form-control-file" id="image-upload" v-on:change="handleImageUpload">
 						<button class="btn btn-primary" v-on:click="submitImage">Posalji</button>
+						<p v-if="imageErrors.length">
+							<b>{{imageErrors[0]}}</b>
+						</p>
 					</div>
 			    	<button type="submit" class="btn btn-primary" v-on:click="submitApartment">Prijavi</button>
 				</form>
