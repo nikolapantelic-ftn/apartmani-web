@@ -7,11 +7,12 @@ import com.google.gson.reflect.TypeToken;
 
 
 import beans.Reservation;
+import repository.sequencer.LongSequencer;
 
-public class ReservationRepository extends AbstractRepository<Reservation, Long> {
+public class ReservationRepository extends AbstractLongRepository<Reservation> {
 
 	public ReservationRepository(String path) {
-		super(path);
+		super(path, new LongSequencer());
 	}
 
 	@Override

@@ -5,12 +5,12 @@ import java.util.Date;
 public class Reservation implements Identifiable<Long>, Deletable {
 
 	private long id;
-	private Apartment apartment;
+	private long apartment;
 	private Date startDate;
 	private int nightsNumber=1;
 	private double totalPrice;
 	private String message;
-	private Guest guest;
+	private long guest;
 	private ReservationStatus status;
 	private boolean deleted;
 	
@@ -18,8 +18,8 @@ public class Reservation implements Identifiable<Long>, Deletable {
 		
 	}
 
-	public Reservation(Apartment apartment, Date startDate, int nightsNumber, double totalPrice, String message,
-			Guest guest, ReservationStatus status) {
+	public Reservation(long apartment, Date startDate, int nightsNumber, double totalPrice, String message,
+			long guest, ReservationStatus status) {
 		super();
 		this.apartment = apartment;
 		this.startDate = startDate;
@@ -30,11 +30,11 @@ public class Reservation implements Identifiable<Long>, Deletable {
 		this.status = status;
 	}
 
-	public Apartment getApartment() {
+	public long getApartment() {
 		return apartment;
 	}
 
-	public void setApartment(Apartment apartment) {
+	public void setApartment(long apartment) {
 		this.apartment = apartment;
 	}
 
@@ -70,11 +70,11 @@ public class Reservation implements Identifiable<Long>, Deletable {
 		this.message = message;
 	}
 
-	public Guest getGuest() {
+	public long getGuest() {
 		return guest;
 	}
 
-	public void setGuest(Guest guest) {
+	public void setGuest(long guest) {
 		this.guest = guest;
 	}
 
