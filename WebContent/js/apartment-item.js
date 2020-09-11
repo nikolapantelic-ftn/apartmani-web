@@ -4,7 +4,7 @@ Vue.component("apartment-item", {
 	},
 	methods: {
 		click(id){
-			router.push('/apartment/:' + id)
+			router.push('/apartment/' + id)
 		}
 	},
 	template:

@@ -1,10 +1,5 @@
 Vue.component("reservation-form", {
-	data: function() {
-		return {
-			apartment: null
-		}
-	},
-	
+	props: ['apartment'],
 	mounted () {
 		
 	},
@@ -17,28 +12,59 @@ Vue.component("reservation-form", {
 		
 							<div class="modal-header">
 								<slot name="header">
-									TODO Rezervacija apartmana
+									<h6>Rezervacija apartmana <h4>{{apartment.name}}</h5></h6>
 								</slot>
 							</div>
 		
 							<div class="modal-body">
-								<header class="card-header">
-									<a href="#" data-toggle="collapse" data-target="#collapse_aside1" data-abc="true" aria-expanded="false" class="collapsed">
-										<i class="icon-control fa fa-chevron-down"></i>
-	                             		<h6 class="title">Datum prijave </h6>
-									</a> 
-								</header>
-								<div class="filter-content collapse show" id="collapse_aside1">
-									<div class="card-body">
-										<input class="form-control" type="date"  v-model="startDate">
+								<div class="row">
+									<div class="col-4">
+		                             	<h5 class="title text-center">Datum prijave</h6>
+										<div class="mt-1">
+											<input class="form-control" type="date">
+										</div>
+									</div>
+									<div class="col-4">
+		                             	<h5 class="title text-center">Datum odjave</h6>
+										<div class="mt-1">
+											<input class="form-control" type="date">
+										</div>
+									</div>
+									<div class="col-3">
+		                             	<h5 class="title text-center">Broj gostiju</h6>
+										<div class="mt-1">
+											<select class="custom-select">
+												<option selected value="1">1</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="ml-3">
+									<div class="row my-1">
+										Vreme prijave:
+									</div>
+									<div class="row my-1">
+										Vreme odjave:
+									</div>
+									<div class="row my-1">
+										Broj nocenja:
+									</div>
+									<div class="row my-1">
+										Ukupna cena:
+									</div>
+									<div class="row my-1">
+										<button class="btn btn-info">Proveri dostupnost</button>
 									</div>
 								</div>
 							</div>
 		
 							<div class="modal-footer">
 								<slot name="footer">
-									<button class="btn btn-primary modal-default-button" @click="$emit('close')">
-										OK
+									<button class="btn btn-secondary modal-default-button" @click="$emit('close')">
+										Odustani
+									</button>
+									<button class="btn btn-success modal-default-button" @click="$emit('close')">
+										Rezervisi
 									</button>
 								</slot>
 							</div>

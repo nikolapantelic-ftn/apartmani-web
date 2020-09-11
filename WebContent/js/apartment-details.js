@@ -10,14 +10,15 @@ Vue.component('apartment-details',{
 	mounted(){
 		axios
 		.get('rest/apartments/search/'+this.id)
-		.then(response => (this.apartment = response.data))
+		.then(response => (this.apartment = response.data));
+		console.log("this.apartment");
 	},
 	template:
   `
   
 	<div>
       <h1 class="display3 text-center">Apartman</h1>
-      <reservation-form v-if="showModal" @close="showModal = false"></reservation-form>
+      <reservation-form v-bind:apartment="apartment" v-if="showModal" @close="showModal = false"></reservation-form>
       
       <!-- Dugme za prikaz forme za rezervaciju apartmana. Mozes ga premestati bilo gde po stranici -->
       <button class="btn btn-primary" id="show-modal" @click="showModal = true">Rezervisi</button>
