@@ -11,8 +11,7 @@ public class Apartment implements Identifiable<Long>, Deletable {
 	private int numberOfRooms;
 	private int numberOfGuests;
 	private Location location;
-	private List<Date> rentDates;
-	private List<Date> avaliableDates;
+	private List<Date> availableDates;
 	private Host host;
 	private List<ApartmentComment> comments;
 	private String mainImage;
@@ -22,7 +21,6 @@ public class Apartment implements Identifiable<Long>, Deletable {
 	private String checkOutTime;
 	private ApartmentStatus status;
 	private List<Long> amenityIds;
-	private List<Reservation> reservations;
 	private boolean deleted;
 	
 	public Apartment() {
@@ -63,20 +61,12 @@ public class Apartment implements Identifiable<Long>, Deletable {
 		this.location = location;
 	}
 
-	public List<Date> getRentDates() {
-		return rentDates;
+	public List<Date> getAvailableDates() {
+		return availableDates;
 	}
 
-	public void setRentDates(List<Date> rentDates) {
-		this.rentDates = rentDates;
-	}
-
-	public List<Date> getAvaliableDates() {
-		return avaliableDates;
-	}
-
-	public void setAvaliableDates(List<Date> avaliableDates) {
-		this.avaliableDates = avaliableDates;
+	public void setAvaliableDates(List<Date> availableDates) {
+		this.availableDates = availableDates;
 	}
 
 	public Host getHost() {
@@ -141,14 +131,6 @@ public class Apartment implements Identifiable<Long>, Deletable {
 
 	public void setAmenityIds(List<Long> amenityIds) {
 		this.amenityIds = amenityIds;
-	}
-
-	public List<Reservation> getReservations() {
-		return reservations;
-	}
-
-	public void setReservations(List<Reservation> reservations) {
-		this.reservations = reservations;
 	}
 	
 	public void setName(String name) {

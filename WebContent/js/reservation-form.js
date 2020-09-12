@@ -33,8 +33,11 @@ Vue.component("reservation-form", {
 			}
 			axios
 				.post('rest/reservations', data)
-				.then(function (response) {
-					console.log(response);
+				.then(function () {
+					alert("Rezervacija uspesna");
+				})
+				.catch(error => {
+					alert(error.response.data);
 				})
 				
 		}
