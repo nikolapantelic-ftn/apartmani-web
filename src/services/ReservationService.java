@@ -97,16 +97,12 @@ public class ReservationService {
 		}
 		return Response.status(400).entity("Neispravna rezervacija.").build();
 	}
-
-	private List<Date> calculateRentDates(Date startDate, int nightsNumber) {
-		ArrayList<Date> rentDates = new ArrayList<Date>();
-		for (int i = 0; i < nightsNumber; i++) {
-			rentDates.add(DateUtil.addDays(startDate, i));
-		}
-		return rentDates;
-	}
-
-	private Boolean isReservationAvailable(Reservation reservation) {
+	
+	@Path("/available")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Boolean isReservationAvailable(Reservation reservation) {
 		List<Date> rentDates = calculateRentDates(reservation.getStartDate(), reservation.getNightsNumber());
 		ApartmentRepository repository = (ApartmentRepository) ctx.getAttribute("apartmentRepository");
 		Apartment apartment = repository.getAll().get(reservation.getApartment());
@@ -120,8 +116,17 @@ public class ReservationService {
 		return true;
 	}
 
+	private List<Date> calculateRentDates(Date startDate, int nightsNumber) {
+		ArrayList<Date> rentDates = new ArrayList<Date>();
+		for (int i = 0; i < nightsNumber; i++) {
+			rentDates.add(DateUtil.addDays(startDate, i));
+		}
+		return rentDates;
+	}
+
 	private Boolean rentDatesAvailable(List<Date> rentDates, List<Date> availableDates) {
-		if (availableDates == null) return false;
+		if (availableDates == null || rentDates == null) return false;
+		if (rentDates.isEmpty() || availableDates.isEmpty()) return false;
 		for (Date rentDate : rentDates) {
 			Boolean dateAvailable = false;
 			for (Date availableDate : availableDates) {

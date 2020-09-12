@@ -7,11 +7,10 @@ Vue.component('apartment-details',{
 			showModal: false
 		}
 	},
-	mounted(){
+	mounted() {
 		axios
 		.get('rest/apartments/search/'+this.id)
 		.then(response => (this.apartment = response.data));
-		console.log("this.apartment");
 	},
 	template:
   `

@@ -10,7 +10,7 @@ public class Reservation implements Identifiable<Long>, Deletable {
 	private int nightsNumber=1;
 	private double totalPrice;
 	private String message;
-	private long guest;
+	private String guest;
 	private ReservationStatus status;
 	private boolean deleted;
 	
@@ -19,7 +19,7 @@ public class Reservation implements Identifiable<Long>, Deletable {
 	}
 
 	public Reservation(long apartment, Date startDate, int nightsNumber, double totalPrice, String message,
-			long guest, ReservationStatus status) {
+			String guest, ReservationStatus status) {
 		super();
 		this.apartment = apartment;
 		this.startDate = startDate;
@@ -70,11 +70,11 @@ public class Reservation implements Identifiable<Long>, Deletable {
 		this.message = message;
 	}
 
-	public long getGuest() {
+	public String getGuest() {
 		return guest;
 	}
 
-	public void setGuest(long guest) {
+	public void setGuest(String guest) {
 		this.guest = guest;
 	}
 

@@ -73,4 +73,18 @@ public class UserService {
 		}
 		return Response.status(200).build();
 	}
+	
+	@POST
+	@Path("/isGuest")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response isGuest(@Context HttpServletRequest request) {
+		User u = (User)request.getSession().getAttribute("user");
+		if (u == null) {
+			return Response.status(403).entity("Zabranjeno").build();
+		}
+		if(u.getRole() != Role.Guest) {
+			return Response.status(403).entity("Zabranjeno").build();
+		}
+		return Response.status(200).build();
+	}
 }
