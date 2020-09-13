@@ -22,7 +22,7 @@ Vue.component('apartment-add', {
 	},
 	mounted: function () {
 		axios
-			.get('rest/amenities')
+			.get('rest/amenities/active')
 			.then(response => {
 				this.availableAmenities = response.data;
 			});

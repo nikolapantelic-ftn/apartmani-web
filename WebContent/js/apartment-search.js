@@ -11,7 +11,8 @@ Vue.component('apartment-search',{
 			max:100,
 			amenities:[],
 			checkedAmanities:[],
-			keyI:0
+			keyI:0,
+			map:null
 			
 		}
 	},
@@ -19,7 +20,6 @@ Vue.component('apartment-search',{
 		if(this.location==("")){
 			this.location=" ";
 		}
-		
 		axios
 		.get('rest/apartments')
 		.then(response => {
@@ -28,6 +28,13 @@ Vue.component('apartment-search',{
 		.get('rest/amenities')
 		.then(response => {
 		this.amenities = response.data})
+		let map=new Map()
+		this.amenities.forEach(a=>{
+			alert(a.id)
+			map[a.id]=a
+		})
+		this.map=map
+		
 		
 			
 		
@@ -35,7 +42,7 @@ Vue.component('apartment-search',{
 	computed: {
 	filterAmanities(apartment){
 		this.checkedAmanities.forEach(a=>{
-			apartment.amenities.forEach(am=>{
+			apartment.amenitiyIds.forEach(am=>{
 				if(am.name==a){
 					return true;
 				}
@@ -52,8 +59,8 @@ Vue.component('apartment-search',{
     filteredApartments() {
       return this.apartmentList.filter(apartment => {
 		var appAmenities=[];
-		apartment.amenities.forEach(a=>{
-			appAmenities.push(a.name);
+		apartment.amenityIds.forEach(a=>{
+			appAmenities.push(a);
 		})
 		var hasAmenities=true;
 		
@@ -66,7 +73,8 @@ Vue.component('apartment-search',{
       })
 
     
-	}
+	},
+	
 	},
 	methods:{
 		sortPriceLH:function(){
@@ -74,6 +82,15 @@ Vue.component('apartment-search',{
 				return a.price-b.price
 			})
 			this.keyI+=1;
+			let map=new Map()
+			this.amenities.forEach(a=>{
+				
+				map[a.id]=a
+			})
+			this.map=map
+			
+		
+		
 			
 		},
 		sortPriceHL:function(){
@@ -81,6 +98,7 @@ Vue.component('apartment-search',{
 				return b.price-a.price
 			})
 			this.keyI+=1;
+			alert(this.map[1])
 			
 		}
 	},
@@ -178,7 +196,7 @@ Vue.component('apartment-search',{
                      <div class="filter-content collapse" id="collapse_aside5" style="">
                          <div class="card-body"> 
 							<label class="custom-control" v-for="amanity in activeAmenities"> 
-								<input type="checkbox" v-bind:value="amanity.name" v-model="checkedAmanities" class="custom-control-input">
+								<input type="checkbox" v-bind:value="amanity.id" v-model="checkedAmanities" class="custom-control-input">
                                  <div class="custom-control-label">{{amanity.name}} </div>
                              </label> 
 						
@@ -191,39 +209,36 @@ Vue.component('apartment-search',{
  </div>
 </div>
 <div class="col ">
-	<div class=" row">
+	<div class="flex-row">
 	<button type="button pr-2" class="btn btn-primary  " v-on:click="sortPriceLH" > Cena rastuca </button>
-	<button type="button" class="btn btn-primary float-right" v-on:click="sortPriceHL" > Cena opadajuca </button>
+	<button type="button" class="btn btn-primary " v-on:click="sortPriceHL" > Cena opadajuca </button>
 	</div>
     <div class="card my-2 flex-row flex-wrap" v-for="(a,i) in filteredApartments" :key="keyI+i*100">	
         <div class="card-header border-0">
-            <img src="//placehold.it/200" alt="">
+            <img v-bind:src="a.images[0]" alt="No image" v-if="a.images">
+			<img src="resources/images/0.jpg" alt="No image"  v-else>
         </div>
 		
 		
         <div class="card-block px-2 col">
             <h4 class="card-title">{{a.name}}</h4>
             <p class="card-text">Cena: {{a.price}}</p>
-            
-        </div>
-		
-		
-		<div class="card-block px-2 col" v-for="amenity in a.amenities" :key="amenity.name" >
-            <p class="card-text">{{amenity.name}}</p>
-            
-        </div>
-		
-		
-		<div class="card-block px-2">
-		<div class="text-right">
+			<p class="cart-text">Tip:{{a.type}}
+			<div class="row">
+			<span class="cart-text" v-for="aID in a.amenitiyIds" v-text="aID"></span>
+            </div>
+		</div>
+				
+		<div class="card-block px-2 d-flex align-items-end">
+		<div >
 				<router-link v-bind:to="'/apartment/'+a.id"> 	
-            	<a class="btn btn-primary">Zakazivanje</a>
+            	<a class="btn btn-primary mb-2">Zakazivanje</a>
 				</router-link>
             </div>
 		</div>
 		
         <div class="card-footer w-100 text-muted">
-            Kontakt informacije:
+            Lokacija
         </div>
 
 	</div>

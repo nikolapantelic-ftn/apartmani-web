@@ -12,7 +12,10 @@ Vue.component('apartment-details',{
 		this.user = app.user;
 		axios
 		.get('rest/apartments/search/'+this.id)
-		.then(response => (this.apartment = response.data));
+		.then(response => {
+			this.apartment = response.data
+			this.pictures=response.data.images
+			});
 	},
 	template:
   `
@@ -32,16 +35,17 @@ Vue.component('apartment-details',{
           <div id="carouselExampleIndicators" class="carousel slide w-100 " data-ride="carousel">
             <ol class="carousel-indicators">
               <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-              <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-              <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+              <li data-target="#carouselExampleIndicators" v-for="(img,index) in pictures" v-if="index>=1" v-bind:data-slide-to="index"></li>
             </ol>
-            <div class="carousel-inner">
+            <div class="carousel-inner" >
+				
               <div class="carousel-item active">
-                <img class="d-block w-100 size" src="C:/Data/pictures/a1.jpg" alt="First slide">
+                <img class="d-block w-100 size" v-bind:src="pictures[0]" >
               </div>
-              <div class="carousel-item">
-                <img class="d-block w-100 size " src="C:/Data/pictures/a12.jpg" alt="Second slide">
-              </div>
+			<div class="carousel-item" v-for="(img,index) in pictures" v-if="index>=1"  >
+                <img class="d-block w-100 size" v-bind:src="pictures[index]" >
+              </div>		
+    
             </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
