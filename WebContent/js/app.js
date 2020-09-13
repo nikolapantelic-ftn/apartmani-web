@@ -3,24 +3,26 @@ const ApartmentDetails = { template: '<apartment-details></apartment-details>' }
 const ApartmentAdd = { template: '<apartment-add></apartment-add>' }
 const Index = { template: '<index></index>' }
 const UsersView = { template: '<users-view></users-view>' }
-const HostRegistration={ template: '<host-registration></host-registration>' }
-const Amenities={ template: '<amenities-list></amenities-list>' }
-
+const HostRegistration = { template: '<host-registration></host-registration>' }
+const Amenities = { template: '<amenities-list></amenities-list>' }
+const ReservationList = { template: '<reservation-list></reservation-list>' }
 
 
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
+		{ path: '*', component: Index },
 	    { path: '/', component: Index },
-		{ path : '/search', component: ApartmentSearch },
-		{ path : '/apartment/:id', component: ApartmentDetails },
+		{ path: '/search', component: ApartmentSearch },
+		{ path: '/apartment/:id', component: ApartmentDetails },
 		{ path: '/users', component: UsersView },
-		{ path :'/addHost',component: HostRegistration },
+		{ path: '/addHost',component: HostRegistration },
 		{ path: '/amenities',component: Amenities },
-		{ path: '/apartmentAdd', component: ApartmentAdd }
+		{ path: '/apartment-add', component: ApartmentAdd },
+		{ path: '/reservation-list', component: ReservationList}
 	  ]
 });
-
+router.replace('/');
 
 
 var app = new Vue({
@@ -37,6 +39,7 @@ var app = new Vue({
 			.get('rest/currentUser')
 			.then(function (response) {
 				app.user = response.data;
+				currentUser = response.data;
 				
 				if (app.user) {
 					app.isLoggedIn = true;
@@ -50,11 +53,13 @@ var app = new Vue({
 			.then(response => (window.location.href = '/apartmani-web'));
 		},
 		addApartment: function () {
-			router.push('/apartmentAdd');
+			router.push('/apartment-add');
 		},
 		home: function () {
 			router.push('/')
+		},
+		reservationList: function () {
+			router.push('/reservation-list');
 		}
-		
 	}
 })

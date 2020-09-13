@@ -71,7 +71,11 @@ public class ApartmentService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Apartment find(@PathParam("id") long id) {
 		ApartmentRepository apartmentRepository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");
-		return apartmentRepository.getAll().get(id);
+		Apartment apartment = apartmentRepository.getAll().get(id);
+		if (!apartment.isDeleted()) {
+			return apartment;
+		}
+		return null;
 	}
 	
 	@DELETE

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -60,7 +61,7 @@ public class ReservationService {
 	public Collection<Reservation> getApartmentReservations(@PathParam("id") long id) {
 		ArrayList<Reservation> apartmentReservations = new ArrayList<Reservation>();
 		for (Reservation r : getAll()) {
-			if (r.getApartment() == id) {
+			if (r.getApartment() == id && !r.isDeleted()) {
 				apartmentReservations.add(r);
 			}
 		}
@@ -115,9 +116,57 @@ public class ReservationService {
 		}
 		return true;
 	}
+	
+	@Path("/guest/{id}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Reservation> getGuestReservations(@PathParam("id") String guestId) {
+		List<Reservation> guestReservations = new ArrayList<Reservation>();
+		for (Reservation r : getAll()) {
+			if (r.getGuest().equals(guestId)) {
+				guestReservations.add(r);
+			}
+		}
+		return guestReservations;
+	}
+	
+	@Path("/{id}")
+	@DELETE
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response cancelReservation(@PathParam("id") long id) {
+		ReservationRepository repository = (ReservationRepository) ctx.getAttribute("reservationRepository");
+		try {
+			repository.delete(id);
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).build();
+	}
+	
+	@Path("apartment/{id}/free-dates")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Date> getApartmentFreeDates(@PathParam("id") long id) {
+		ApartmentRepository repository = (ApartmentRepository) ctx.getAttribute("apartmentRepository");
+		Apartment apartment = repository.getAll().get(id);
+		List<Date> freeDates = new ArrayList<Date>();
+		for (Date date : apartment.getAvailableDates()) {
+			Boolean dateAvailable = true;
+			for (Date rentedDate : getApartmentRentedDates(id)) {
+				if(DateUtil.isSameDay(date, rentedDate)) {
+					dateAvailable = false;
+				}
+			}
+			if (dateAvailable) {
+				freeDates.add(date);
+			}
+		}
+		return freeDates;
+	}
 
 	private List<Date> calculateRentDates(Date startDate, int nightsNumber) {
 		ArrayList<Date> rentDates = new ArrayList<Date>();
+		if (startDate == null) return rentDates;
 		for (int i = 0; i < nightsNumber; i++) {
 			rentDates.add(DateUtil.addDays(startDate, i));
 		}

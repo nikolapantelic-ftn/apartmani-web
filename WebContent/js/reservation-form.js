@@ -69,6 +69,9 @@ Vue.component("reservation-form", {
 						this.available = false;
 					}
 				})
+			axios
+				.get('rest/reservations/apartment/' + this.apartment.id + '/free-dates')
+				.then(response => (console.log(response.data)));
 		},
 		submitReservation: function () {
 			data = {
