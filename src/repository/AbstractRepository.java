@@ -7,6 +7,8 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +71,16 @@ abstract class AbstractRepository<T extends Identifiable<ID> & Deletable, ID> im
 		entities.get(id).setDeleted(true);
 		saveAll();
 		return entities.get(id);
+	}
+	
+	@Override
+	public Collection<T> getActive(){
+		Collection<T> ret=new ArrayList<T>();
+		for (T t : entities.values()) {
+			if(!t.isDeleted())
+				ret.add(t);
+		}
+		return ret;
 	}
 
 }

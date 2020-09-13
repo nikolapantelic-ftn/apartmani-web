@@ -48,6 +48,15 @@ public class AmenityService {
 		return amenitiesRepository.getAll().values();
 	}
 	
+	
+	@GET
+	@Path("/active")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Amenity> getActive() {
+		AmenitiesRepository amenitiesRepository = (AmenitiesRepository)ctx.getAttribute("amenitiesRepository");
+		return amenitiesRepository.getActive();
+	}
+	
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
