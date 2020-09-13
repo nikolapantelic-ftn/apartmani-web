@@ -1,3 +1,4 @@
+Vue.component('vue-ctk-date-time-picker', window['vue-ctk-date-time-picker']);
 Vue.component('apartment-details',{
 	data:function(){
 		return{
@@ -5,7 +6,9 @@ Vue.component('apartment-details',{
 			apartment:null,
 			pictures:[],
 			id:this.$route.params.id,
-			showModal: false
+			showModal: false,
+			datePicker:null,
+			amenities:[]
 		}
 	},
 	mounted() {
@@ -42,7 +45,7 @@ Vue.component('apartment-details',{
               <div class="carousel-item active">
                 <img class="d-block w-100 size" v-bind:src="pictures[0]" >
               </div>
-			<div class="carousel-item" v-for="(img,index) in pictures" v-if="index>=1"  >
+			        <div class="carousel-item" v-for="(img,index) in pictures" v-if="index>=1"  >
                 <img class="d-block w-100 size" v-bind:src="pictures[index]" >
               </div>		
     
@@ -58,17 +61,15 @@ Vue.component('apartment-details',{
           </div>
         </div>
         <div class="col">
-        	<div class="input-group date" data-provide="datepicker">
-    <input type="text" class="form-control">
-    <div class="input-group-addon">
-        <span class="glyphicon glyphicon-th"></span>
-    </div>
-</div>
+        	<vue-ctk-date-time-picker label="Hello World!" v-model="datePicker" :range="true" :no-shortcuts ="true">
+          </vue-ctk-date-time-picker>
         </div>
       </div>
       <div class="row">
         <p>Sadrzaji</p>
+		<
       </div>
+
 </div>
 
 	`
