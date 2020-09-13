@@ -25,7 +25,6 @@ Vue.component('profile-view', {
 			this.repeatedPassword = '';
 		},
 		submit: function () {
-			this.errors = [];
 			this.user.firstName = this.firstName;
 			this.user.lastName = this.lastName;
 			this.user.gender = this.gender;
@@ -36,8 +35,14 @@ Vue.component('profile-view', {
 			else if (this.user.role == 'Admin') servicePath = '/admin-profile';
 			axios
 				.post('rest/users' + servicePath, this.user)
-				.then(this.editMode = false)
-				.catch(error => (console.log(error.response)))
+				.then(response => {
+					this.editMode = false;
+					alert("Uspesno izmenjen profil.");
+					})
+				.catch(error => {
+					console.log(error.response);
+					alert("Greska pri izmeni profila.");
+				});
 		},
 		changePassword: function () {
 			this.errors = [];
@@ -52,8 +57,14 @@ Vue.component('profile-view', {
 			else if (this.user.role == 'Admin') servicePath = '/admin-profile';
 			axios
 				.post('rest/users' + servicePath, this.user)
-				.then(this.editMode = false)
-				.catch(error => (console.log(error.response)));
+				.then(response => {
+					this.editMode = false;
+					alert("Uspesno izmenjena lozinka.");
+					})
+				.catch(error => {
+					console.log(error.response);
+					alert("Greska pri izmeni lozinke.");
+				});
 			this.password = '';
 			this.repeatedPassword = '';
 		}

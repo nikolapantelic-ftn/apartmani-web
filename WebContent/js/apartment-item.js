@@ -9,16 +9,16 @@ Vue.component("apartment-item", {
 	},
 	template:
 		`
-		<div class="btn border border-primary rounded" @click="click(apartment.id)">
+		<div style="cursor: pointer;" class="border border-primary rounded py-2" @click="click(apartment.id)">
 			<img v-bind:src="apartment.images[0]" alt="No image" style="width: 100%" v-if="apartment.images">
 			<img src="resources/images/0.jpg" alt="No image" style="width: 100%" v-else>
 			
 			<br>
 			<div class="container">
-				<div class="col">
+				<div class="row d-flex justify-content-center">
 					{{ apartment.name }}
 				</div>
-				<div class="col text-muted" v-if="apartment.location">
+				<div class="row text-muted d-flex justify-content-center" v-if="apartment.location">
 					{{ apartment.location.address.place }} {{ apartment.location.address.zipCode }}
 				</div>
 			</div>

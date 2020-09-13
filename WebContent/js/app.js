@@ -7,6 +7,7 @@ const HostRegistration = { template: '<host-registration></host-registration>' }
 const Amenities = { template: '<amenities-list></amenities-list>' }
 const ReservationList = { template: '<reservation-list></reservation-list>' }
 const ProfileView = { template: '<profile-view></profile-view>' }
+const SimpleSearch = { template: '<simple-search></simple-search>' }
 
 
 const router = new VueRouter({
@@ -21,7 +22,8 @@ const router = new VueRouter({
 		{ path: '/amenities',component: Amenities },
 		{ path: '/apartment-add', component: ApartmentAdd },
 		{ path: '/reservation-list', component: ReservationList},
-		{ path: '/profile', component: ProfileView }
+		{ path: '/profile', component: ProfileView },
+		{ path: '/simple-search/:s', component: SimpleSearch }
 	  ]
 });
 router.replace('/');
@@ -33,7 +35,7 @@ var app = new Vue({
 	data: {
 		user: null,
 		isLoggedIn: false,
-		searchField: "",
+		searchField: '',
 		apartments: []
 	},
 	mounted () {
@@ -58,13 +60,16 @@ var app = new Vue({
 			router.push('/apartment-add');
 		},
 		home: function () {
-			router.push('/')
+			router.push('/');
 		},
 		reservationList: function () {
 			router.push('/reservation-list');
 		},
 		profileView: function () {
 			router.push('/profile');
+		},
+		search: function () {
+			router.push('/simple-search/' + this.searchField);
 		}
 	}
 })

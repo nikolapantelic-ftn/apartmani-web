@@ -83,7 +83,7 @@ Vue.component('apartment-add', {
 					alert(response.data);
 				})
 				.catch(e => {
-					console.log(e)
+					console.log(e.response.data)
 				})
 		},
 		handleImageUpload() {
