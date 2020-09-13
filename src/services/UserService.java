@@ -1,5 +1,6 @@
 package services;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.gson.JsonIOException;
+
 import app.WebApp;
+import beans.Guest;
+import beans.Host;
 import beans.Role;
 import beans.User;
 import repository.AdminRepository;
@@ -84,6 +89,49 @@ public class UserService {
 		}
 		if(u.getRole() != Role.Guest) {
 			return Response.status(403).entity("Zabranjeno").build();
+		}
+		return Response.status(200).build();
+	}
+	
+	@POST
+	@Path("/guest-profile")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response editGuestProfile(Guest guest, @Context HttpServletRequest request) {
+		User currentUser = (User)request.getSession().getAttribute("user");
+		if (currentUser == null) {
+			return Response.status(403).entity("Zabranjeno").build();
+		}
+		if (!currentUser.getUsername().equals(guest.getUsername())) {
+			return Response.status(403).entity("Zabranjeno").build();
+		}
+		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
+		try {
+			guestRepository.save(guest);
+		} catch (JsonIOException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).build();
+	}
+	@POST
+	@Path("/host-profile")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response editHostProfile(Host host, @Context HttpServletRequest request) {
+		User currentUser = (User)request.getSession().getAttribute("user");
+		if (currentUser == null) {
+			return Response.status(403).entity("Zabranjeno").build();
+		}
+		if (!currentUser.getUsername().equals(host.getUsername())) {
+			return Response.status(403).entity("Zabranjeno").build();
+		}
+		HostRepository hostRepository = (HostRepository)ctx.getAttribute("hostRepository");
+		try {
+			hostRepository.save(host);
+		} catch (JsonIOException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return Response.status(200).build();
 	}

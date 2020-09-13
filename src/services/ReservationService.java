@@ -52,7 +52,12 @@ public class ReservationService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Reservation> getAll() {
 		ReservationRepository repository = (ReservationRepository) ctx.getAttribute("reservationRepository");
-		return repository.getAll().values();
+		List<Reservation> reservations = new ArrayList<Reservation>();
+		for (Reservation r : repository.getAll().values()) {
+			if (!r.isDeleted())
+				reservations.add(r);
+		}
+		return reservations;
 	}
 
 	@Path("/apartment/{id}")

@@ -6,6 +6,7 @@ const UsersView = { template: '<users-view></users-view>' }
 const HostRegistration = { template: '<host-registration></host-registration>' }
 const Amenities = { template: '<amenities-list></amenities-list>' }
 const ReservationList = { template: '<reservation-list></reservation-list>' }
+const ProfileView = { template: '<profile-view></profile-view>' }
 
 
 const router = new VueRouter({
@@ -19,7 +20,8 @@ const router = new VueRouter({
 		{ path: '/addHost',component: HostRegistration },
 		{ path: '/amenities',component: Amenities },
 		{ path: '/apartment-add', component: ApartmentAdd },
-		{ path: '/reservation-list', component: ReservationList}
+		{ path: '/reservation-list', component: ReservationList},
+		{ path: '/profile', component: ProfileView }
 	  ]
 });
 router.replace('/');
@@ -60,6 +62,9 @@ var app = new Vue({
 		},
 		reservationList: function () {
 			router.push('/reservation-list');
+		},
+		profileView: function () {
+			router.push('/profile');
 		}
 	}
 })
