@@ -19,6 +19,21 @@ Vue.component('apartment-details',{
 			this.apartment = response.data
 			this.pictures=response.data.images
 			});
+		axios
+		.get('rest/amenities/active')
+		.then(response=>{
+			this.amenities=response.data
+		})
+	},
+	
+	computed:{
+		apartmentAmenities(){
+			return this.amenities.filter(a =>{
+				if(this.apartment.amenityIds.includes(a.id)){
+					return a
+					}
+			})
+		}
 	},
 	template:
   `
@@ -65,10 +80,14 @@ Vue.component('apartment-details',{
           </vue-ctk-date-time-picker>
         </div>
       </div>
+	<div id="amenities" class="container-fluid border border-primary rounded bg-secondary mt-2">
       <div class="row">
-        <p>Sadrzaji</p>
-		<
+        <h5 class="text-light mx-2"><strong>Sadrzaji</strong></h5>
       </div>
+		<div class="row">
+		<button class="btn btn-primary mx-2 mb-2" v-for="a in apartmentAmenities">{{a.name}} </button>
+		</div>
+	</div>
 
 </div>
 
