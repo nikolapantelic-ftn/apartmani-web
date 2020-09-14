@@ -26,8 +26,6 @@ public class Apartment implements Identifiable<Long>, Deletable {
 	public Apartment() {
 		
 	}
-	
-	
 
 	public ApartmentType getType() {
 		return type;
