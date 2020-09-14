@@ -8,6 +8,7 @@ public class ApartmentComment implements Identifiable<Long>, Deletable {
 	private String text;
 	private int mark;
 	private boolean deleted;
+	private boolean toDisplay;
 	
 	public ApartmentComment() {
 		
@@ -69,6 +70,14 @@ public class ApartmentComment implements Identifiable<Long>, Deletable {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	public boolean isToDisplay() {
+		return toDisplay;
+	}
+
+	public void setToDisplay(boolean toDisplay) {
+		this.toDisplay = toDisplay;
 	}
 
 }

@@ -10,6 +10,7 @@ Vue.component('apartment-details',{
 			datePicker:null,
 			amenities:[],
 			avaliableDates:['2020-09-14','2020-10-15'],
+			comments:[]
 			
 		}
 	},
@@ -20,6 +21,7 @@ Vue.component('apartment-details',{
 		.then(response => {
 			this.apartment = response.data
 			this.pictures=response.data.images
+			this.comments=response.data.comments
 			});
 		axios
 		.get('rest/amenities/active')
@@ -70,7 +72,13 @@ Vue.component('apartment-details',{
 					ret.push(date)
 			}
 			return ret
-		}
+		},
+		commentsToDisplay(){
+		return this.comments.filter(c=>{
+			if(c.toDisplay)
+				return c
+		})
+	}
 		
 	},
 	template:
@@ -126,6 +134,7 @@ Vue.component('apartment-details',{
 		<button class="btn btn-primary mx-2 mb-2" v-for="a in apartmentAmenities">{{a.name}} </button>
 		</div>
 	</div>
+	<comments class="my-4" v-bind:apartment="apartment" v-bind:comments="commentsToDisplay"></comments>
 
 </div>
 
