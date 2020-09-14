@@ -3,12 +3,14 @@ Vue.component('apartment-details',{
 	data:function(){
 		return{
 			user: null,
-			apartment:null,
+			apartment:Object,
 			pictures:[],
 			id:this.$route.params.id,
 			showModal: false,
 			datePicker:null,
-			amenities:[]
+			amenities:[],
+			avaliableDates:['2020-09-14','2020-10-15'],
+			
 		}
 	},
 	mounted() {
@@ -24,6 +26,7 @@ Vue.component('apartment-details',{
 		.then(response=>{
 			this.amenities=response.data
 		})
+		
 	},
 	
 	computed:{
@@ -33,7 +36,42 @@ Vue.component('apartment-details',{
 					return a
 					}
 			})
+		},
+		minDate(){
+			var today=new Date()
+			var dd=today.getDate()
+			var yyyy=today.getFullYear()
+			var mm=today.getMonth()+1
+			return mm+'-'+dd+'-'+yyyy
+		},
+		maxDate(){
+			var today=new Date()
+			var dd=today.getDate()
+			var yyyy=today.getFullYear()+1
+			var mm=today.getMonth()+1
+			return mm+'-'+dd+'-'+yyyy
+		},
+		disabledDates(){
+			var ret=[]
+			var start=new Date(this.minDate)
+			var end=new Date(this.maxDate)
+			for(i=start;start<end;i.setDate(i.getDate()+1)){
+				var dd=i.getDate()
+					if(dd<10){
+						dd='0'+dd
+					}
+					var yyyy=i.getFullYear()
+					var mm=i.getMonth()+1
+					if(mm<10){
+						mm='0'+mm
+					}
+					var date= yyyy+'-'+mm+'-'+dd
+				if(!this.avaliableDates.includes(date))
+					ret.push(date)
+			}
+			return ret
 		}
+		
 	},
 	template:
   `
@@ -76,7 +114,7 @@ Vue.component('apartment-details',{
           </div>
         </div>
         <div class="col">
-        	<vue-ctk-date-time-picker label="Hello World!" v-model="datePicker" :range="true" :no-shortcuts ="true">
+        	<vue-ctk-date-time-picker label="Zeljeni datum" v-model="datePicker" :range="true" v-bind:disabled-dates="disabledDates"  :no-shortcuts ="true">
           </vue-ctk-date-time-picker>
         </div>
       </div>
