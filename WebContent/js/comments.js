@@ -1,4 +1,9 @@
 Vue.component("comments", {
+	data: function() {
+		return {
+			user:app.user
+		}
+	},
 	props:['comments'],
 		
 	template:
@@ -18,7 +23,8 @@ Vue.component("comments", {
                     </a>
                 </h5>
                 {{c.text}}
-		<star-rating v-model="c.mark" :read-only="true"></star-rating>
+			<star-rating v-model="c.mark" :read-only="true"></star-rating>
+			<button class="btn btn-primary" v-if="!c.toDisplay && user.role==='Host'" >Prikazi komentar </button>
             </div>
         </div>
        

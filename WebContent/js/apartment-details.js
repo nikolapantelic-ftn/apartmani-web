@@ -74,10 +74,14 @@ Vue.component('apartment-details',{
 			return ret
 		},
 		commentsToDisplay(){
+		if(this.user.role=="Admin" || this.user.role=="Host" ){
+			return this.comments;
+		}
 		return this.comments.filter(c=>{
 			if(c.toDisplay)
 				return c
 		})
+		
 	}
 		
 	},
@@ -134,7 +138,7 @@ Vue.component('apartment-details',{
 		<button class="btn btn-primary mx-2 mb-2" v-for="a in apartmentAmenities">{{a.name}} </button>
 		</div>
 	</div>
-	<comments class="my-4" v-bind:apartment="apartment" v-bind:comments="commentsToDisplay"></comments>
+	<comments class="my-4" v-bind:apartment="apartment" v-bind:comments="commentsToDisplay" v-if=""></comments>
 
 </div>
 
