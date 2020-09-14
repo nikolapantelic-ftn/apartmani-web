@@ -42,14 +42,14 @@ Vue.component('apartment-details',{
 			var dd=today.getDate()
 			var yyyy=today.getFullYear()
 			var mm=today.getMonth()+1
-			return mm+'-'+dd+'-'+yyyy
+			return yyyy+'-'+mm+'-'+dd
 		},
 		maxDate(){
 			var today=new Date()
 			var dd=today.getDate()
 			var yyyy=today.getFullYear()+1
 			var mm=today.getMonth()+1
-			return mm+'-'+dd+'-'+yyyy
+			return yyyy+'-'+mm+'-'+dd
 		},
 		disabledDates(){
 			var ret=[]
