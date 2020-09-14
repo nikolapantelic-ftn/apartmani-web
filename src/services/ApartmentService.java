@@ -7,21 +7,26 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.google.gson.JsonIOException;
 
 import app.WebApp;
 import beans.Apartment;
 import beans.Location;
+import beans.Role;
+import beans.User;
 import repository.ApartmentRepository;
 
 
@@ -128,6 +133,25 @@ public class ApartmentService {
 		return apartments;
 	}
 	
+	@PUT
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response update(Apartment apartment, @Context HttpServletRequest request) {
+		User user = (User)request.getSession().getAttribute("user");
+		if (user == null || !apartment.getHost().equals(user.getId()) || user.getRole() != Role.Admin) {
+			return Response.status(403).build();
+		}
+		ApartmentRepository repository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");
+		try {
+			repository.save(apartment);
+			return Response.status(200).entity(apartment).build();
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+			return Response.status(400).build();
+		}
+		
+	}
 	
 	
 	
