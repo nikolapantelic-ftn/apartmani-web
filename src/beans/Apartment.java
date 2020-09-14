@@ -12,7 +12,7 @@ public class Apartment implements Identifiable<Long>, Deletable {
 	private int numberOfGuests;
 	private Location location;
 	private List<Date> availableDates;
-	private Host host;
+	private String host;
 	private List<ApartmentComment> comments;
 	private String mainImage;
 	private List<String> images;
@@ -69,11 +69,11 @@ public class Apartment implements Identifiable<Long>, Deletable {
 		this.availableDates = availableDates;
 	}
 
-	public Host getHost() {
+	public String getHost() {
 		return host;
 	}
 
-	public void setHost(Host host) {
+	public void setHost(String host) {
 		this.host = host;
 	}
 

@@ -112,6 +112,22 @@ public class ApartmentService {
 		return false;
 	}
 	
+	@GET
+	@Path("/host/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Apartment> getHostApartments(@PathParam("id") String id) {
+		ApartmentRepository apartmentRepository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");
+		List<Apartment> apartments = new ArrayList<Apartment>();
+		for (Apartment a : apartmentRepository.getActive()) {
+			if (a.getHost() != null) {
+				if (a.getHost().equals(id)) {
+					apartments.add(a);
+				}
+			}
+		}
+		return apartments;
+	}
+	
 	
 	
 	

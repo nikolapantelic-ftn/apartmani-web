@@ -4,6 +4,7 @@ const ApartmentAdd = { template: '<apartment-add></apartment-add>' }
 const Index = { template: '<index></index>' }
 const UsersView = { template: '<users-view></users-view>' }
 const HostRegistration = { template: '<host-registration></host-registration>' }
+const HostApartments = { template: '<host-apartments></host-apartments>' }
 const Amenities = { template: '<amenities-list></amenities-list>' }
 const ReservationList = { template: '<reservation-list></reservation-list>' }
 const ProfileView = { template: '<profile-view></profile-view>' }
@@ -23,7 +24,8 @@ const router = new VueRouter({
 		{ path: '/apartment-add', component: ApartmentAdd },
 		{ path: '/reservation-list', component: ReservationList},
 		{ path: '/profile', component: ProfileView },
-		{ path: '/simple-search/:s', component: SimpleSearch }
+		{ path: '/simple-search/:s', component: SimpleSearch },
+		{ path: '/host-apartments', component: HostApartments }
 	  ]
 });
 router.replace('/');
@@ -70,6 +72,9 @@ var app = new Vue({
 		},
 		search: function () {
 			router.push('/simple-search/' + this.searchField);
+		},
+		hostApartments: function () {
+			router.push('/host-apartments');
 		}
 	}
 })

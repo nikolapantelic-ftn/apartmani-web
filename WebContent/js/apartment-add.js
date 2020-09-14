@@ -10,6 +10,7 @@ Vue.component('apartment-add', {
 			checkOutTime: 'Vreme odjave',
 			amenityIds: [],
 			availableAmenities: [],
+			availableDates: [],
 			streetAndNumber: '',
 			images: [],
 			place: '',
@@ -68,8 +69,9 @@ Vue.component('apartment-add', {
 					},
 					deleted: 'false'
 				},
+				availableDates: this.availableDates,
 				images: this.images,
-				host: app.currentUser,
+				host: app.user.id,
 				price: this.price,
 				checkInTime: this.checkInTime,
 				checkOutTime: this.checkOutTime,
@@ -204,7 +206,7 @@ Vue.component('apartment-add', {
 							<b>{{imageErrors[0]}}</b>
 						</p>
 					</div>
-			    	<button type="submit" class="btn btn-primary" v-on:click="submitApartment">Prijavi</button>
+			    	<button class="btn btn-primary" v-on:click="submitApartment">Prijavi</button>
 				</form>
 			</div>
 		`
