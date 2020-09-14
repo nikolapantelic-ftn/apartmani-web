@@ -114,7 +114,7 @@ Vue.component('apartment-details',{
           </div>
         </div>
         <div class="col">
-        	<vue-ctk-date-time-picker label="Zeljeni datum" v-model="datePicker" :range="true" v-bind:disabled-dates="disabledDates"  :no-shortcuts ="true">
+        	<vue-ctk-date-time-picker label="Zeljeni datum" v-model="datePicker" :range="true" v-bind:disabled-dates="disabledDates" v-bind:min-date="minDate" v-bind:max-date="maxDate"  :no-shortcuts ="true">
           </vue-ctk-date-time-picker>
         </div>
       </div>
