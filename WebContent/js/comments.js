@@ -18,7 +18,7 @@ Vue.component("comments", {
                     </a>
                 </h5>
                 {{c.text}}
-
+		<star-rating v-model="c.mark" :read-only="true"></star-rating>
             </div>
         </div>
        

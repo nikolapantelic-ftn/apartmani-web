@@ -10,6 +10,8 @@ const ReservationList = { template: '<reservation-list></reservation-list>' }
 const ProfileView = { template: '<profile-view></profile-view>' }
 const SimpleSearch = { template: '<simple-search></simple-search>' }
 
+Vue.component('star-rating', VueStarRating.default);
+
 
 const router = new VueRouter({
 	  mode: 'hash',
