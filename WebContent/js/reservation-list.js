@@ -19,7 +19,7 @@ Vue.component('reservation-list', {
 	template:
 		`
 			<div class="container">
-				<reservation-item v-on:update="update" v-for="reservation in reservations" v-bind:key="reservation.id" :reservation="reservation"></reservation-item>
+				<reservation-item v-on:update="update" v-for="reservation in reservations" v-bind:key="reservation.id" :reservation="reservation" v-if="reservation.status != 'finished' && reservation.status != 'canceled'"></reservation-item>
 			</div>
 		`
 })

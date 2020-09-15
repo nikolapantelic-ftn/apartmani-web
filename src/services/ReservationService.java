@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -24,6 +25,8 @@ import com.google.gson.JsonIOException;
 import app.WebApp;
 import beans.Apartment;
 import beans.Reservation;
+import beans.ReservationStatus;
+import beans.User;
 import repository.ApartmentRepository;
 import repository.ReservationRepository;
 import util.DateUtil;
@@ -79,9 +82,11 @@ public class ReservationService {
 	public Collection<Date> getApartmentRentedDates(@PathParam("id") long id) {
 		List<Date> rentDates = new ArrayList<Date>();
 		for (Reservation r : getApartmentReservations(id)) {
-			for (Date rd : calculateRentDates(r.getStartDate(), r.getNightsNumber())) {
-				rentDates.add(rd);
-			}
+			if (r.getStatus() != ReservationStatus.canceled && r.getStatus() != ReservationStatus.rejected) {
+				for (Date rd : calculateRentDates(r.getStartDate(), r.getNightsNumber())) {
+					rentDates.add(rd);
+				}
+			}	
 		}
 		return rentDates;
 	}
@@ -138,14 +143,23 @@ public class ReservationService {
 	@Path("/{id}")
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response cancelReservation(@PathParam("id") long id) {
+	public Response cancelReservation(@PathParam("id") long id, @Context HttpServletRequest request) {
 		ReservationRepository repository = (ReservationRepository) ctx.getAttribute("reservationRepository");
+		Reservation r = repository.getAll().get(id);
+		User user = (User)request.getSession().getAttribute("user");
+		if(!user.getId().equals(r.getGuest())) {
+			return Response.status(403).build();
+		}
+		r.setStatus(ReservationStatus.canceled);
 		try {
-			repository.delete(id);
-		} catch (JsonIOException | IOException e) {
+			repository.save(r);
+			return Response.status(200).build();
+		} catch (JsonIOException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return Response.status(200).build();
+		return Response.status(400).build();
 	}
 	
 	@Path("apartment/{id}/free-dates")
