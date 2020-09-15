@@ -9,7 +9,7 @@ Vue.component('apartment-details',{
 			showModal: false,
 			datePicker:null,
 			amenities:[],
-			avaliableDates:['2020-09-14','2020-10-15'],
+			avaliableDatesMS:[],
 			comments:[],
 			apAmenities:[],
 			userReservations:[]
@@ -25,6 +25,7 @@ Vue.component('apartment-details',{
 			this.pictures=response.data.images
 			this.comments=response.data.comments
 			this.apAmenities=response.data.amenityIds
+			this.avaliableDatesMS=response.data.availableDates
 			});
 		axios
 		.get('rest/amenities/active')
@@ -46,6 +47,24 @@ Vue.component('apartment-details',{
 					return a
 					}
 			})
+		},
+		avaliableDates(){
+			let ret=[]
+			this.avaliableDatesMS.forEach(d=>{
+				let date=new Date(d)
+				var dd=date.getDate()
+				if(dd<10){
+						dd='0'+dd
+					}
+				var yyyy=date.getFullYear()
+				var mm=date.getMonth()+1
+				if(mm<10){
+						mm='0'+mm
+					}
+				var dateFormat= yyyy+'-'+mm+'-'+dd
+				ret.push(dateFormat)
+			})
+			return ret
 		},
 		minDate(){
 			var today=new Date()
