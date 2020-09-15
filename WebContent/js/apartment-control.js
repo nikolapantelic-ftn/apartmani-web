@@ -24,7 +24,7 @@ Vue.component('apartment-control', {
 			axios
 				.put('rest/apartments', this.apartment)
 				.then(response => {
-					alert(Izmene sacuvane.);
+					alert("Izmene sacuvane.");
 				})
 				.catch(e => {
 					console.log(e.response.data);
