@@ -44,10 +44,11 @@ Vue.component("reservation-form", {
 	},
 	methods: {	
 		checkAvailability: function () {
+			var date=new Date(this.startDate)
 			axios
 				.post('rest/reservations/available', {
 					apartment: this.apartment.id,
-					startDate: this.startDate,
+					startDate:date,
 					nightsNumber: this.nightsNumber
 				})
 				.then(response => {

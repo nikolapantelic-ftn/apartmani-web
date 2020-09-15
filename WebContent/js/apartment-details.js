@@ -10,7 +10,8 @@ Vue.component('apartment-details',{
 			datePicker:null,
 			amenities:[],
 			avaliableDates:['2020-09-14','2020-10-15'],
-			comments:[]
+			comments:[],
+			apAmenities:[]
 			
 		}
 	},
@@ -22,6 +23,7 @@ Vue.component('apartment-details',{
 			this.apartment = response.data
 			this.pictures=response.data.images
 			this.comments=response.data.comments
+			this.apAmenities=response.data.amenityIds
 			});
 		axios
 		.get('rest/amenities/active')
@@ -34,7 +36,7 @@ Vue.component('apartment-details',{
 	computed:{
 		apartmentAmenities(){
 			return this.amenities.filter(a =>{
-				if(this.apartment.amenityIds.includes(a.id)){
+				if(this.apAmenities.includes(a.id)){
 					return a
 					}
 			})
