@@ -1,10 +1,18 @@
 Vue.component("comments", {
 	data: function() {
 		return {
-			user:app.user
+			user:app.user,
+			newMark:0
 		}
 	},
-	props:['comments'],
+	props:['comments','allowComment'],
+	
+	methods:{
+		displayComment(c){
+			c.toDisplay=true;
+			
+		}
+	},
 		
 	template:
 		`
@@ -25,6 +33,7 @@ Vue.component("comments", {
                 {{c.text}}
 			<star-rating v-model="c.mark" :read-only="true"></star-rating>
 			<button class="btn btn-primary" v-if="!c.toDisplay && user.role==='Host'" >Prikazi komentar </button>
+			<button class="btn btn-primary" v-if="c.toDisplay && user.role==='Host'" >Sakrij komentar </button>
             </div>
         </div>
        
@@ -32,6 +41,32 @@ Vue.component("comments", {
     </div>
 </div>
 <!--/.Comments-->
+<div class="card mb-3 wow fadeIn" v-if="allowComment">
+    <div class="card-header font-weight-bold">Ostavite utisak</div>
+    <div class="card-body">
+
+        <!-- Default form reply -->
+        <form>
+
+            <!-- Comment -->
+            <div class="form-group">
+                <label for="replyFormComment">Vas komentar</label>
+                <textarea class="form-control" id="replyFormComment" rows="5"></textarea>
+            </div>
+			<div>
+			<star-rating v-model="newMark"></star-rating>
+            </div>
+			<div class="text-center mt-4">
+                <button class="btn btn-info btn-md" type="submit">Dodaj komentar</button>
+            </div>
+			
+        </form>
+        <!-- Default form reply -->
+
+
+
+    </div>
+</div>
 </div>
 
 		`

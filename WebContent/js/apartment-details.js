@@ -11,7 +11,8 @@ Vue.component('apartment-details',{
 			amenities:[],
 			avaliableDates:['2020-09-14','2020-10-15'],
 			comments:[],
-			apAmenities:[]
+			apAmenities:[],
+			userReservations:[]
 			
 		}
 	},
@@ -29,6 +30,11 @@ Vue.component('apartment-details',{
 		.get('rest/amenities/active')
 		.then(response=>{
 			this.amenities=response.data
+		})
+		axios
+		.get('rest/reservations/guest/'+this.user.id)
+		.then(response=>{
+			this.userReservations=response.data
 		})
 		
 	},
@@ -84,7 +90,19 @@ Vue.component('apartment-details',{
 				return c
 		})
 		
-	}
+		},
+		
+		allowComment(){
+			if(this.user.role!='Guest')
+				return false;
+			this.userReservations.forEach(r=>{
+				if(r.apartment==this.id)
+				return true
+			})
+			return false
+		}
+	
+	
 		
 	},
 	template:
@@ -140,7 +158,7 @@ Vue.component('apartment-details',{
 		<button class="btn btn-primary mx-2 mb-2" v-for="a in apartmentAmenities">{{a.name}} </button>
 		</div>
 	</div>
-	<comments class="my-4" v-bind:apartment="apartment" v-bind:comments="commentsToDisplay" v-if=""></comments>
+	<comments class="my-4" v-bind:apartment="apartment" v-bind:comments="commentsToDisplay" v-bind:allowComment="allowComment" v-if=""></comments>
 
 </div>
 
