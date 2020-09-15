@@ -11,7 +11,8 @@ Vue.component("reservation-form", {
 			nightsNumber: '1',
 			message: '',
 			guestsNumber: '1',
-			available: ''
+			available: '',
+			format:'YYYY-MM-DD'
 		}
 	},
 	beforeMount(){
@@ -123,7 +124,7 @@ Vue.component("reservation-form", {
 									<div class="col-4">
 		                             	<h5 class="title text-center">Datum prijave</h5>
 										<div class="mt-1">
-											<vue-ctk-date-time-picker label="Prijava" v-model="startDate" :only-date="true"  v-bind:disabled-dates="disabledDates" v-bind:min-date="minDate" v-bind:max-date="maxDate"  :no-shortcuts ="true">
+											<vue-ctk-date-time-picker label="Prijava" v-model="startDate" :only-date="true"  v-bind:disabled-dates="disabledDates" v-bind:min-date="minDate" v-bind:max-date="maxDate" v-bind:format="format"  :no-shortcuts ="true">
           									</vue-ctk-date-time-picker>
 										</div>
 									</div>
