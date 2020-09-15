@@ -12,7 +12,9 @@ Vue.component('apartment-details',{
 			avaliableDatesMS:[],
 			comments:[],
 			apAmenities:[],
-			userReservations:[]
+			userReservations:[],
+			format:'YYYY-MM-DD',
+			location:Object
 			
 		}
 	},
@@ -25,7 +27,7 @@ Vue.component('apartment-details',{
 			this.pictures=response.data.images
 			this.comments=response.data.comments
 			this.apAmenities=response.data.amenityIds
-			this.avaliableDatesMS=response.data.availableDates
+			this.location=response.data.location
 			});
 		axios
 		.get('rest/amenities/active')
@@ -36,6 +38,11 @@ Vue.component('apartment-details',{
 		.get('rest/reservations/guest/'+this.user.id)
 		.then(response=>{
 			this.userReservations=response.data
+		})
+		axios
+		.get('rest/reservations/apartment/'+this.id+'/free-dates')
+		.then(response=>{
+			this.avaliableDatesMS=response.data
 		})
 		
 	},
@@ -120,7 +127,13 @@ Vue.component('apartment-details',{
 				}
 			})
 			return false
+		},
+		apartmentType(){
+			if(this.apartment.type=="room")
+				return "Soba"
+			return "Ceo apartman"
 		}
+		
 	},
 	methods: {
 		apartmentControl: function () {
@@ -137,15 +150,14 @@ Vue.component('apartment-details',{
   `
   
 	<div>
-      <h1 class="display3 text-center">Apartman</h1>
+	<div class="d-flex justify-content-around">
+      <h1 class="display3 text-center">{{apartment.name}}</h1>
       <reservation-form v-bind:apartment="apartment" v-bind:minDate="minDate" v-bind:maxDate="maxDate" v-bind:disabledDates="disabledDates"  v-if="showModal" @close="showModal = false"></reservation-form>
-      
-      <!-- Dugme za prikaz forme za rezervaciju apartmana. Mozes ga premestati bilo gde po stranici -->
 		<div v-if="user">
 			<button class="btn btn-primary" @click="apartmentControl" v-if="canEdit()">Kontrolni panel</button>
       		<button class="btn btn-primary" id="show-modal" @click="showModal = true" v-if="user.role == 'Guest'">Rezervisi</button>
 		</div>
-      
+      </div>
       
       <div class="row">
         <div class="col">
@@ -175,8 +187,14 @@ Vue.component('apartment-details',{
           </div>
         </div>
         <div class="col">
-        	<vue-ctk-date-time-picker label="Zeljeni datum" v-model="datePicker" :range="true" v-bind:disabled-dates="disabledDates" v-bind:min-date="minDate" v-bind:max-date="maxDate"  :no-shortcuts ="true">
+        	<vue-ctk-date-time-picker label="Slobodni datumi" v-model="datePicker" v-bind:format="format" :only-date="true" v-bind:disabled-dates="disabledDates" v-bind:min-date="minDate" v-bind:max-date="maxDate"  :no-shortcuts ="true">
           </vue-ctk-date-time-picker>
+			 <h4>Cena:<span class="badge badge-primary"> {{apartment.price}}</span></h4>
+			<h4>Mesto:<span class="badge badge-primary"> {{location.address.place}}</span></h4>
+			<h4>Adresa:<span class="badge badge-primary"> {{location.address.streetAndNumber}}</span></h4>
+			<h4>Broj soba:<span class="badge badge-primary"> {{apartment.numberOfRooms}}</span></h4>
+			<h4>Broj gostiju:<span class="badge badge-primary"> {{apartment.numberOfGuests}}</span></h4>
+			<h4>Tip:<span class="badge badge-primary"> {{apartmentType}}</span></h4>
         </div>
       </div>
 	<div id="amenities" class="container-fluid border border-primary rounded bg-secondary mt-2">
