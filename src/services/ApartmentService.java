@@ -139,7 +139,7 @@ public class ApartmentService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response update(Apartment apartment, @Context HttpServletRequest request) {
 		User user = (User)request.getSession().getAttribute("user");
-		if (user == null || !apartment.getHost().equals(user.getId()) || user.getRole() != Role.Admin) {
+		if (user == null || (!apartment.getHost().equals(user.getId()) && user.getRole() != Role.Admin)) {
 			return Response.status(403).build();
 		}
 		ApartmentRepository repository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");

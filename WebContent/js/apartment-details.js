@@ -76,16 +76,26 @@ Vue.component('apartment-details',{
 			return ret
 		},
 		commentsToDisplay(){
-		if(this.user.role=="Admin" || this.user.role=="Host" ){
-			return this.comments;
+			if(this.user.role=="Admin" || this.user.role=="Host" ){
+				return this.comments;
+			}
+			return this.comments.filter(c=>{
+				if(c.toDisplay)
+					return c
+			});
+		
 		}
-		return this.comments.filter(c=>{
-			if(c.toDisplay)
-				return c
-		})
-		
-	}
-		
+	},
+	methods: {
+		apartmentControl: function () {
+			router.push('/apartment-control/' + this.apartment.id);
+		},
+		canEdit: function (){
+			if (this.user.id == this.apartment.host || this.user.role == 'Admin') {
+				return true;
+			}
+			return false;
+		}
 	},
 	template:
   `
@@ -96,6 +106,7 @@ Vue.component('apartment-details',{
       
       <!-- Dugme za prikaz forme za rezervaciju apartmana. Mozes ga premestati bilo gde po stranici -->
 		<div v-if="user">
+			<button class="btn btn-primary" @click="apartmentControl" v-if="canEdit()">Kontrolni panel</button>
       		<button class="btn btn-primary" id="show-modal" @click="showModal = true" v-if="user.role == 'Guest'">Rezervisi</button>
 		</div>
       
