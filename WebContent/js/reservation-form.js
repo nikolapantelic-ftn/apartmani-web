@@ -8,7 +8,7 @@ Vue.component("reservation-form", {
 	data: function() {
 		return {
 			startDate: '',
-			nightsNumber: '',
+			nightsNumber: '1',
 			message: '',
 			guestsNumber: '1',
 			available: ''
@@ -37,9 +37,29 @@ Vue.component("reservation-form", {
 			return date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
 				+ '. u ' + this.apartment.checkOutTime;
 		},
+		
+		discountDays(){
+			var days=0;
+			let nights=parseInt(this.nightsNumber);
+			let start = new Date(this.startDate);
+			let end = new Date(this.startDate);
+			end.setDate(end.getDate()+nights)
+			for(i=start;start<end;i.setDate(i.getDate()+1)){
+				if(i.getDay()==0)
+				days=days+1;
+				if(i.getDay()==5)
+				days=days+1;
+				if(i.getDay()==6)
+				days=days+1;
+			}
+			return days
+		},
+		discount(){
+			return this.discountDays*this.apartment.price*0.1
+		},
 		totalPrice(){
 			var nights=parseInt(this.nightsNumber)
-			return nights*this.apartment.price
+			return nights*this.apartment.price-this.discount;
 		}
 	},
 	methods: {	
@@ -110,16 +130,14 @@ Vue.component("reservation-form", {
 									<div class="col-4">
 		                             	<h5 class="title text-center">Broj noci</h5>
 										<div class="mt-1">
-											<input class="form-control" type="text" v-model="nightsNumber"> </input>
+											<input class="form-control" type="number" min="1"  v-model="nightsNumber"> </input>
 										</div>
 									</div>
 									
 									<div class="col-3">
 		                             	<h5 class="title text-center">Broj gostiju</h5>
 										<div class="mt-1">
-											<select class="custom-select" v-model="guestsNumber">
-												<option selected value="1">1</option>
-											</select>
+											<input class="form-control" type="number" min="1" v-model="guestsNumber"> </input>
 										</div>
 									</div>
 								</div>
@@ -135,6 +153,9 @@ Vue.component("reservation-form", {
 									</div>
 									<div class="row my-1" v-if="nightsNumber">
 										Broj nocenja: {{ nightsNumber }}
+									</div>
+									<div class="row my-1" v-if="discount">
+										Vikend popust: {{ discount }} din.
 									</div>
 									<div class="row my-1" v-if="totalPrice">
 										Ukupna cena: {{ totalPrice }} din.
