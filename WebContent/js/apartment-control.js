@@ -6,10 +6,18 @@ Vue.component('apartment-control', {
 			editMode: false,
 			availableAmenities: [],
 			selectedImage: '',
-			imageErrors: []
+			imageErrors: [],
+			calendar : null,
+			calendarRendered: false
 		};
 	},
 	mounted: function () {
+		this.calendar = new ej.calendars.Calendar({
+			isMultiSelection: true,
+			values: [],
+			min: new Date(),
+			showTodayButton: false,
+		});
 		axios
 			.get('rest/amenities/active')
 			.then(response => {
@@ -17,7 +25,17 @@ Vue.component('apartment-control', {
 			});
 		axios
 			.get('rest/apartments/search/' + this.id)
-			.then(response => (this.apartment = response.data));
+			.then(response => {
+				this.apartment = response.data;
+				this.calendar.values = [];
+				this.apartment.availableDates.forEach(date=> { this.calendar.values.push(new Date(date)) });
+			});
+	},
+	updated: function () {
+		if (this.calendarRendered == false) {
+			this.calendar.appendTo('#calendar');
+			this.calendarRendered = true;
+		}	
 	},
 	methods: {
 		submit() {
@@ -28,7 +46,7 @@ Vue.component('apartment-control', {
 				})
 				.catch(e => {
 					console.log(e.response.data);
-				})
+				});
 			this.editMode = false;
 		},
 		cancel() {
@@ -36,6 +54,27 @@ Vue.component('apartment-control', {
 			.get('rest/apartments/search/' + this.id)
 			.then(response => (this.apartment = response.data));
 			this.editMode = false;
+		},
+		submitCalendar() {
+			this.apartment.availableDates = [];
+			this.calendar.values.forEach(date => this.apartment.availableDates.push(date.getTime()));
+			axios
+				.put('rest/apartments', this.apartment)
+				.then(response => {
+					alert("Izmene sacuvane.");
+				})
+				.catch(e => {
+					console.log(e.response.data);
+				});
+		},
+		cancelCalendar() {
+			axios
+			.get('rest/apartments/search/' + this.id)
+			.then(response => {
+				this.apartment = response.data;
+				this.calendar.values =[]
+				this.apartment.availableDates.forEach(date=> { this.calendar.values.push(new Date(date)) });
+			});
 		},
 		deleteImage(image) {
 			this.apartment.images = this.apartment.images.filter(i => i !== image);
@@ -82,7 +121,15 @@ Vue.component('apartment-control', {
 				<h4 class="rounded bg-secondary text-light p-2">Kontrolni panel</h4>
 				<div>
 					<h5>Dodavanje radnih dana</h5>
+					<div class="row ml-4">
+						<div id="calendar" style="max-width: 40%"></div>
+						<div class="col">
+							<button class="btn btn-info" @click="submitCalendar">Sacuvaj</button>
+							<button class="btn btn-secondary" @click="cancelCalendar">Odbaci</button>
+						</div>
+					</div>
 				</div>
+				<hr/>
 				<div>
 					<h5 class="d-inline">Izmena apartmana</h5>
 					<button class="btn btn-info my-2" @click="editMode = true">Izmeni</button>
