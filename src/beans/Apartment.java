@@ -1,5 +1,6 @@
 package beans;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,10 @@ public class Apartment implements Identifiable<Long>, Deletable {
 	private boolean deleted;
 	
 	public Apartment() {
-		
+		this.comments = new ArrayList<ApartmentComment>();
+		this.images = new ArrayList<String>();
+		this.amenityIds = new ArrayList<Long>();
+		this.availableDates= new ArrayList<Date>();
 	}
 
 	public ApartmentType getType() {
