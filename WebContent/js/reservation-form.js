@@ -1,17 +1,16 @@
 Vue.component("reservation-form", {
 	props: {
-		apartment: Object
+		apartment: Object,
+		minDate:'',
+		maxDate:'',
+		disabledDates:''
 	},
 	data: function() {
 		return {
 			startDate: '',
-			endDate: '',
 			nightsNumber: '',
-			totalPrice: '',
 			message: '',
 			guestsNumber: '1',
-			checkIn: '',
-			checkOut: '',
 			available: ''
 		}
 	},
@@ -24,37 +23,26 @@ Vue.component("reservation-form", {
 			}
 		});
 	},
-	methods: {
-		updateNightsNumber: function () {
-			if (this.endDate && this.startDate) {
-				this.nightsNumber = (Date.parse(this.endDate) - Date.parse(this.startDate)) / (1000*60*60*24);
-			}
-			if (this.apartment.price != '') {
-				this.totalPrice = this.nightsNumber * this.apartment.price;
-			}
-		},
-		updateCheckIn: function () {
+	computed:{
+		checkIn(){
 			let date = new Date(this.startDate);
-			let tommorow = new Date();
-			tommorow = tommorow.setDate(tommorow.getDate() + 1);
-			if (date < tommorow || date >= new Date(this.endDate)) {
-				this.startDate = '';
-				return;
-			}
-			this.checkIn = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
+			return date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
 				+ '. u ' + this.apartment.checkInTime;
-			this.updateNightsNumber();
+		
 		},
-		updateCheckOut: function () {
-			let date = new Date(this.endDate);
-			if (date <= new Date(this.startDate)) {
-				this.endDate = '';
-				return;
-			}
-			this.checkOut = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
+		checkOut(){
+			var nights=parseInt(this.nightsNumber)
+			let date = new Date(this.startDate);
+			date.setDate(date.getDate()+nights)
+			return date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
 				+ '. u ' + this.apartment.checkOutTime;
-			this.updateNightsNumber();
 		},
+		totalPrice(){
+			var nights=parseInt(this.nightsNumber)
+			return nights*this.apartment.price
+		}
+	},
+	methods: {	
 		checkAvailability: function () {
 			axios
 				.post('rest/reservations/available', {
@@ -114,15 +102,17 @@ Vue.component("reservation-form", {
 									<div class="col-4">
 		                             	<h5 class="title text-center">Datum prijave</h5>
 										<div class="mt-1">
-											<input class="form-control" type="date" v-model="startDate" @change="updateCheckIn">
+											<vue-ctk-date-time-picker label="Prijava" v-model="startDate" :only-date="true"  v-bind:disabled-dates="disabledDates" v-bind:min-date="minDate" v-bind:max-date="maxDate"  :no-shortcuts ="true">
+          									</vue-ctk-date-time-picker>
 										</div>
 									</div>
 									<div class="col-4">
-		                             	<h5 class="title text-center">Datum odjave</h5>
+		                             	<h5 class="title text-center">Broj noci</h5>
 										<div class="mt-1">
-											<input class="form-control" type="date" v-model="endDate" @change="updateCheckOut">
+											<input class="form-control" type="text" v-model="nightsNumber"> </input>
 										</div>
 									</div>
+									
 									<div class="col-3">
 		                             	<h5 class="title text-center">Broj gostiju</h5>
 										<div class="mt-1">
@@ -139,7 +129,7 @@ Vue.component("reservation-form", {
 									<div class="row my-1" v-show="startDate">
 										Vreme prijave: {{ checkIn }}
 									</div>
-									<div class="row my-1" v-if="endDate">
+									<div class="row my-1" v-if="startDate && nightsNumber">
 										Vreme odjave: {{ checkOut }}
 									</div>
 									<div class="row my-1" v-if="nightsNumber">
@@ -148,7 +138,7 @@ Vue.component("reservation-form", {
 									<div class="row my-1" v-if="totalPrice">
 										Ukupna cena: {{ totalPrice }} din.
 									</div>
-									<div class="row my-1" v-if="startDate && endDate">
+									<div class="row my-1" v-if="startDate && nightsNumber">
 										<button class="btn btn-info" @click="checkAvailability">Proveri dostupnost</button>
 									</div>
 								</div>

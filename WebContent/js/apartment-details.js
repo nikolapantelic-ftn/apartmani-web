@@ -2,7 +2,7 @@ Vue.component('vue-ctk-date-time-picker', window['vue-ctk-date-time-picker']);
 Vue.component('apartment-details',{
 	data:function(){
 		return{
-			user: null,
+			user: Object,
 			apartment:Object,
 			pictures:[],
 			id:this.$route.params.id,
@@ -90,7 +90,7 @@ Vue.component('apartment-details',{
   
 	<div>
       <h1 class="display3 text-center">Apartman</h1>
-      <reservation-form v-bind:apartment="apartment" v-if="showModal" @close="showModal = false"></reservation-form>
+      <reservation-form v-bind:apartment="apartment" v-bind:minDate="minDate" v-bind:maxDate="maxDate" v-bind:disabledDates="disabledDates"  v-if="showModal" @close="showModal = false"></reservation-form>
       
       <!-- Dugme za prikaz forme za rezervaciju apartmana. Mozes ga premestati bilo gde po stranici -->
 		<div v-if="user">
