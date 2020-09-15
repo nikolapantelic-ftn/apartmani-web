@@ -2,15 +2,63 @@ Vue.component("comments", {
 	data: function() {
 		return {
 			user:app.user,
-			newMark:0
+			newComment:{
+				text:'',
+				mark:0,
+				guest:{username:app.user.username},
+				toDisplay:false
+			}
 		}
 	},
-	props:['comments','allowComment'],
+	props:['comments','allowComment','apartment'],
 	
 	methods:{
 		displayComment(c){
 			c.toDisplay=true;
 			
+		},
+		showComment(c){
+			c.toDisplay=true
+			axios
+				.post('rest/apartments', this.apartment)
+				.then(response => {
+					alert('Komentar postavljen');
+				})
+				.catch(e => {
+					console.log(e.response.data)
+				})
+			
+		},
+		hideComment(c){
+			c.toDisplay=false
+			axios
+				.post('rest/apartments', this.apartment)
+				.then(response => {
+					alert('Komentar postavljen');
+				})
+				.catch(e => {
+					console.log(e.response.data)
+				})
+			
+		},
+		postComment(){
+			this.apartment.comments.push(this.newComment)
+			axios
+				.post('rest/apartments', this.apartment)
+				.then(response => {
+					alert('Komentar postavljen');
+				})
+				.catch(e => {
+					console.log(e.response.data)
+				})
+				
+		}
+	},
+	computed:{
+		isOwner(){
+			if(this.apartment.host==this.user.username)
+				return true
+			return false
 		}
 	},
 		
@@ -32,8 +80,8 @@ Vue.component("comments", {
                 </h5>
                 {{c.text}}
 			<star-rating v-model="c.mark" :read-only="true"></star-rating>
-			<button class="btn btn-primary" v-if="!c.toDisplay && user.role==='Host'" >Prikazi komentar </button>
-			<button class="btn btn-primary" v-if="c.toDisplay && user.role==='Host'" >Sakrij komentar </button>
+			<button class="btn btn-primary" v-if="!c.toDisplay && isOwner" v-on:click="showComment(c)" >Prikazi komentar </button>
+			<button class="btn btn-primary" v-if="c.toDisplay && isOwner" v-on:click="hideComment(c)" >Sakrij komentar </button>
             </div>
         </div>
        
@@ -51,13 +99,13 @@ Vue.component("comments", {
             <!-- Comment -->
             <div class="form-group">
                 <label for="replyFormComment">Vas komentar</label>
-                <textarea class="form-control" id="replyFormComment" rows="5"></textarea>
+                <textarea class="form-control" id="replyFormComment" v-model="newComment.text" rows="5"></textarea>
             </div>
 			<div>
-			<star-rating v-model="newMark"></star-rating>
+			<star-rating v-model="newComment.mark"></star-rating>
             </div>
 			<div class="text-center mt-4">
-                <button class="btn btn-info btn-md" type="submit">Dodaj komentar</button>
+                <button class="btn btn-info btn-md" v-on:click="postComment">Dodaj komentar</button>
             </div>
 			
         </form>

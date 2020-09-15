@@ -96,8 +96,10 @@ Vue.component('apartment-details',{
 			if(this.user.role!='Guest')
 				return false;
 			this.userReservations.forEach(r=>{
-				if(r.apartment==this.id)
-				return true
+				if(r.apartment==this.id){
+					if(r.status=="rejected" || r.status=="finished")
+					return true
+				}
 			})
 			return false
 		}
