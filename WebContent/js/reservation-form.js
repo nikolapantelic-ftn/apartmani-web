@@ -27,7 +27,7 @@ Vue.component("reservation-form", {
 	computed:{
 		checkIn(){
 			let date = new Date(this.startDate);
-			return date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
+			return date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
 				+ '. u ' + this.apartment.checkInTime;
 		
 		},
@@ -35,7 +35,7 @@ Vue.component("reservation-form", {
 			var nights=parseInt(this.nightsNumber)
 			let date = new Date(this.startDate);
 			date.setDate(date.getDate()+nights)
-			return date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
+			return date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
 				+ '. u ' + this.apartment.checkOutTime;
 		},
 		

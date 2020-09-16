@@ -212,6 +212,9 @@ var app = new Vue({
 		},
 		showAllApartments: function () {
 			router.push('/all-apartments');
+		},
+		hostReservations: function () {
+			router.push('/host-reservations');
 		}
 	}
 })

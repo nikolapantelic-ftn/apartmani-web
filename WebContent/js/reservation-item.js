@@ -16,15 +16,26 @@ Vue.component('reservation-item', {
 			.then(this.$emit('update'))
 			.catch(error => (console.log(error.response.data)));
 		},
+		finish: function () {
+			this.reservation.status = 'finished';
+			axios
+				.post('rest/reservations/updateStatus', this.reservation)
+				.then(function () {
+					alert("Rezervacija zavrsena");
+				})
+				.catch(error => {
+					alert(error.response.data);
+				})
+		},
 		checkIn: function () {
 			let date = new Date(this.reservation.startDate);
-			this.checkInTime = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear() + 
+			this.checkInTime = date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear() + 
 				'. u ' + this.apartment.checkInTime;
 		},
 		checkOut: function () {
 			let date = new Date(this.reservation.startDate);
 			date.setDate(date.getDate() + parseInt(this.reservation.nightsNumber));
-			this.checkOutTime = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear() + 
+			this.checkOutTime = date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear() + 
 				'. u ' + this.apartment.checkOutTime;
 		},
 		acceptReservation:function(){
@@ -43,12 +54,12 @@ Vue.component('reservation-item', {
 			axios
 			.post('rest/reservations/updateStatus', this.reservation)
 				.then(function () {
-					alert("Rezervacija prihvacena");
+					alert("Rezervacija odbijena");
 				})
 				.catch(error => {
 					alert(error.response.data);
 				})
-		}
+		},
 	},
 	mounted() {
 		axios
@@ -58,6 +69,15 @@ Vue.component('reservation-item', {
 				this.checkIn();
 				this.checkOut();
 			});
+	},
+	computed: {
+		reservationPassed() {
+			let date = new Date(this.reservation.startDate);
+			date.setDate(date.getDate() + parseInt(this.reservation.nightsNumber));
+			let today = new Date();
+			if (date < today) return true;
+			else return false;
+		}
 	},
 	template:
 		`
@@ -95,12 +115,12 @@ Vue.component('reservation-item', {
 						<h4 class="d-inline text-info" v-if="reservation.status == 'created'">Na cekanju</h4>
 						<h4 class="d-inline text-success" v-else-if="reservation.status == 'accepted'">Prihvacena</h4>
 						<h4 class="d-inline text-danger" v-else-if="reservation.status == 'rejected'">Odbijena</h4>
+						<h4 class="d-inline text-primary" v-else-if="reservation.status == 'finished'">Zavrsena</h4>
 					</div>
 					<button type="button" class="btn btn-success float-right sticky-bottom" v-if="reservation.status == 'created' && host" v-on:click="acceptReservation">Prihvati</button>
 					<button type="button" class="btn btn-danger float-right sticky-bottom" v-if="(reservation.status == 'created'|| reservation.status == 'accepted')&&host" v-on:click="declineReservation">Odbij</button>
-					<button @click="cancel" class="btn btn-danger float-right sticky-bottom" v-if="(reservation.status == 'created' || reservation.status == 'accepted')&& !host" style="position: absolute; right: 0; bottom: 0;">
-						Otkazi
-					</button>
+					<button @click="finish" class="btn btn-info float-right sticky-bottom" v-if="reservation.status == 'accepted' && host && reservationPassed">Zavrsi</button>
+					<button @click="cancel" class="btn btn-danger float-right sticky-bottom" v-if="(reservation.status == 'created' || reservation.status == 'accepted')&& !host" style="position: absolute; right: 0; bottom: 0;">Otkazi</button>
 				</div>
 				
 			</div>
