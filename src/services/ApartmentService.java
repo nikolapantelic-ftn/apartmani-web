@@ -24,6 +24,7 @@ import com.google.gson.JsonIOException;
 
 import app.WebApp;
 import beans.Apartment;
+import beans.ApartmentStatus;
 import beans.Location;
 import beans.Role;
 import beans.User;
@@ -164,6 +165,49 @@ public class ApartmentService {
 		
 	}
 	
+	@GET
+	@Path("/set-active/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response setActive(@PathParam("id") long id, @Context HttpServletRequest request) {
+		User user = (User)request.getSession().getAttribute("user");
+		if (user == null || user.getRole() != Role.Admin) {
+			return Response.status(403).build();
+		}
+		ApartmentRepository repository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");
+		Apartment apartment = repository.get(id);
+		apartment.setStatus(ApartmentStatus.Active);
+		try {
+			repository.save(apartment);
+			return Response.status(200).build();
+		} catch (JsonIOException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return Response.status(400).build();
+	}
+	
+	@GET
+	@Path("/set-inactive/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response setInactive(@PathParam("id") long id, @Context HttpServletRequest request) {
+		User user = (User)request.getSession().getAttribute("user");
+		if (user == null || user.getRole() != Role.Admin) {
+			return Response.status(403).build();
+		}
+		ApartmentRepository repository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");
+		Apartment apartment = repository.get(id);
+		apartment.setStatus(ApartmentStatus.Inactive);
+		try {
+			repository.save(apartment);
+			return Response.status(200).build();
+		} catch (JsonIOException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return Response.status(400).build();
+	}
 	
 	
 }

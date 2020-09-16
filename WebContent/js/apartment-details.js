@@ -146,6 +146,24 @@ Vue.component('apartment-details',{
 				return true;
 			}
 			return false;
+		},
+		setActive: function () {
+			axios
+				.get('rest/apartments/set-active/' + this.id)
+				.then(response => {
+					this.apartment.status = 'Active';
+					alert('Apartman aktiviran.')
+				})
+				.catch(e => alert('Neuspesno aktiviranje.'));
+		},
+		setInactive: function () {
+			axios
+				.get('rest/apartments/set-inactive/' + this.id)
+				.then(response => {
+					this.apartment.status = 'Inactive';
+					alert('Apartman deaktiviran.')
+				})
+				.catch(e => alert('Neuspesno deaktiviranje.'));
 		}
 	},
 	template:
@@ -158,6 +176,8 @@ Vue.component('apartment-details',{
 		<div v-if="user">
 			<button class="btn btn-primary" @click="apartmentControl" v-if="canEdit()">Kontrolni panel</button>
       		<button class="btn btn-primary" id="show-modal" @click="showModal = true" v-if="user.role == 'Guest'">Rezervisi</button>
+			<button class="btn btn-success" @click="setActive" v-if="user.role == 'Admin' && apartment.status == 'Inactive'">Aktiviraj</button>
+			<button class="btn btn-danger" @click="setInactive" v-if="user.role == 'Admin' && apartment.status == 'Active'">Deaktiviraj</button>
 		</div>
       </div>
       
