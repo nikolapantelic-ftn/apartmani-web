@@ -1,7 +1,7 @@
 Vue.component("index", {
 	data: function() {
 		return {
-			apartments: []
+			apartments: [],
 		}
 	},
 	mounted: function () {
@@ -14,7 +14,7 @@ Vue.component("index", {
 		<div class="container">
 	    	<booking-form></booking-form>
 	    	<div class="row d-flex justify-content-between">
-	    		<apartment-item v-for="apartment in apartments" v-bind:key="apartment.id" :apartment="apartment" class="col-md-3 m-4">
+	    		<apartment-item v-for="apartment in apartments" v-if="apartment.status == 'Active'" v-bind:key="apartment.id" :apartment="apartment" class="col-md-3 m-4">
 	    		</apartment-item>
 	    	</div>
 		</div>

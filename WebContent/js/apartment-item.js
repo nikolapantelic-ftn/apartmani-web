@@ -21,6 +21,7 @@ Vue.component("apartment-item", {
 				<div class="row text-muted d-flex justify-content-center" v-if="apartment.location">
 					{{ apartment.location.address.place }} {{ apartment.location.address.zipCode }}
 				</div>
+				<b class="text-danger d-flex justify-content-center" v-if="apartment.status == 'Inactive'">Neaktivan</b>
 			</div>
 		</div>
 		`

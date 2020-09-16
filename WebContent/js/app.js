@@ -3,6 +3,7 @@ const ApartmentDetails = { template: '<apartment-details></apartment-details>' }
 const ApartmentAdd = { template: '<apartment-add></apartment-add>' }
 const ApartmentControl = { template: '<apartment-control></apartment-control>' }
 const Index = { template: '<index></index>' }
+const AllApartments = { template: '<all-apartments></all-apartments>' }
 const UsersView = { template: '<users-view></users-view>' }
 const HostRegistration = { template: '<host-registration></host-registration>' }
 const HostApartments = { template: '<host-apartments></host-apartments>' }
@@ -33,7 +34,8 @@ const router = new VueRouter({
 		{ path: '/simple-search/:s', component: SimpleSearch },
 		{ path: '/host-apartments', component: HostApartments },
 		{ path: '/host-reservations', component: HostReservationList },
-		{ path: '/host-guests', component: UsersViewHost }
+		{ path: '/host-guests', component: UsersViewHost },
+		{ path: '/all-apartments', component: AllApartments }
 	  ]
 });
 router.replace('/');
@@ -86,6 +88,9 @@ var app = new Vue({
 		},
 		hostGuests: function () {
 			router.push('/host-guests');
+		},
+		showAllApartments: function () {
+			router.push('/all-apartments');
 		}
 	}
 })
