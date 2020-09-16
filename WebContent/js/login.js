@@ -5,6 +5,8 @@ var app = new Vue({
 		username:null,
 		password:null,
 		errors:[],
+		hasErrors: false,
+		hasRegisterErrors: false,
 		user:null,
 		info:null,
 		register: false,
@@ -14,75 +16,111 @@ var app = new Vue({
 		registerFirstName: '',
 		registerLastName: '',
 		registerGender: '',
-		registerErrors: []
+		usernameError: false,
+		passwordError: false,
+		registerNameError: false,
+		registerLastNameError: false,
+		registerGenderError: false,
+		registerUsernameError: false,
+		registerPasswordError: false,
+		registerRepeatedPasswordError: false,
+		usernameTaken: false
 		
 	},
 	methods:{
 		checkForm: function(e){
-			this.errors = [];
+			e.preventDefault();
+			this.clearErrors();
 			if(!this.username){
-				this.errors.push("Korisnicko ime je obavezno!");
+				this.hasErrors = true;
+				this.usernameError = true;
 			}
 			if(!this.password){
-				this.errors.push("Lozinka je obavezna!");
+				this.hasErrors = true;
+				this.passwordError = true;
 			}
-			e.preventDefault();
-			axios
-			.post('rest/login',{
-				username:this.username,
-				password:this.password
-			})
-			.then(response=>{
-				window.location.href = '/apartmani-web';
-				return true;
-			})
-			.catch(e=>{
-				this.info=e.response.status;
-				if(e.response.status==400){
-					this.errors.push("Pogresno korisnicko ime/lozinka!");
-				}
-			})
+			
+			if(!this.hasErrors)
+				axios
+				.post('rest/login',{
+					username:this.username,
+					password:this.password
+				})
+				.then(response=>{
+					window.location.href = '/apartmani-web';
+					return true;
+				})
+				.catch(e=>{
+					this.info=e.response.status;
+					if(e.response.status==400){
+						this.errors.push("Pogresno korisnicko ime/lozinka!");
+					}
+				})
 			
 		},
 		checkRegisterForm: function (e) {
-			this.errors = [];
+			e.preventDefault();
+			this.clearErrors();
 			if (!this.registerFirstName) {
-				this.registerErrors.push("Ime je obavezno!");
+				this.hasRegisterErrors = true;
+				this.registerNameError = true;
 			}
-			if (!this.registerPassword) {
-				this.registerErrors.push("Prezime je obavezno!");
+			if (!this.registerLastName) {
+				this.hasRegisterErrors = true;
+				this.registerLastNameError = true;
+			}
+			if (!this.registerGender) {
+				this.hasRegisterErrors = true;
+				this.registerGenderError = true;
 			}
 			if (!this.registerUsername) {
-				this.registerErrors.push("Korisnicko ime je obavezno!");
+				this.hasRegisterErrors = true;
+				this.registerUsernameError = true;
 			}
 			if (!this.registerPassword) {
-				this.registerErrors.push("Lozinka je obavezna!");
+				this.hasRegisterErrors = true;
+				this.registerPasswordError = true;
 			}
 			if (this.registerRepeatedPassword != this.registerPassword) {
-				this.registerErrors.push("Lozinke se ne poklapaju!");
+				this.hasRegisterErrors = true;
+				this.registerRepeatedPasswordError = true;
 			}
-			e.preventDefault();
 			
-			axios
-				.post('rest/register', {
-					username: this.registerUsername,
-					password: this.registerPassword,
-					firstName: this.registerFirstName,
-					lastName: this.registerLastName,
-					role: 'Guest',
-					gender: this.registerGender
-				})
-				.then(response => {
-					window.location.href = '/apartmani-web/login.html';
-					alert("Registracija uspesna.");
-					return true;
-				})
-				.catch(e => {
-					this.info = e.response.status;
-					if (e.response.status == 400) {
-						this.registerErrors.push("Korisnicko ime je zauzeto!");
-					}
-				})
+			if (!this.hasRegisterErrors)
+				axios
+					.post('rest/register', {
+						username: this.registerUsername,
+						password: this.registerPassword,
+						firstName: this.registerFirstName,
+						lastName: this.registerLastName,
+						role: 'Guest',
+						gender: this.registerGender
+					})
+					.then(response => {
+						window.location.href = '/apartmani-web/login.html';
+						alert("Registracija uspesna.");
+						return true;
+					})
+					.catch(e => {
+						this.info = e.response.status;
+						if (e.response.status == 400) {
+							this.usernameTaken = true;
+						}
+					})
+		},
+		clearErrors: function () {
+			this.errors = [];
+			this.usernameTaken = false;
+			this.hasErrors = false;
+			this.hasRegisterErrors = false;
+			this.usernameError = false;
+			this.passwordError = false;
+			this.registerGenderError = false;
+			this.registerNameError = false;
+			this.registerLastNameError = false;
+			this.registerUsernameError = false;
+			this.registerPasswordError = false;
+			this.registerRepeatedPasswordError = false;
 		}
 	}
 }

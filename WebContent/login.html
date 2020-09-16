@@ -23,52 +23,76 @@
 			</nav>
 		</div>
 		<div class="d-inline d-flex justify-content-center">
-	    <form method="post" @submit="checkRegisterForm" name="register" id="register-form" v-if="register" class="col-sm-6 border border-light mt-1">
-	    	<p v-if="registerErrors.length">
-				<b>{{registerErrors[0]}}</b>
-			</p>
+	    <form method="post" @change="clearErrors" @submit="checkRegisterForm" name="register" id="register-form" v-if="register" class="col-sm-6 border border-light mt-1">
 	    	<div class="form-group row">
 	    		<div class="col">
-	    			<input type="text" v-model='registerFirstName' class="form-control" id="name-input" placeholder="Ime">
+	    			<input type="text" v-model='registerFirstName' class="form-control" v-bind:class="{ 'is-invalid': registerNameError }" id="name-input" placeholder="Ime">
+	    			<div class="invalid-feedback" v-if="registerNameError">
+	    				Ime je obavezno.
+	    			</div>
 	    		</div>
 	    		<div class="col">
-	    			<input type="text" v-model='registerLastName' class="form-control" id="last-name-input" placeholder="Prezime">
+	    			<input type="text" v-model='registerLastName' class="form-control" v-bind:class="{ 'is-invalid': registerLastNameError }" id="last-name-input" placeholder="Prezime">
+	    			<div class="invalid-feedback" v-if="registerLastNameError">
+	    				Prezime je obavezno.
+	    			</div>
+	    		</div>
+	    	</div>
+	    	<div class="form-row ml-1 mb-2">
+	    		<label class="mr-2" for="gender">Pol:</label>
+	    		<div id="gender">
+	    			<div class="form-check">
+			    		<input class="form-check-input" v-bind:class="{ 'is-invalid': registerGenderError }" v-model='registerGender' type="radio" id="male" name="gender" value="Male">
+		                <label class="form-check-label" for="male">Muški</label>
+	                </div>
+	                <div class="form-check">
+		                <input class="form-check-input" v-bind:class="{ 'is-invalid': registerGenderError }" v-model='registerGender' type="radio" id="female" name="gender" value="Female">
+		                <label class="form-check-label" for="female">Ženski</label>
+		                <div class="invalid-feedback" v-if="registerGenderError">Pol je obavezan.</div>
+	                </div>
+	                
+                </div> 
+	    	</div>
+	    	<div class="form-group">
+	    		<input type="text" v-model='registerUsername' class="form-control" v-bind:class="{ 'is-invalid': registerUsernameError || usernameTaken }" id="username-input" placeholder="Korisničko ime"/>
+	    		<div class="invalid-feedback" v-if="registerUsernameError">
+	    			Korisnicko ime je obavezno.
+	    		</div>
+	    		<div class="invalid-feedback" v-if="usernameTaken">
+	    			Korisnicko ime je zauzeto.
 	    		</div>
 	    	</div>
 	    	<div class="form-group">
-	    		<label for="gender">Pol</label>
-	    		<div id="gender">
-	    			<div class="form-check form-check-inline">
-			    		<input class="form-check-input" v-model='registerGender' type="radio" id="male" name="gender" value="Male">
-		                <label class="form-check-label" for="male">Muški</label>
-	                </div>
-	                <div class="form-check form-check-inline">
-		                <input class="form-check-input" v-model='registerGender' type="radio" id="female" name="gender" value="Female">
-		                <label class="form-check-label" for="female">Ženski</label>
-	                </div>
-                </div> 	
+	    		<input type="password" v-model='registerPassword' class="form-control" v-bind:class="{ 'is-invalid': registerPasswordError }" id="password-input" placeholder="Lozinka"/>
+	    		<div class="invalid-feedback" v-if="registerPasswordError">
+	    			Lozinka je obavezna.
+	    		</div>
 	    	</div>
 	    	<div class="form-group">
-	    		<input type="text" v-model='registerUsername' class="form-control" id="username-input" placeholder="Korisničko ime"/>
-	    	</div>
-	    	<div class="form-group">
-	    		<input type="password" v-model='registerPassword' class="form-control" id="password-input" placeholder="Lozinka"/>
-	    	</div>
-	    	<div class="form-group">
-	    		<input type="password" v-model='registerRepeatedPassword' class="form-control" id="repeated-password-input" placeholder="Ponovljena lozinka"/>
+	    		<input type="password" v-model='registerRepeatedPassword' class="form-control" v-bind:class="{ 'is-invalid': registerRepeatedPasswordError }" id="repeated-password-input" placeholder="Ponovljena lozinka"/>
+	    		<div class="invalid-feedback" v-if="registerRepeatedPasswordError">
+	    			Lozinke se ne poklapaju.
+	    		</div>
 	    	</div>
 	    	<button type="submit" class="btn btn-default">Registruj se</button>
 	    </form>
-	    <form method="post" @submit="checkForm"  name="login" id="login-form" v-else class="col-sm-6 border border-light mt-1">
+	    <form method="post" @change="clearErrors" @submit="checkForm"  name="login" id="login-form" v-else class="col-sm-6 border border-light mt-1">
 			<p v-if="errors.length">
-				<b>{{errors[0]}}</b>
+				<b class="text-danger">{{errors[0]}}</b>
 			</p>
 	    	<div class="form-group">
-	    		<input type="text" v-model="username" class="form-control" id="login-username-input" placeholder="Korisničko ime"/>
+	    		<input type="text" v-model="username" class="form-control" v-bind:class="{ 'is-invalid': usernameError }" id="login-username-input" placeholder="Korisničko ime"/>
+	    		<div class="invalid-feedback" v-if="usernameError">
+	    			Unesite korisnicko ime.
+	    		</div>
 	    	</div>
 	    	<div class="form-group">
-	    		<input type="password" v-model="password" class="form-control" id="login-password-input" placeholder="Lozinka"/>
+	    		<input type="password" v-model="password" class="form-control" v-bind:class="{ 'is-invalid': passwordError }" id="login-password-input" placeholder="Lozinka"/>
+	    		<div class="invalid-feedback" v-if="passwordError">
+		    		Unesite lozinku.
+		    	</div>
 	    	</div>
+	    	
 	    	<button type="submit" class="btn btn-default">Prijavi se</button>
 	    </form>
 	    </div>
