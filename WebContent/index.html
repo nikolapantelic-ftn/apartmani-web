@@ -74,19 +74,22 @@
 	          		<div class="dropdown-divider"></div>
 	          		</div>
 	          		<div v-if="user.role === 'Guest'">
-	          		<a class="dropdown-item" href="#">Iznajmljeni apartmani </a>
+	          		<a class="dropdown-item" href="#">Iznajmljeni apartmani</a>
 	          		<div class="dropdown-divider"></div>
 	          		</div>
 	          		<div v-if="user.role === 'Host'">
-	          		<a class="dropdown-item btn" v-on:click="hostApartments">Moji apartmani </a>
+	          		<a class="dropdown-item btn" v-on:click="hostApartments">Moji apartmani</a>
+	          		<div class="dropdown-divider"></div>
+	          		<div v-if="user.role === 'Host'">
+	          		<a class="dropdown-item btn" v-on:click="hostGuests">Moji gosti</a>
 	          		<div class="dropdown-divider"></div>
 	          		</div>
 	          		<div v-if="user.role === 'Admin'">
-	          		<a class="dropdown-item" href="#/users">Korisnici </a>
+	          		<a class="dropdown-item" href="#/users">Korisnici</a>
 	          		<div class="dropdown-divider"></div>
 	          		</div>
 	          		<div v-if="user.role === 'Admin'">
-	          		<a class="dropdown-item" href="#/amenities">Sadrzaji </a>
+	          		<a class="dropdown-item" href="#/amenities">Sadrzaji</a>
 	          		<div class="dropdown-divider"></div>
 	          		</div>
 	          		<a class="dropdown-item btn" v-on:click="logout">Odjavi se</a>
@@ -111,6 +114,7 @@
 	<script src="js/host-registration.js"></script>
 	<script src="js/host-apartments.js"></script>
 	<script src="js/users-view.js"></script>
+	<script src="js/users-view-host.js"></script>
 	<script src="js/apartment-details.js"></script>
 	<script src="js/apartment-item.js"></script>
 	<script src="js/apartment-add.js"></script>
