@@ -118,15 +118,17 @@ Vue.component('apartment-details',{
 		
 		},
 		allowComment(){
+			var user=true
+			var ret=false
 			if(this.user.role!='Guest')
-				return false;
+				user=false;
 			this.userReservations.forEach(r=>{
-				if(r.apartment==this.id){
+				if(r.apartment==this.apartment.id){
 					if(r.status=="rejected" || r.status=="finished")
-					return true
+					ret=true
 				}
 			})
-			return false
+			return user&&ret
 		},
 		apartmentType(){
 			if(this.apartment.type=="room")

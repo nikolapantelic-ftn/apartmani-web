@@ -1,6 +1,7 @@
 Vue.component('reservation-item', {
 	props: {
 		reservation: Object,
+		host:''
 	},
 	data: function () {
 		return {
@@ -25,6 +26,28 @@ Vue.component('reservation-item', {
 			date.setDate(date.getDate() + parseInt(this.reservation.nightsNumber));
 			this.checkOutTime = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear() + 
 				'. u ' + this.apartment.checkOutTime;
+		},
+		acceptReservation:function(){
+			this.reservation.status='accepted';
+			axios
+			.post('rest/reservations/updateStatus', this.reservation)
+				.then(function () {
+					alert("Rezervacija prihvacena");
+				})
+				.catch(error => {
+					alert(error.response.data);
+				})
+		},
+		declineReservation:function(){
+			this.reservation.status='rejected';
+			axios
+			.post('rest/reservations/updateStatus', this.reservation)
+				.then(function () {
+					alert("Rezervacija prihvacena");
+				})
+				.catch(error => {
+					alert(error.response.data);
+				})
 		}
 	},
 	mounted() {
@@ -73,8 +96,9 @@ Vue.component('reservation-item', {
 						<h4 class="d-inline text-success" v-else-if="reservation.status == 'accepted'">Prihvacena</h4>
 						<h4 class="d-inline text-danger" v-else-if="reservation.status == 'rejected'">Odbijena</h4>
 					</div>
-					
-					<button @click="cancel" class="btn btn-danger float-right sticky-bottom" v-if="reservation.status == 'created' || reservation.status == 'accepted'" style="position: absolute; right: 0; bottom: 0;">
+					<button type="button" class="btn btn-success float-right sticky-bottom" v-if="reservation.status == 'created' && host" v-on:click="acceptReservation">Prihvati</button>
+					<button type="button" class="btn btn-danger float-right sticky-bottom" v-if="(reservation.status == 'created'|| reservation.status == 'accepted')&&host" v-on:click="declineReservation">Odbij</button>
+					<button @click="cancel" class="btn btn-danger float-right sticky-bottom" v-if="(reservation.status == 'created' || reservation.status == 'accepted')&& !host" style="position: absolute; right: 0; bottom: 0;">
 						Otkazi
 					</button>
 				</div>

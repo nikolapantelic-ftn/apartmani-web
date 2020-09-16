@@ -90,6 +90,21 @@ public class ReservationService {
 		}
 		return rentDates;
 	}
+	
+	@Path("/updateStatus")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateReservation(Reservation reservation) {
+		ReservationRepository repository = (ReservationRepository) ctx.getAttribute("reservationRepository");
+		try {
+			repository.save(reservation);
+			return Response.status(200).entity(reservation).build();
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+		return Response.status(400).entity("Neispravna rezervacija.").build();
+	}
 
 	@Path("/")
 	@POST
@@ -138,6 +153,20 @@ public class ReservationService {
 			}
 		}
 		return guestReservations;
+	}
+	
+	@Path("/host")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Reservation> getReservationsForApartments(Collection<Long> ids) {
+		List<Reservation> ret = new ArrayList<Reservation>();
+		for (Reservation r : getAll()) {
+			if (ids.contains(r.getApartment())) {
+				ret.add(r);
+			}
+		}
+		return ret;
 	}
 	
 	@Path("/{id}")

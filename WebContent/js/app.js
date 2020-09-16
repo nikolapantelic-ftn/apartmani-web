@@ -10,6 +10,8 @@ const Amenities = { template: '<amenities-list></amenities-list>' }
 const ReservationList = { template: '<reservation-list></reservation-list>' }
 const ProfileView = { template: '<profile-view></profile-view>' }
 const SimpleSearch = { template: '<simple-search></simple-search>' }
+const HostReservationList = { template: '<host-reservation-list></host-reservation-list>' }
+
 
 Vue.component('star-rating', VueStarRating.default);
 
@@ -29,7 +31,8 @@ const router = new VueRouter({
 		{ path: '/reservation-list', component: ReservationList},
 		{ path: '/profile', component: ProfileView },
 		{ path: '/simple-search/:s', component: SimpleSearch },
-		{ path: '/host-apartments', component: HostApartments }
+		{ path: '/host-apartments', component: HostApartments },
+		{ path: '/host-reservations', component: HostReservationList },
 	  ]
 });
 router.replace('/');
