@@ -12,14 +12,18 @@ Vue.component('apartment-search',{
 			amenities:[],
 			checkedAmanities:[],
 			keyI:0,
-			available:true
+			available:true,
+			minRooms:'',
+			maxRooms:'',
+			maxGuests:'',
+			type:''
 			
 			
 		}
 	},
 	mounted(){
 		if(this.location==("")){
-			this.location=" ";
+			this.location="";
 		}
 		axios
 		.get('rest/apartments')
@@ -68,13 +72,46 @@ Vue.component('apartment-search',{
 			if(this.location.toLowerCase()==apartment.location.address.place.toLowerCase())
 				location=true
 		
-       if(apartment.price<=this.max && apartment.price>=this.min && hasAmenities && !apartment.deleted && apartment.status=='Active' && this.available &&location)
+		var minRooms=false
+		if(this.minRooms=="")
+			minRooms=true
+		if(this.minRooms<=apartment.numberOfRooms)
+			minRooms=true
+			
+		var maxRooms=false
+		if(this.maxRooms=="")
+			maxRooms=true
+		if(this.maxRooms>=apartment.numberOfRooms)
+			maxRooms=true
+			
+		var minGuests=false
+		if(this.guests=="")
+			minGuests=true
+		if(this.guests<=apartment.numberOfGuests)
+			minGuests=true
+			
+		var maxGuests=false
+		if(this.maxGuests=="")
+			maxGuests=true
+		if(this.maxGuests>=apartment.numberOfGuests)
+			maxGuests=true
+			
+			
+			
+			
+       if(apartment.price<=this.max && apartment.price>=this.min && minRooms && maxRooms && minGuests &&maxGuests && hasAmenities && !apartment.deleted && apartment.status=='Active' && this.available &&location)
 		return apartment;
       })
 
     
 	},
-	
+	minDate(){
+			var today=new Date()
+			var dd=today.getDate()
+			var yyyy=today.getFullYear()
+			var mm=today.getMonth()+1
+			return yyyy+'-'+mm+'-'+dd
+		},
 	},
 	methods:{
 		sortPriceLH:function(){
@@ -125,6 +162,7 @@ Vue.component('apartment-search',{
 				
 			}
 	},
+	
 	},
 	template:
 	`
@@ -152,7 +190,7 @@ Vue.component('apartment-search',{
                          </a> </header>
                      <div class="filter-content collapse show" id="collapse_aside1" style="">
                          <div class="card-body">
-                             <input class="form-control" type="date"  v-model="startDate">
+                             <input class="form-control" type="date" v-bind:min="minDate" v-model="startDate">
                          </div>
                      </div>
                  </article>
@@ -162,7 +200,7 @@ Vue.component('apartment-search',{
                          </a> </header>
                      <div class="filter-content collapse show" id="collapse_aside1-2" style="">
                          <div class="card-body">
-                             <input class="form-control" type="date"  v-model="endDate">
+                             <input class="form-control" type="date" v-bind:min="startDate"  v-model="endDate" >
                          </div>
                      </div>
                  </article>
@@ -185,14 +223,11 @@ Vue.component('apartment-search',{
                          </a> </header>
                      <div class="filter-content collapse" id="collapse_aside3" style="">
                          <div class="card-body">
-						 <select class="d-flex form-control  text-center" v-model="rooms" >
-  							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							
-						</select>
-					 </div>
+							<p> Minimalno </p>
+						 <input class="form-control" type="number" min="1" v-bind:max="maxRooms"  v-model="minRooms"> </input>
+							<p> Maksimalno </p>
+							<input class="form-control" type="number" v-bind:min="minRooms"  v-model="maxRooms" > </input>
+					 	</div>
                      </div>
                  </article>
                  <article class="filter-group">
@@ -201,13 +236,10 @@ Vue.component('apartment-search',{
                          </a> </header>
                      <div class="filter-content collapse" id="collapse_aside4" style="">
                          <div class="card-body">
- 							<select class="form-control  text-center" v-model="guests" >
-  								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-							
-						</select>
+ 							<p> Minimalno </p>
+						 <input class="form-control" type="number" min="1" v-bind:max="maxGuests"  v-model="guests"> </input>
+							<p> Maksimalno </p>
+							<input class="form-control" type="number" v-bind:min="guests"  v-model="maxGuests" > </input>
 					 </div>
 
                      </div>
@@ -237,31 +269,32 @@ Vue.component('apartment-search',{
 	<button type="button" class="btn btn-primary " v-on:click="sortPriceHL" > Cena opadajuca </button>
 	</div>
     <div class="card my-2 flex-row flex-wrap" v-for="(a,i) in filteredApartments" :key="keyI+i*100">	
-        <div class="card-header border-0">
-            <img v-bind:src="a.images[0]" alt="No image" v-if="a.images">
-			<img src="resources/images/0.jpg" alt="No image"  v-else>
-        </div>
+        <div class="card-header border-0 col-5">
+            <img class="img-thumbnail" v-bind:src="a.images[0]" alt="No image" v-if="a.images">
+			<img  class="img-thumbnail" src="resources/images/0.jpg" alt="No image"  v-else>	
+        	
+		</div>
 		
-		
-        <div class="card-block px-2 col">
+        <div class="card-block px-2 col-5">
             <h4 class="card-title">{{a.name}}</h4>
             <p class="card-text">Cena: {{a.price}}</p>
-			<p class="cart-text">Tip:{{a.type}}
+			<p class="cart-text" v-if="a.type=='room'">Tip: Soba </p>
+			<p class="cart-text" v-else>Tip: Ceo apartman </p>
 			<div class="row">
 			<span class="cart-text" v-for="aID in a.amenitiyIds" v-text="aID"></span>
             </div>
 		</div>
 				
-		<div class="card-block px-2 d-flex align-items-end">
+		<div class="card-block px-2 d-flex align-items-end col-2">
 		<div >
 				<router-link v-bind:to="'/apartment/'+a.id"> 	
-            	<a class="btn btn-primary mb-2">Zakazivanje</a>
+            	<button class="btn btn-primary mb-2">Zakazivanje</button>
 				</router-link>
             </div>
 		</div>
 		
         <div class="card-footer w-100 text-muted">
-            Lokacija
+            Lokacija: {{a.location.address.streetAndNumber}},{{a.location.address.place}}
         </div>
 
 	</div>
