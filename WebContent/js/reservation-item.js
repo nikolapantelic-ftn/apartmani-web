@@ -5,6 +5,7 @@ Vue.component('reservation-item', {
 	},
 	data: function () {
 		return {
+			user: null,
 			apartment: null,
 			checkInTime: '',
 			checkOutTime: '',
@@ -62,6 +63,7 @@ Vue.component('reservation-item', {
 		},
 	},
 	mounted() {
+		this.user = app.user;
 		axios
 			.get('rest/apartments/search/' + this.reservation.apartment)
 			.then(response => {
@@ -117,10 +119,12 @@ Vue.component('reservation-item', {
 						<h4 class="d-inline text-danger" v-else-if="reservation.status == 'rejected'">Odbijena</h4>
 						<h4 class="d-inline text-primary" v-else-if="reservation.status == 'finished'">Zavrsena</h4>
 					</div>
-					<button type="button" class="btn btn-success float-right sticky-bottom" v-if="reservation.status == 'created' && host" v-on:click="acceptReservation">Prihvati</button>
-					<button type="button" class="btn btn-danger float-right sticky-bottom" v-if="(reservation.status == 'created'|| reservation.status == 'accepted')&&host" v-on:click="declineReservation">Odbij</button>
-					<button @click="finish" class="btn btn-info float-right sticky-bottom" v-if="reservation.status == 'accepted' && host && reservationPassed">Zavrsi</button>
-					<button @click="cancel" class="btn btn-danger float-right sticky-bottom" v-if="(reservation.status == 'created' || reservation.status == 'accepted')&& !host" style="position: absolute; right: 0; bottom: 0;">Otkazi</button>
+					<div v-if="user.role != 'Admin'">
+						<button type="button" class="btn btn-success float-right sticky-bottom" v-if="reservation.status == 'created' && host" v-on:click="acceptReservation">Prihvati</button>
+						<button type="button" class="btn btn-danger float-right sticky-bottom" v-if="(reservation.status == 'created'|| reservation.status == 'accepted')&&host" v-on:click="declineReservation">Odbij</button>
+						<button @click="finish" class="btn btn-info float-right sticky-bottom" v-if="reservation.status == 'accepted' && host && reservationPassed">Zavrsi</button>
+						<button @click="cancel" class="btn btn-danger float-right sticky-bottom" v-if="(reservation.status == 'created' || reservation.status == 'accepted')&& !host" style="position: absolute; right: 0; bottom: 0;">Otkazi</button>
+					</div>
 				</div>
 				
 			</div>

@@ -98,6 +98,10 @@
 	          		<a class="dropdown-item" href="#/amenities">Sadrzaji</a>
 	          		<div class="dropdown-divider"></div>
 	          		</div>
+	          		<div v-if="user.role === 'Admin'">
+	          		<a class="dropdown-item btn" v-on:click="allReservations">Rezervacije</a>
+	          		<div class="dropdown-divider"></div>
+	          		</div>
 	          		<a class="dropdown-item btn" v-on:click="logout">Odjavi se</a>
 	        	</div>
 	            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" v-else>
@@ -130,6 +134,7 @@
 	<script src="js/reservation-item.js"></script>
 	<script src="js/apartment-search.js"></script>
 	<script src="js/all-apartments.js"></script>
+	<script src="js/all-reservations.js"></script>
 	<script src="js/booking-form.js"></script>
 	<script src="js/simple-search.js"></script>
 	<script src="js/app.js"></script>

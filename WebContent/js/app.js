@@ -4,6 +4,7 @@ const ApartmentAdd = { template: '<apartment-add></apartment-add>' }
 const ApartmentControl = { template: '<apartment-control></apartment-control>' }
 const Index = { template: '<index></index>' }
 const AllApartments = { template: '<all-apartments></all-apartments>' }
+const AllReservations = { template: '<all-reservations></all-reservations>' }
 const UsersView = { template: '<users-view></users-view>' }
 const HostRegistration = { template: '<host-registration></host-registration>' }
 const HostApartments = { template: '<host-apartments></host-apartments>' }
@@ -156,6 +157,18 @@ const router = new VueRouter({
 						else next();
 					})
 			} 
+		},
+		{
+			path: '/all-reservations',
+			component: AllReservations,
+			beforeEnter: (to, from, next) => {
+				axios
+					.get('rest/currentUser')
+					.then(response => {
+						if (response.data.role != 'Admin') next({ path: '/' });
+						else next();
+					})
+			} 
 		}
 	  ]
 });
@@ -215,6 +228,9 @@ var app = new Vue({
 		},
 		hostReservations: function () {
 			router.push('/host-reservations');
+		},
+		allReservations: function () {
+			router.push('/all-reservations');
 		}
 	}
 })
