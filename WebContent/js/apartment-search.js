@@ -8,11 +8,12 @@ Vue.component('apartment-search',{
 			guests:this.$route.query.guests,
 			rooms:this.$route.query.rooms,
 			min:0,
-			max:100,
+			max:10000,
 			amenities:[],
 			checkedAmanities:[],
 			keyI:0,
-			map:null
+			available:true
+			
 			
 		}
 	},
@@ -28,15 +29,7 @@ Vue.component('apartment-search',{
 		.get('rest/amenities')
 		.then(response => {
 		this.amenities = response.data})
-		let map=new Map()
-		this.amenities.forEach(a=>{
-			alert(a.id)
-			map[a.id]=a
-		})
-		this.map=map
 		
-		
-			
 		
 	},
 	computed: {
@@ -58,6 +51,7 @@ Vue.component('apartment-search',{
 	},
     filteredApartments() {
       return this.apartmentList.filter(apartment => {
+		this.checkAvailability(apartment)
 		var appAmenities=[];
 		apartment.amenityIds.forEach(a=>{
 			appAmenities.push(a);
@@ -68,7 +62,7 @@ Vue.component('apartment-search',{
 			if(!appAmenities.includes(a))
 			hasAmenities=false;
 		})
-       if(apartment.price<=this.max && apartment.price>=this.min && hasAmenities && !apartment.deleted && apartment.status=='Active')
+       if(apartment.price<=this.max && apartment.price>=this.min && hasAmenities && !apartment.deleted && apartment.status=='Active' && this.available )
 		return apartment;
       })
 
@@ -98,11 +92,34 @@ Vue.component('apartment-search',{
 				return b.price-a.price
 			})
 			this.keyI+=1;
-			alert(this.map[1])
+		
 			
-		}
+		},
+		
+		checkAvailability: function (apartment) {
+			var id=apartment.id
+			if(this.startDate!='null' && this.endDate!='null'){
+				var date=new Date(this.startDate)
+				var end=new Date(this.endDate)
+				var diffTime = Math.abs(date - end);
+				var nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+				axios
+				.post('rest/reservations/available', {
+					apartment: id,
+					startDate:date,
+					nightsNumber: nights
+				})
+				.then(response => {
+					if (response.data == true) {
+						this.available = true;
+					} else {
+						this.available = false;
+					}
+				})
+				
+			}
 	},
-	
+	},
 	template:
 	`
 	<div class="containter">

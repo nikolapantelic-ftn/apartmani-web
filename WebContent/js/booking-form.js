@@ -10,7 +10,7 @@ Vue.component("booking-form",{
 	},
 	methods:{
 		searchApartments:function(){
-			window.location.href = '/apartmani-web/#/search?location='+this.location+'&rooms='+this.rooms+'&guests='+this.guests+'&sDate='+this.startDate+'&eDate'+this.endDate;
+			window.location.href = '/apartmani-web/#/search?location='+this.location+'&rooms='+this.rooms+'&guests='+this.guests+'&sDate='+this.startDate+'&eDate='+this.endDate;
 		}
 	},
 	template:
