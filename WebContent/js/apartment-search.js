@@ -62,7 +62,13 @@ Vue.component('apartment-search',{
 			if(!appAmenities.includes(a))
 			hasAmenities=false;
 		})
-       if(apartment.price<=this.max && apartment.price>=this.min && hasAmenities && !apartment.deleted && apartment.status=='Active' && this.available )
+			var location=false
+			if(this.location=='')
+				location=true
+			if(this.location.toLowerCase()==apartment.location.address.place.toLowerCase())
+				location=true
+		
+       if(apartment.price<=this.max && apartment.price>=this.min && hasAmenities && !apartment.deleted && apartment.status=='Active' && this.available &&location)
 		return apartment;
       })
 
