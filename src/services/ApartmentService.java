@@ -52,7 +52,7 @@ public class ApartmentService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Apartment> getAll() {
 		ApartmentRepository apartmentRepository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");
-		return apartmentRepository.getAll().values();
+		return apartmentRepository.getActive();
 	}
 	
 	@POST
@@ -76,11 +76,7 @@ public class ApartmentService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Apartment find(@PathParam("id") long id) {
 		ApartmentRepository apartmentRepository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");
-		Apartment apartment = apartmentRepository.getAll().get(id);
-		if (!apartment.isDeleted()) {
-			return apartment;
-		}
-		return null;
+		return apartmentRepository.get(id);
 	}
 	
 	@DELETE
@@ -102,7 +98,7 @@ public class ApartmentService {
 	public List<Apartment> findByParams(@PathParam("location") String location,@PathParam("name") String name) {
 		ApartmentRepository apartmentRepository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");
 		List<Apartment> ret=new ArrayList<Apartment>();
-		for (Apartment a : apartmentRepository.getAll().values()) {
+		for (Apartment a : apartmentRepository.getActive()) {
 			if(a.getName().equals(location))
 			ret.add(a);
 		}

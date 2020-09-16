@@ -55,12 +55,7 @@ public class ReservationService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Reservation> getAll() {
 		ReservationRepository repository = (ReservationRepository) ctx.getAttribute("reservationRepository");
-		List<Reservation> reservations = new ArrayList<Reservation>();
-		for (Reservation r : repository.getAll().values()) {
-			if (!r.isDeleted())
-				reservations.add(r);
-		}
-		return reservations;
+		return repository.getActive();
 	}
 
 	@Path("/apartment/{id}")
@@ -69,7 +64,7 @@ public class ReservationService {
 	public Collection<Reservation> getApartmentReservations(@PathParam("id") long id) {
 		ArrayList<Reservation> apartmentReservations = new ArrayList<Reservation>();
 		for (Reservation r : getAll()) {
-			if (r.getApartment() == id && !r.isDeleted()) {
+			if (r.getApartment() == id) {
 				apartmentReservations.add(r);
 			}
 		}
@@ -131,7 +126,7 @@ public class ReservationService {
 	public Boolean isReservationAvailable(Reservation reservation) {
 		List<Date> rentDates = calculateRentDates(reservation.getStartDate(), reservation.getNightsNumber());
 		ApartmentRepository repository = (ApartmentRepository) ctx.getAttribute("apartmentRepository");
-		Apartment apartment = repository.getAll().get(reservation.getApartment());
+		Apartment apartment = repository.get(reservation.getApartment());
 
 		if (!rentDatesAvailable(rentDates, apartment.getAvailableDates())) {
 			return false;
@@ -174,7 +169,7 @@ public class ReservationService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response cancelReservation(@PathParam("id") long id, @Context HttpServletRequest request) {
 		ReservationRepository repository = (ReservationRepository) ctx.getAttribute("reservationRepository");
-		Reservation r = repository.getAll().get(id);
+		Reservation r = repository.get(id);
 		User user = (User)request.getSession().getAttribute("user");
 		if(!user.getId().equals(r.getGuest())) {
 			return Response.status(403).build();
@@ -196,7 +191,7 @@ public class ReservationService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Date> getApartmentFreeDates(@PathParam("id") long id) {
 		ApartmentRepository repository = (ApartmentRepository) ctx.getAttribute("apartmentRepository");
-		Apartment apartment = repository.getAll().get(id);
+		Apartment apartment = repository.get(id);
 		List<Date> freeDates = new ArrayList<Date>();
 		for (Date date : apartment.getAvailableDates()) {
 			Boolean dateAvailable = true;

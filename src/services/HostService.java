@@ -42,7 +42,7 @@ public class HostService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Host> getAll() {
 		HostRepository hostRepository = (HostRepository)ctx.getAttribute("hostRepository");
-		return hostRepository.getAll().values();
+		return hostRepository.getActive();
 	}
 	
 	@POST
@@ -67,7 +67,7 @@ public class HostService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Host find(@PathParam("id") String username) {
 		HostRepository hostRepository = (HostRepository)ctx.getAttribute("hostRepository");
-		return hostRepository.getAll().get(username);
+		return hostRepository.get(username);
 	}
 	
 	

@@ -50,13 +50,13 @@ public class LoginService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(User user, @Context HttpServletRequest request) {
 		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
-		User loggedUser = guestRepository.getAll().get(user.getUsername());
+		User loggedUser = guestRepository.get(user.getUsername());
 		if (loggedUser == null) {
 			HostRepository hostRepository=(HostRepository)ctx.getAttribute("hostRepository");
-			loggedUser=hostRepository.getAll().get(user.getUsername());
+			loggedUser=hostRepository.get(user.getUsername());
 			if(loggedUser==null) {
 				AdminRepository adminRepository=(AdminRepository)ctx.getAttribute("adminRepository");
-				loggedUser=adminRepository.getAll().get(user.getUsername());
+				loggedUser=adminRepository.get(user.getUsername());
 				if(loggedUser==null) {
 					return Response.status(400).entity("Invalid username and/or password").build();
 				}

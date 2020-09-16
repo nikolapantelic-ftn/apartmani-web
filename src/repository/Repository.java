@@ -18,6 +18,8 @@ interface Repository<T, ID> {
 	public Map<ID, T> getAll();
 	
 	public Collection<T> getActive();
+	
+	public T get(ID id);
 
 	public T delete(ID id) throws JsonIOException, IOException;
 	

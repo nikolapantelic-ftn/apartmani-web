@@ -53,15 +53,15 @@ public class RegistrationService {
 		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
 		HostRepository hostRepository = (HostRepository)ctx.getAttribute("hostRepository");
 		AdminRepository adminRepository = (AdminRepository)ctx.getAttribute("adminRepository");
-		User user = guestRepository.getAll().get(guest.getUsername());
+		User user = guestRepository.get(guest.getUsername());
 		if (user != null) {
 			return Response.status(400).entity("User already exists!").build();
 		}
-		user = hostRepository.getAll().get(guest.getUsername());
+		user = hostRepository.get(guest.getUsername());
 		if (user != null) {
 			return Response.status(400).entity("User already exists!").build();
 		}
-		user = adminRepository.getAll().get(guest.getUsername());
+		user = adminRepository.get(guest.getUsername());
 		if (user != null) {
 			return Response.status(400).entity("User already exists!").build();
 		}
@@ -86,15 +86,15 @@ public class RegistrationService {
 		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
 		HostRepository hostRepository = (HostRepository)ctx.getAttribute("hostRepository");
 		AdminRepository adminRepository = (AdminRepository)ctx.getAttribute("adminRepository");
-		User user = guestRepository.getAll().get(host.getUsername());
+		User user = guestRepository.get(host.getUsername());
 		if (user != null) {
 			return Response.status(400).entity("User already exists!").build();
 		}
-		user = hostRepository.getAll().get(host.getUsername());
+		user = hostRepository.get(host.getUsername());
 		if (user != null) {
 			return Response.status(400).entity("User already exists!").build();
 		}
-		user = adminRepository.getAll().get(host.getUsername());
+		user = adminRepository.get(host.getUsername());
 		if (user != null) {
 			return Response.status(400).entity("User already exists!").build();
 		}

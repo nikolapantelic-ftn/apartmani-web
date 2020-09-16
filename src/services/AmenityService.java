@@ -45,7 +45,7 @@ public class AmenityService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Amenity> getAll() {
 		AmenitiesRepository amenitiesRepository = (AmenitiesRepository)ctx.getAttribute("amenitiesRepository");
-		return amenitiesRepository.getAll().values();
+		return amenitiesRepository.getActive();
 	}
 	
 	
@@ -79,7 +79,7 @@ public class AmenityService {
 	public Amenity delete(@PathParam("id") long id) {
 		AmenitiesRepository amenitiesRepository = (AmenitiesRepository)ctx.getAttribute("amenitiesRepository");
 		try {
-			Amenity tmp=amenitiesRepository.getAll().get(id);
+			Amenity tmp=amenitiesRepository.get(id);
 			amenitiesRepository.delete(id);
 			return tmp;
 		} catch (JsonIOException e) {

@@ -44,7 +44,7 @@ public class CommentService {
 	public Collection<ApartmentComment> getAll() {
 		ApartmentCommentRepository commentRepository = (ApartmentCommentRepository) ctx
 				.getAttribute("commentRepository");
-		return commentRepository.getAll().values();
+		return commentRepository.getActive();
 	}
 
 	@GET
@@ -54,7 +54,7 @@ public class CommentService {
 		ApartmentCommentRepository commentRepository = (ApartmentCommentRepository) ctx
 				.getAttribute("commentRepository");
 		Collection<ApartmentComment> apartmentComments = new ArrayList<ApartmentComment>();
-		for (ApartmentComment comment : commentRepository.getAll().values()) {
+		for (ApartmentComment comment : commentRepository.getActive()) {
 			if (comment.getApartmentId() == id) {
 				apartmentComments.add(comment);
 			}

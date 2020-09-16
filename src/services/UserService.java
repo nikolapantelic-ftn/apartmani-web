@@ -60,9 +60,9 @@ public class UserService {
 		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
 		AdminRepository adminRepository=(AdminRepository) ctx.getAttribute("adminRepository");
 		HostRepository hostRepository=(HostRepository) ctx.getAttribute("hostRepository");
-		ret.addAll(guestRepository.getAll().values());
-		ret.addAll(adminRepository.getAll().values());
-		ret.addAll(hostRepository.getAll().values());
+		ret.addAll(guestRepository.getActive());
+		ret.addAll(adminRepository.getActive());
+		ret.addAll(hostRepository.getActive());
 		return ret;
 	}
 	@POST

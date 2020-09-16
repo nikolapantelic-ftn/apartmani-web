@@ -82,5 +82,13 @@ abstract class AbstractRepository<T extends Identifiable<ID> & Deletable, ID> im
 		}
 		return ret;
 	}
+	
+	@Override
+	public T get(ID id) {
+		T entity = entities.get(id);
+		if (entity == null) return null;
+		if (entity.isDeleted()) return null;
+		return entity;
+	}
 
 }
