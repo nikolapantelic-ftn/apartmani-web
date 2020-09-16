@@ -24,18 +24,139 @@ const router = new VueRouter({
 	    { path: '/', component: Index },
 		{ path: '/search', component: ApartmentSearch },
 		{ path: '/apartment/:id', component: ApartmentDetails },
-		{ path: '/users', component: UsersView },
-		{ path: '/addHost',component: HostRegistration },
-		{ path: '/amenities',component: Amenities },
-		{ path: '/apartment-add', component: ApartmentAdd },
-		{ path: '/apartment-control/:id', component: ApartmentControl },
-		{ path: '/reservation-list', component: ReservationList},
-		{ path: '/profile', component: ProfileView },
+		{ 
+			path: '/users', 
+			component: UsersView,
+			beforeEnter: (to, from, next) => {
+				axios
+					.get('rest/currentUser')
+					.then(response => {
+						if (response.data.role != 'Admin') next({ path: '/' });
+						else next();
+					})
+			} 
+		},
+		{
+			path: '/addHost',
+			component: HostRegistration,
+			beforeEnter: (to, from, next) => {
+				axios
+					.get('rest/currentUser')
+					.then(response => {
+						if (response.data.role != 'Admin') next({ path: '/' });
+						else next();
+					})
+			} 
+		},
+		{
+			path: '/amenities',
+			component: Amenities,
+			beforeEnter: (to, from, next) => {
+				axios
+					.get('rest/currentUser')
+					.then(response => {
+						if (response.data.role != 'Admin') next({ path: '/' });
+						else next();
+					})
+			} 	
+		},
+		{
+			path: '/apartment-add',
+			component: ApartmentAdd,
+			beforeEnter: (to, from, next) => {
+				axios
+					.get('rest/currentUser')
+					.then(response => {
+						if (response.data.role != 'Host') next({ path: '/' });
+						else next();
+					})
+			} 
+		},
+		{
+			path: '/apartment-control/:id',
+			component: ApartmentControl,
+			beforeEnter: (to, from, next) => {
+				axios
+					.get('rest/currentUser')
+					.then(response => {
+						if (response.data.role != 'Admin' && response.data.role != 'Host') next({ path: '/' });
+						else next();
+					})
+			} 
+		},
+		{ 
+			path: '/reservation-list',
+			component: ReservationList,
+			beforeEnter: (to, from, next) => {
+				axios
+					.get('rest/currentUser')
+					.then(response => {
+						if (response.data.role != 'Guest') next({ path: '/' });
+						else next();
+					})
+			} 
+		},
+		{
+			path: '/profile',
+			component: ProfileView,
+			beforeEnter: (to, from, next) => {
+				axios
+					.get('rest/currentUser')
+					.then(response => {
+						if (!response.data.role) next({ path: '/' });
+						else next();
+					})
+			} 
+		},
 		{ path: '/simple-search/:s', component: SimpleSearch },
-		{ path: '/host-apartments', component: HostApartments },
-		{ path: '/host-reservations', component: HostReservationList },
-		{ path: '/host-guests', component: UsersViewHost },
-		{ path: '/all-apartments', component: AllApartments }
+		{
+			path: '/host-apartments',
+			component: HostApartments,
+			beforeEnter: (to, from, next) => {
+				axios
+					.get('rest/currentUser')
+					.then(response => {
+						if (response.data.role != 'Host') next({ path: '/' });
+						else next();
+					})
+			} 
+		},
+		{
+			path: '/host-reservations',
+			component: HostReservationList,
+			beforeEnter: (to, from, next) => {
+				axios
+					.get('rest/currentUser')
+					.then(response => {
+						if (response.data.role != 'Host') next({ path: '/' });
+						else next();
+					})
+			} 
+		},
+		{
+			path: '/host-guests',
+			component: UsersViewHost,
+			beforeEnter: (to, from, next) => {
+				axios
+					.get('rest/currentUser')
+					.then(response => {
+						if (response.data.role != 'Host') next({ path: '/' });
+						else next();
+					})
+			} 
+		},
+		{
+			path: '/all-apartments',
+			component: AllApartments,
+			beforeEnter: (to, from, next) => {
+				axios
+					.get('rest/currentUser')
+					.then(response => {
+						if (response.data.role != 'Admin') next({ path: '/' });
+						else next();
+					})
+			} 
+		}
 	  ]
 });
 router.replace('/');
