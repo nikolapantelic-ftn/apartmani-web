@@ -8,7 +8,8 @@ Vue.component('apartment-control', {
 			selectedImage: '',
 			imageErrors: [],
 			calendar : null,
-			calendarRendered: false
+			calendarRendered: false,
+			hasErrors: false
 		};
 	},
 	mounted: function () {
@@ -39,6 +40,9 @@ Vue.component('apartment-control', {
 	},
 	methods: {
 		submit() {
+			this.hasErrors = false;
+			this.checkForm();
+			if(this.hasErrors) return;
 			axios
 				.put('rest/apartments', this.apartment)
 				.then(response => {
@@ -112,6 +116,20 @@ Vue.component('apartment-control', {
 				.catch(function () {
 					alert("Slika nije poslata.");
 				});
+		},
+		checkForm() {
+			if (!this.apartment.name || !this.apartment.type 
+				|| !parseInt(this.apartment.numberOfRooms) 
+				|| !parseInt(this.apartment.numberOfGuests)
+				|| !parseInt(this.apartment.price)
+				|| !this.apartment.location.address.place 
+				|| !this.apartment.location.address.streetAndNumber 
+				|| !this.apartment.location.address.country 
+				|| !this.apartment.location.address.zipCode
+				|| !parseFloat(this.apartment.location.longitude)
+				|| !parseFloat(this.apartment.location.latitude)) {
+					this.hasErrors = true;
+				}
 		}
 	},
 	template:
@@ -135,18 +153,18 @@ Vue.component('apartment-control', {
 					<button class="btn btn-info my-2" @click="editMode = true">Izmeni</button>
 					<div>
 						<div class="form-group">
-							<input id="name" type="text" class="form-control" v-model="apartment.name" :disabled="editMode == false">
+							<input id="name" type="text" class="form-control" v-bind:class="{ 'is-invalid': hasErrors && !apartment.name }" v-model="apartment.name" :disabled="editMode == false">
 							<label for="name">Naziv:</label>
 						</div>
 						<div class="form-group">
 				    		<label for="type">Tip apartmana:</label>
 				    		<div id="type">
 				    			<div class="form-check form-check-inline">
-						    		<input class="form-check-input" v-model='apartment.type' type="radio" id="full-apartment" value="fullApartment" :disabled="editMode == false">
+						    		<input class="form-check-input" v-bind:class="{ 'is-invalid': hasErrors && !apartment.type }" v-model='apartment.type' type="radio" id="full-apartment" value="fullApartment" :disabled="editMode == false">
 					                <label class="form-check-label" for="full-apartment">Ceo apartman</label>
 				                </div>
 				                <div class="form-check form-check-inline">
-					                <input class="form-check-input" v-model='apartment.type' type="radio" id="room" value="room" :disabled="editMode == false">
+					                <input class="form-check-input" v-bind:class="{ 'is-invalid': hasErrors && !apartment.type }" v-model='apartment.type' type="radio" id="room" value="room" :disabled="editMode == false">
 					                <label class="form-check-label" for="room">Soba</label>
 				                </div>
 			                </div> 	
@@ -154,7 +172,7 @@ Vue.component('apartment-control', {
 						<div class="form-group">
 							<label for="price">Cena nocenja:</label>
 				    		<div class="input-group">
-				    			<input id="price" type="text" class="form-control col-md-2" v-model="apartment.price" :disabled="editMode == false">
+				    			<input id="price" type="text" class="form-control col-md-2" v-bind:class="{ 'is-invalid': hasErrors && !parseInt(apartment.price) }" v-model="apartment.price" :disabled="editMode == false">
 				    			<div class="input-group-append">
 				    				<div class="input-group-text">din.</div>
 				    			</div>
@@ -162,35 +180,83 @@ Vue.component('apartment-control', {
 				    	</div>
 						<div class="form-group">
 							<label for="number-of-rooms">Broj soba:</label>
-							<input id="number-of-rooms" type="text" class="form-control col-md-2" v-model="apartment.numberOfRooms" :disabled="editMode == false">
+							<input id="number-of-rooms" type="text" class="form-control col-md-2" v-bind:class="{ 'is-invalid': hasErrors && !parseInt(apartment.numberOfRooms) }" v-model="apartment.numberOfRooms" :disabled="editMode == false">
 						</div>
 						<div class="form-group">
 							<label for="number-of-guests">Broj gostiju</label>
-							<input id="number-of-guests" type="text" class="form-control col-md-2" v-model="apartment.numberOfGuests" :disabled="editMode == false">
+							<input id="number-of-guests" type="text" class="form-control col-md-2" v-bind:class="{ 'is-invalid': hasErrors && !parseInt(apartment.numberOfGuests) }" v-model="apartment.numberOfGuests" :disabled="editMode == false">
 						</div>
 						<div class="form-row">
 				    		<div class="col-sm-3">
 								<label for="check-in-time">Vreme prijave</label>
-				    			<select class="custom-select" id="check-in-time" v-model="apartment.checkInTime" :disabled="editMode == false">
+				    			<select class="custom-select" v-bind:class="{ 'is-invalid': hasErrors && !apartment.checkInTime }" id="check-in-time" v-model="apartment.checkInTime" :disabled="editMode == false">
+									<option value="00:00">00:00</option>
+									<option value="01:00">01:00</option>
+									<option value="02:00">02:00</option>
+									<option value="03:00">03:00</option>
+									<option value="04:00">04:00</option>
+									<option value="05:00">05:00</option>
+									<option value="06:00">06:00</option>
+									<option value="07:00">07:00</option>
+									<option value="08:00">08:00</option>
+									<option value="09:00">09:00</option>
+									<option value="10:00">10:00</option>
+									<option value="11:00">11:00</option>
+									<option value="12:00">12:00</option>
+									<option value="13:00">13:00</option>
 									<option value="14:00">14:00</option>
+									<option value="15:00">15:00</option>
+									<option value="16:00">16:00</option>
+									<option value="17:00">17:00</option>
+									<option value="18:00">18:00</option>
+									<option value="19:00">19:00</option>
+									<option value="20:00">20:00</option>
+									<option value="21:00">21:00</option>
+									<option value="22:00">22:00</option>
+									<option value="23:00">23:00</option>
 				    			</select>
 				    		</div>
 				    		<div class="col-sm-3">
 								<label for="check-out-time">Vreme odjave</label>
-				    			<select class="custom-select" id="check-out-time" v-model="apartment.checkOutTime" :disabled="editMode == false">
+				    			<select class="custom-select" id="check-out-time" v-bind:class="{ 'is-invalid': hasErrors && !apartment.checkOutTime }" v-model="apartment.checkOutTime" :disabled="editMode == false">
+									<option value="01:00">01:00</option>
+									<option value="02:00">02:00</option>
+									<option value="03:00">03:00</option>
+									<option value="04:00">04:00</option>
+									<option value="05:00">05:00</option>
+									<option value="06:00">06:00</option>
+									<option value="07:00">07:00</option>
+									<option value="08:00">08:00</option>
+									<option value="09:00">09:00</option>
 									<option value="10:00">10:00</option>
+									<option value="11:00">11:00</option>
+									<option value="12:00">12:00</option>
+									<option value="13:00">13:00</option>
+									<option value="14:00">14:00</option>
+									<option value="15:00">15:00</option>
+									<option value="16:00">16:00</option>
+									<option value="17:00">17:00</option>
+									<option value="18:00">18:00</option>
+									<option value="19:00">19:00</option>
+									<option value="20:00">20:00</option>
+									<option value="21:00">21:00</option>
+									<option value="22:00">22:00</option>
+									<option value="23:00">23:00</option>
 				    			</select>
 				    		</div>
 				    	</div>
 						<div class="form-row">
 							<div class="col-sm-3 my-3">
-								<input type="text" class="form-control" v-model="apartment.location.address.zipCode" placeholder="Postanski broj" :disabled="editMode == false">
+								<input type="text" class="form-control" v-bind:class="{ 'is-invalid': hasErrors && !apartment.location.address.country }" v-model="apartment.location.address.country" placeholder="Drzava" :disabled="editMode == false">
 							</div>
 							<div class="col-sm-3 my-3">
-								<input type="text" class="form-control" v-model="apartment.location.address.place" placeholder="Mesto" :disabled="editMode == false">
+								<input type="text" class="form-control" v-bind:class="{ 'is-invalid': hasErrors && !apartment.location.address.zipCode }" v-model="apartment.location.address.zipCode" placeholder="Postanski broj" :disabled="editMode == false">
+							</div>
+							<div class="col-sm-3 my-3">
+								<input type="text" class="form-control" v-bind:class="{ 'is-invalid': hasErrors && !apartment.location.address.place }" v-model="apartment.location.address.place" placeholder="Mesto" :disabled="editMode == false">
 							</div>
 							<div class="col-sm-5 my-3">
-								<input type="text" class="form-control" v-model="apartment.location.address.streetAndNumber" placeholder="Ulica i broj" :disabled="editMode == false">
+								<input type="text" class="form-control" v-bind:class="{ 'is-invalid': hasErrors && !apartment.location.address.streetAndNumber }" v-model="apartment.location.address.streetAndNumber" placeholder="Ulica i broj" :disabled="editMode == false">
 							</div>
 						</div>
 						<div class="form-group">
@@ -205,11 +271,11 @@ Vue.component('apartment-control', {
 						<div class="form-row">
 							<div class="col-sm-3 my-1">
 								<label for="longitude">Geografska duzina:</label>
-								<input id="longutude" type="text" class="form-control" v-model="apartment.location.longitude" placeholder="Geografska duzina" :disabled="editMode == false">
+								<input id="longutude" type="text" class="form-control" v-bind:class="{ 'is-invalid': hasErrors && !parseFloat(apartment.location.longitude) }" v-model="apartment.location.longitude" placeholder="Geografska duzina" :disabled="editMode == false">
 							</div>
 							<div class="col-sm-3 my-1">
 								<label for="latitude">Geografska sirina:</label>
-								<input id="latitude" type="text" class="form-control" v-model="apartment.location.latitude" placeholder="Geografska sirina" :disabled="editMode == false">
+								<input id="latitude" type="text" class="form-control" v-bind:class="{ 'is-invalid': hasErrors && !parseFloat(apartment.location.latitude) }" v-model="apartment.location.latitude" placeholder="Geografska sirina" :disabled="editMode == false">
 							</div>
 						</div>
 						<div>
@@ -233,6 +299,7 @@ Vue.component('apartment-control', {
 					</div>
 					<div class="my-2">
 						<button class="btn btn-success" v-if="editMode" @click="submit">Sacuvaj izmene</button>
+						<div v-if="hasErrors" class="text-danger">Sva polja moraju biti popunjena.</div>
 						<button class="btn btn-secondary" v-if="editMode" @click="cancel">Otkazi</button>
 					</div>
 				</div>
