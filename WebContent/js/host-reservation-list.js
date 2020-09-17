@@ -65,33 +65,61 @@ Vue.component('host-reservation-list', {
 	},
 	template:
 		`
+			<div>
 			<div class="container">
-			<div class="col mb-3">
-				<div class="search-wrapper">
-	  				<input type="text" v-model="search" placeholder="Pretraga po korisnickom imenu"/>
+			<div class="row justify-content-around align-items-center d-flex">
+				<div class="col-3 align-items-center">
+					<div class="search-wrapper">
+	  					<input type="text" v-model="search" placeholder="Pretraga po korisnickom imenu"/>
+					</div>
+				</div>
+				<div class="col-3 align-items-center">
+					<div class="row">
+					<button type="button pr-2" class="btn btn-primary  " v-on:click="sortPriceLH" > Cena rastuca </button>
+					</div>
+					<div class="row mt-2">
+					<button type="button" class="btn btn-primary " v-on:click="sortPriceHL" > Cena opadajuca </button>
+					</div>
+				</div>	
+				<div class="col-3 align-items-center">
+					<div class="row my-3">
+						<label class="custom-control" >
+					 		<input class="custom-control-input" type="checkbox" id="accepted" value="accepted" v-model="checkedNames">
+							<label class="custom-control-label" for="accepted">Prihvacena</label>
+						</label>
+					</div>
+					<div class="row my-3">
+						<label class="custom-control" >
+							<input class="custom-control-input" type="checkbox" id="created" value="created" v-model="checkedNames">
+							<label class="custom-control-label" for="created">Kreirana</label>
+						</label>
+					</div>	
+					<div class="row my-3">
+						<label  class="custom-control" >
+							<input class="custom-control-input"  type="checkbox" id="rejected" value="rejected" v-model="checkedNames">
+							<label class="custom-control-label" for="rejected">Odbijena</label>
+						</label>
+					</div>
+					</div>
+					<div class="col-3 align-items-center">
+					<div class="row my-3">
+						<label class="custom-control" >
+							<input class="custom-control-input" type="checkbox" id="canceled" value="canceled" v-model="checkedNames">
+							<label class="custom-control-label" for="canceled">Otkazana</label>
+						</label>
+					</div>
+					<div class="row my-3">
+						<label class="custom-control" >
+							<input class="custom-control-input" type="checkbox" id="finished" value="finished" v-model="checkedNames">
+							<label class="custom-control-label" for="finished">Zavrsena</label>
+						</label>
+					</div>
+		
 				</div>
 			</div>
-				<div class="flex-row">
-			<button type="button pr-2" class="btn btn-primary  " v-on:click="sortPriceLH" > Cena rastuca </button>
-			<button type="button" class="btn btn-primary " v-on:click="sortPriceHL" > Cena opadajuca </button>
-			
-			<div class="row my-3">
-			<input type="checkbox" id="accepted" value="accepted" v-model="checkedNames">
-			<label for="accepted">Prihvacena</label>
-			<input type="checkbox" id="created" value="created" v-model="checkedNames">
-			<label for="created">Kreirana</label>
-			<input type="checkbox" id="rejected" value="rejected" v-model="checkedNames">
-			<label for="rejected">Odbijena</label>
-			<input type="checkbox" id="canceled" value="canceled" v-model="checkedNames">
-			<label for="canceled">Otkazana</label>
-			<input type="checkbox" id="finished" value="finished" v-model="checkedNames">
-			<label for="finished">Zavrsena</label>
-			</div>
-			
-
-			
 			</div>
 				<reservation-item v-on:update="update" v-for="reservation in filteredReservations"  v-bind:key="reservation.id" :reservation="reservation" :host="true"></reservation-item>
+			</div>
 			</div>
 		`
 })
