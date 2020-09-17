@@ -51,6 +51,7 @@ public class LoginService {
 	public Response login(User user, @Context HttpServletRequest request) {
 		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
 		User loggedUser = guestRepository.get(user.getUsername());
+		
 		if (loggedUser == null) {
 			HostRepository hostRepository=(HostRepository)ctx.getAttribute("hostRepository");
 			loggedUser=hostRepository.get(user.getUsername());
@@ -64,6 +65,9 @@ public class LoginService {
 		}
 		if(!user.getPassword().equals(loggedUser.getPassword())){
 			return Response.status(400).entity("Invalid username and/or password").build();
+		}
+		if(loggedUser.isBlocked()==true) {
+			return Response.status(403).entity("Blocked account").build();
 		}
 			
 		

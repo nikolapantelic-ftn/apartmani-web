@@ -55,6 +55,9 @@ var app = new Vue({
 					if(e.response.status==400){
 						this.errors.push("Pogresno korisnicko ime/lozinka!");
 					}
+					if(e.response.status==403){
+						this.errors.push("Vas nalog je blokiran,obratite se adminu!");
+					}
 				})
 			
 		},

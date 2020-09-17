@@ -27,6 +27,7 @@ public class GuestRepository extends AbstractRepository<Guest, String> implement
 	public Guest block(String username) throws JsonIOException, IOException {
 		Guest g=get(username);
 		g.setBlocked(true);
+		save(g);
 		return g;
 	}
 

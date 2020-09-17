@@ -37,6 +37,59 @@ Vue.component('users-view',{
       })
     }
 	},
+	methods:{
+		update: function() {
+			axios
+			.get('rest/users')
+			.then(response => (this.users = response.data))
+		},
+		block(user){
+			if(user.role=='Host'){
+			axios
+			.get('rest/hosts/block/'+user.username)
+			.then(response=>{
+				alert("Uspesno blokiran")
+			})
+			.catch(e=>{
+				alert("Greska")
+			})
+			}else{
+				axios
+			.get('rest/guests/block/'+user.username)
+			.then(response=>{
+				alert("Uspesno blokiran")
+			})
+			.catch(e=>{
+				alert("Greska")
+			})
+			}
+			this.update()
+		},
+		unblock(user){
+			if(user.role=='Host'){
+			axios
+			.get('rest/hosts/unblock/'+user.username)
+			.then(response=>{
+				alert("Uspesno odblokiran")
+			})
+			.catch(e=>{
+				alert("Greska")
+			})
+			}else{
+				axios
+			.get('rest/guests/unblock/'+user.username)
+			.then(response=>{
+				alert("Uspesno odblokiran")
+			})
+			.catch(e=>{
+				alert("Greska")
+			})
+			}
+			this.update()
+		},
+		
+		
+	},
 	template:
   `
   
@@ -90,7 +143,7 @@ Vue.component('users-view',{
 	</div>
 	<div class="row">
 	
-      <div class="col-lg-3 col-md-4 col-sm-6" v-for="user in filteredUsers">
+      <div class="col-lg-3 col-md-4 col-sm-6" v-on:update="update" v-for="user in filteredUsers" v-bind:key="user.username" >
         <div class="panel panel-default userlist">
         
           <div class="panel-body text-center">
@@ -105,8 +158,9 @@ Vue.component('users-view',{
             E-mail: 
             </p>
           </div>
-          <div class="panel-footer"> <a href="" class="btn btn-link">Deaktiviraj nalog</a> <a href="" class="btn btn-link pull-right favorite"><i class="fa fa-heart"></i></a> </div>
-        </div>
+          <div class="panel-footer" v-if="!user.blocked && user.role!='Admin'"> <a v-on:click="block(user)" class="btn btn-link">Blokiraj nalog</a> <a href="" class="btn btn-link pull-right favorite"><i class="fa fa-heart"></i></a> </div>
+			<div class="panel-footer" v-if="user.blocked && user.role!='Admin'"> <a v-on:click="unblock(user)" class="btn btn-link">Aktiviraj nalog</a> <a href="" class="btn btn-link pull-right favorite"><i class="fa fa-heart"></i></a> </div>        
+</div>
       </div>
 	</div>
 	</div>
