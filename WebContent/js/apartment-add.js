@@ -59,7 +59,6 @@ Vue.component('apartment-add', {
 				this.country = this.convert(response.data.address.country);
 				this.zipCode = response.data.address.postcode;
 				this.streetAndNumber = response.data.address.road + ' ' + response.data.address.house_number;
-				console.log(response.data.address.city);
 			})
 		});
 	},
