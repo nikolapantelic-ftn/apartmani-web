@@ -6,6 +6,7 @@ const Index = { template: '<index></index>' }
 const AllApartments = { template: '<all-apartments></all-apartments>' }
 const AllReservations = { template: '<all-reservations></all-reservations>' }
 const UsersView = { template: '<users-view></users-view>' }
+const MapSearch = { template: '<map-search></map-search>' }
 const HostRegistration = { template: '<host-registration></host-registration>' }
 const HostApartments = { template: '<host-apartments></host-apartments>' }
 const Amenities = { template: '<amenities-list></amenities-list>' }
@@ -23,6 +24,7 @@ const router = new VueRouter({
 	    { path: '/', component: Index },
 		{ path: '/search', component: ApartmentSearch },
 		{ path: '/apartment/:id', component: ApartmentDetails },
+		{ path: '/map-search', component: MapSearch },
 		{ 
 			path: '/users', 
 			component: UsersView,
@@ -228,6 +230,9 @@ var app = new Vue({
 		},
 		allReservations: function () {
 			router.push('/all-reservations');
+		},
+		mapSearch: function () {
+			router.push('/map-search');
 		}
 	}
 })

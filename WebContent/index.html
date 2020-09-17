@@ -53,7 +53,11 @@
                 <li class="nav-item active">
                     <a class="nav-link btn" v-on:click="home">Pocetna strana <span class="sr-only">(current)</span></a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link btn" v-on:click="mapSearch">Mapa</a>
+                </li>
             </ul>
+                
             <div v-if="isLoggedIn">
             	<a v-if="user.role === 'Host'" class="nav-link" href="#" v-on:click="addApartment">Dodaj apartman</a>
             	<a v-if="user.role === 'Admin'" class="nav-link" href="#" v-on:click="showAllApartments">Prikazi sve apartmane</a>
@@ -112,6 +116,7 @@
     
 	</div>
 	<script src="js/host-reservation-list.js"></script>
+	<script src="js/map-search.js"></script>
 	<script src="js/comments.js"></script>
 	<script src="js/index.js"></script>
 	<script src="js/profile-view.js"></script>
