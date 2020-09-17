@@ -20,6 +20,7 @@ Vue.component('apartment-add', {
 			latitude: '',
 			image: '',
 			imageErrors: [],
+			hasErrors: false
 		}
 	},
 	mounted: function () {
@@ -50,7 +51,11 @@ Vue.component('apartment-add', {
 		      });
 	},
 	methods: {
-		submitApartment: function () {
+		submitApartment(e) {
+			e.preventDefault();
+			this.hasErrors = false;
+			this.checkForm();
+			if (this.hasErrors) return;
 			var data = {
 				id: '0',
 				name: this.name,
@@ -84,10 +89,12 @@ Vue.component('apartment-add', {
 			axios
 				.post('rest/apartments', data)
 				.then(response => {
-					alert(response.data);
+					alert('Apartman uspesno kreiran.');
+					router.push('/');
 				})
 				.catch(e => {
-					console.log(e.response.data)
+					alert('Greska pri kreiranju apartmana.')
+					console.log(e)
 				})
 		},
 		handleImageUpload() {
@@ -120,6 +127,20 @@ Vue.component('apartment-add', {
 				.catch(function () {
 					alert("Slika nije poslata.");
 				});
+		},
+		checkForm() {
+			if (!this.name || !this.type 
+				|| !this.numberOfRooms 
+				|| !this.numberOfGuests 
+				|| !this.price 
+				|| !this.place 
+				|| !this.streetAndNumber 
+				|| !this.country 
+				|| !this.zipCode
+				|| !this.longitude
+				|| !this.latitude) {
+					this.hasErrors = true;
+				}
 		}
 	},
 	template:
@@ -128,44 +149,44 @@ Vue.component('apartment-add', {
 				<h1>Dodavanje apartmana</h1>
 				<form>
 					<div class="form-group">
-						<input type="text" class="form-control" v-model="name" placeholder="Naziv">
+						<input type="text" class="form-control" v-bind:class="{ 'is-invalid': hasErrors && !name }" v-model="name" placeholder="Naziv">
 					</div>
 					<div class="form-group">
 			    		<label for="type">Tip apartmana:</label>
 			    		<div id="type">
 			    			<div class="form-check form-check-inline">
-					    		<input class="form-check-input" v-model='type' type="radio" id="full-apartment" value="fullApartment">
+					    		<input class="form-check-input" v-bind:class="{ 'is-invalid': hasErrors && !type }" v-model='type' type="radio" id="full-apartment" value="fullApartment">
 				                <label class="form-check-label" for="full-apartment">Ceo apartman</label>
 			                </div>
 			                <div class="form-check form-check-inline">
-				                <input class="form-check-input" v-model='type' type="radio" id="room" value="room">
+				                <input class="form-check-input" v-bind:class="{ 'is-invalid': hasErrors && !type }" v-model='type' type="radio" id="room" value="room">
 				                <label class="form-check-label" for="room">Soba</label>
 			                </div>
 		                </div> 	
 			    	</div>
 			    	<div class="form-group">
 			    		<div class="input-group">
-			    			<input type="text" class="form-control col-md-2" v-model="price" placeholder="Cena nocenja">
+			    			<input type="text" class="form-control col-md-2" v-bind:class="{ 'is-invalid': hasErrors && !price }" v-model="price" placeholder="Cena nocenja">
 			    			<div class="input-group-append">
 			    				<div class="input-group-text">din.</div>
 			    			</div>
 			    		</div>
 			    	</div>
 					<div class="form-group">
-						<input type="text" class="form-control col-md-2" v-model="numberOfRooms" placeholder="Broj soba">
+						<input type="number" class="form-control col-md-2" v-bind:class="{ 'is-invalid': hasErrors && !numberOfRooms }" v-model="numberOfRooms" placeholder="Broj soba">
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control col-md-2" v-model="numberOfGuests" placeholder="Broj gostiju">
+						<input type="number" class="form-control col-md-2" v-bind:class="{ 'is-invalid': hasErrors && !numberOfGuests }" v-model="numberOfGuests" placeholder="Broj gostiju">
 					</div>
 			    	<div class="form-row">
 			    		<div class="col-sm-3">
-			    			<select class="custom-select" id="check-in-time" v-model="checkInTime">
+			    			<select class="custom-select" v-bind:class="{ 'is-invalid': hasErrors && !checkInTime }" id="check-in-time" v-model="checkInTime">
 			    				<option selected disabled hidden>Vreme prijave</option>
 								<option value="14:00">14:00</option>
 			    			</select>
 			    		</div>
 			    		<div class="col-sm-3">
-			    			<select class="custom-select" id="check-out-time" v-model="checkOutTime">
+			    			<select class="custom-select" v-bind:class="{ 'is-invalid': hasErrors && !checkOutTime }" id="check-out-time" v-model="checkOutTime">
 			    				<option selected hidden disabled>Vreme odjave</option>
 								<option value="10:00">10:00</option>
 			    			</select>
@@ -173,18 +194,17 @@ Vue.component('apartment-add', {
 			    	</div>
 					<div class="form-row">
 						<div class="col-sm-3 my-3">
-							<input type="text" class="form-control" v-model="zipCode" placeholder="Postanski broj">
+							<input type="text" class="form-control" v-bind:class="{ 'is-invalid': hasErrors && !zipCode }" v-model="zipCode" placeholder="Postanski broj">
 						</div>
 						<div class="col-sm-3 my-3">
-							<input type="text" class="form-control" v-model="country" placeholder="Drzava">
+							<input type="text" class="form-control" v-bind:class="{ 'is-invalid': hasErrors && !country }" v-model="country" placeholder="Drzava">
 						</div>
 						<div class="col-sm-3 my-3">
-							<input type="text" class="form-control" v-model="place" placeholder="Mesto">
+							<input type="text" class="form-control" v-bind:class="{ 'is-invalid': hasErrors && !place }" v-model="place" placeholder="Mesto">
 						</div>
 						<div class="col-sm-3 my-3">
-							<input type="text" class="form-control" v-model="streetAndNumber" placeholder="Ulica i broj">
+							<input type="text" class="form-control" v-bind:class="{ 'is-invalid': hasErrors && !streetAndNumber }" v-model="streetAndNumber" placeholder="Ulica i broj">
 						</div>
-						
 					</div>
 			    	<div class="form-group">
 						<label for="amenities">Sadrzaj apartmana:</label>
@@ -198,10 +218,10 @@ Vue.component('apartment-add', {
 					<div id="map" class="map"></div>
 					<div class="form-row">
 						<div class="col-sm-3 my-1">
-							<input type="text" class="form-control" v-model="longitude" placeholder="Geografska duzina">
+							<input type="text" class="form-control" v-bind:class="{ 'is-invalid': hasErrors && !longitude }" v-model="longitude" placeholder="Geografska duzina">
 						</div>
 						<div class="col-sm-3 my-1">
-							<input type="text" class="form-control" v-model="latitude" placeholder="Geografska sirina">
+							<input type="text" class="form-control" v-bind:class="{ 'is-invalid': hasErrors && !latitude }" v-model="latitude" placeholder="Geografska sirina">
 						</div>
 					</div>
 			    	<div class="form-group">
@@ -213,6 +233,7 @@ Vue.component('apartment-add', {
 						</p>
 					</div>
 			    	<button class="btn btn-primary" v-on:click="submitApartment">Prijavi</button>
+					<div v-if="hasErrors" class="text-danger">Sva polja moraju biti popunjena.</div>
 				</form>
 			</div>
 		`
