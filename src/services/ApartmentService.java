@@ -145,6 +145,26 @@ public class ApartmentService {
 		return apartments;
 	}
 	
+	@GET
+	@Path("/deleteAmenity/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void deleteAmenity(@PathParam("id") long id) {
+		ApartmentRepository apartmentRepository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");
+		for (Apartment a : apartmentRepository.getAll().values()) {
+			List<Long> ids=a.getAmenityIds();
+			if (ids.contains(id)) {
+				ids.remove(id);
+				a.setAmenityIds(ids);
+				try {
+					apartmentRepository.save(a);
+				} catch (JsonIOException | IOException e) {
+						e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+	
 	@PUT
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)

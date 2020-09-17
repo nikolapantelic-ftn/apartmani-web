@@ -59,11 +59,12 @@ Vue.component('amenities-list',{
 			.then(response=>{
 				var index=this.amenities.findIndex(a => a.name === this.selected.name);
 				this.amenities.splice(index, 1, response.data);
+				alert('Uspesno izmenjeno')
 			})
 			.catch(e=>{
 				this.info=e.response.status;
 				if(e.response.status==400){
-					this.errors.push("Greska");
+					alert("Greska");
 				}
 			})
 			
@@ -75,12 +76,18 @@ Vue.component('amenities-list',{
 				var index=this.amenities.findIndex(a => a.id === this.selected.id);
 				var tmp=response.data
 				this.amenities.splice(index, 1,tmp );
+				alert('Uspesno dodato')
 			})
 			.catch(e=>{
 				this.info=e.response.status;
 				if(e.response.status==400){
-					this.errors.push("Greska");
+					alert("Greska");
 				}
+			})
+			axios
+			.get('rest/apartments/deleteAmenity/'+this.selected.id)
+			.then(response=>{
+
 			})
 		},
 		activateAmenity:function(a){

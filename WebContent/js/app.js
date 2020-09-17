@@ -200,7 +200,7 @@ var app = new Vue({
 		logout: function(e) {
 			axios
 			.get('rest/logout')
-			.then(response => (window.location.href = '/apartmani-web'));
+			.then(response => (window.location.href = 'login.html'));
 		},
 		addApartment: function () {
 			router.push('/apartment-add');
