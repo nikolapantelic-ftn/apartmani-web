@@ -3,7 +3,9 @@ Vue.component('host-reservation-list', {
 		return {
 			apartmentsId:[],
 			reservations: [],
-			search:''
+			search:'',
+			checkedStatus:[],
+			checkedNames:[]
 		};
 	},
 	mounted() {
@@ -44,9 +46,19 @@ Vue.component('host-reservation-list', {
 	computed:{
 		filteredReservations(){
 			return this.reservations.filter(r=>{
+				var username=false
 				if(this.search=="")
-					return r
+					username=true
 				if(this.search==r.guest)
+					username=true
+				var status=false;
+				if(this.checkedNames.length==0)
+					status=true
+				if(this.checkedNames.includes(r.status)){
+				
+					status=true
+				}
+				if(username && status)
 					return r
 			})
 		}
@@ -62,6 +74,22 @@ Vue.component('host-reservation-list', {
 				<div class="flex-row">
 			<button type="button pr-2" class="btn btn-primary  " v-on:click="sortPriceLH" > Cena rastuca </button>
 			<button type="button" class="btn btn-primary " v-on:click="sortPriceHL" > Cena opadajuca </button>
+			
+			<div class="row my-3">
+			<input type="checkbox" id="accepted" value="accepted" v-model="checkedNames">
+			<label for="accepted">Prihvacena</label>
+			<input type="checkbox" id="created" value="created" v-model="checkedNames">
+			<label for="created">Kreirana</label>
+			<input type="checkbox" id="rejected" value="rejected" v-model="checkedNames">
+			<label for="rejected">Odbijena</label>
+			<input type="checkbox" id="canceled" value="canceled" v-model="checkedNames">
+			<label for="canceled">Otkazana</label>
+			<input type="checkbox" id="finished" value="finished" v-model="checkedNames">
+			<label for="finished">Zavrsena</label>
+			</div>
+			
+
+			
 			</div>
 				<reservation-item v-on:update="update" v-for="reservation in filteredReservations"  v-bind:key="reservation.id" :reservation="reservation" :host="true"></reservation-item>
 			</div>
