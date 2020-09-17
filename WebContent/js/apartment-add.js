@@ -14,6 +14,7 @@ Vue.component('apartment-add', {
 			streetAndNumber: '',
 			images: [],
 			place: '',
+			country:'',
 			zipCode: '',
 			longitude: '',
 			latitude: '',
@@ -62,6 +63,7 @@ Vue.component('apartment-add', {
 					latitude: this.latitude,
 					address: {
 						id: '0',
+						country:this.country,
 						streetAndNumber: this.streetAndNumber,
 						place: this.place,
 						zipCode: this.zipCode,
@@ -174,11 +176,15 @@ Vue.component('apartment-add', {
 							<input type="text" class="form-control" v-model="zipCode" placeholder="Postanski broj">
 						</div>
 						<div class="col-sm-3 my-3">
+							<input type="text" class="form-control" v-model="country" placeholder="Drzava">
+						</div>
+						<div class="col-sm-3 my-3">
 							<input type="text" class="form-control" v-model="place" placeholder="Mesto">
 						</div>
-						<div class="col-sm-5 my-3">
+						<div class="col-sm-3 my-3">
 							<input type="text" class="form-control" v-model="streetAndNumber" placeholder="Ulica i broj">
 						</div>
+						
 					</div>
 			    	<div class="form-group">
 						<label for="amenities">Sadrzaj apartmana:</label>

@@ -69,7 +69,7 @@ Vue.component('apartment-search',{
 			var location=false
 			if(this.location=='')
 				location=true
-			if(this.location.toLowerCase()==apartment.location.address.place.toLowerCase())
+			if(this.location.toLowerCase()==apartment.location.address.place.toLowerCase() || this.location.toLowerCase()==apartment.location.address.country.toLowerCase())
 				location=true
 		
 		var minRooms=false
@@ -119,25 +119,14 @@ Vue.component('apartment-search',{
 				return a.price-b.price
 			})
 			this.keyI+=1;
-			let map=new Map()
-			this.amenities.forEach(a=>{
-				
-				map[a.id]=a
-			})
-			this.map=map
-			
+			},
 		
-		
-			
-		},
 		sortPriceHL:function(){
 			this.filteredApartments.sort((a,b)=>{
 				return b.price-a.price
 			})
 			this.keyI+=1;
-		
-			
-		},
+			},
 		
 		checkAvailability: function (apartment) {
 			var id=apartment.id

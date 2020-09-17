@@ -6,6 +6,7 @@ public class Address implements Identifiable<Long>, Deletable {
 	private String streetAndNumber;
 	private String place;
 	private String zipCode;
+	private String country;
 	private boolean deleted;
 	
 	public Address() {
@@ -63,6 +64,18 @@ public class Address implements Identifiable<Long>, Deletable {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+
+
+	public String getCountry() {
+		return country;
+	}
+
+
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 	
 	
