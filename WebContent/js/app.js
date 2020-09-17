@@ -17,7 +17,6 @@ const UsersViewHost = { template: '<users-view-host></users-view-host>' }
 
 Vue.component('star-rating', VueStarRating.default);
 
-
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
