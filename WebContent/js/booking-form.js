@@ -1,8 +1,8 @@
 Vue.component("booking-form",{
 	data:function(){
 		return{
-			guests:1,
-			rooms:0,
+			guests:'',
+			rooms:'',
 			startDate:null,
 			endDate:null,
 			location:""
@@ -26,24 +26,19 @@ Vue.component("booking-form",{
 					</div>
 					<div class="col-md-2">
 						<div class="form-group">
-							<select class="form-control" v-model="guests">
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-							</select>
+							<input class="form-control" v-model="guests" type="number" min="1" placeholder="Gosti">
 							<span class="select-arrow"></span>
 							<span class="form-label">Gosti</span>
 						</div>
 					</div>
 					<div class="col-md-2">
 						<div class="form-group">
-							<select class="form-control" v-model='rooms'>
-								<option>0</option>
-								<option>1</option>
-								<option>2</option>
-							</select>
+							<div class="form-group">
+							<input class="form-control" v-model="rooms" min="1"type="number" placeholder="Sobe">
 							<span class="select-arrow"></span>
 							<span class="form-label">Sobe</span>
+						</div>
+							
 						</div>
 					</div>
 				</div>
