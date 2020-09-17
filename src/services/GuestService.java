@@ -76,12 +76,42 @@ public class GuestService {
 		return null;
 	}
 	
+	
+	
 	@GET
 	@Path("/search/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Guest find(@PathParam("id") String username) {
 		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
 		return guestRepository.get(username);
+	}
+	
+	@GET
+	@Path("/block/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void block(@PathParam("id") String username) {
+		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
+		try {
+			Guest g=guestRepository.block(username);
+		} catch (JsonIOException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@GET
+	@Path("/unblock/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void unblock(@PathParam("id") String username) {
+		GuestRepository guestRepository = (GuestRepository)ctx.getAttribute("guestRepository");
+		try {
+			Guest g=guestRepository.unblock(username);
+		} catch (JsonIOException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 

@@ -94,7 +94,9 @@ var app = new Vue({
 						firstName: this.registerFirstName,
 						lastName: this.registerLastName,
 						role: 'Guest',
-						gender: this.registerGender
+						gender: this.registerGender,
+						deleted:'false',
+						blocked:'false'
 					})
 					.then(response => {
 						window.location.href = '/apartmani-web/login.html';

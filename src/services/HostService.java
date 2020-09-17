@@ -18,7 +18,9 @@ import javax.ws.rs.core.MediaType;
 import com.google.gson.JsonIOException;
 
 import app.WebApp;
+import beans.Guest;
 import beans.Host;
+import repository.GuestRepository;
 import repository.HostRepository;
 
 @Path("/hosts")
@@ -68,6 +70,34 @@ public class HostService {
 	public Host find(@PathParam("id") String username) {
 		HostRepository hostRepository = (HostRepository)ctx.getAttribute("hostRepository");
 		return hostRepository.get(username);
+	}
+	
+	@GET
+	@Path("/block/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void block(@PathParam("id") String username) {
+		HostRepository hostRepository = (HostRepository)ctx.getAttribute("hostRepository");
+		try {
+			Host g=hostRepository.block(username);
+		} catch (JsonIOException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@GET
+	@Path("/unblock/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void unblock(@PathParam("id") String username) {
+		HostRepository hostRepository = (HostRepository)ctx.getAttribute("hostRepository");
+		try {
+			Host g=hostRepository.unblock(username);
+		} catch (JsonIOException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	

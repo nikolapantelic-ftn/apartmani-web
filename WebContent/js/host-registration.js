@@ -46,7 +46,9 @@ Vue.component("host-registration",{
 					firstName: this.registerFirstName,
 					lastName: this.registerLastName,
 					role: 'Host',
-					gender: this.registerGender
+					gender: this.registerGender,
+					blocked:'false',
+					deleted:'false'
 				})
 				.then(response => {
 					window.location.href = '/apartmani-web/#/users';

@@ -1,7 +1,7 @@
 package beans;
 
 
-public class User implements Identifiable<String>, Deletable {
+public class User implements Identifiable<String>, Deletable,IBlocked {
 	
 	protected String username;
 	protected String password;
@@ -9,6 +9,7 @@ public class User implements Identifiable<String>, Deletable {
 	protected String lastName;
 	protected Role role;
 	protected Gender gender;
+	protected boolean blocked;
 	protected boolean deleted;
 	
 	public User() {
@@ -78,6 +79,17 @@ public class User implements Identifiable<String>, Deletable {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	@Override
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	@Override
+	public void setBlocked(boolean blocked) {
+		this.blocked=blocked;
+		
 	}
 	
 }
