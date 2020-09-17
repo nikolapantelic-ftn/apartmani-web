@@ -238,7 +238,7 @@ Vue.component('apartment-details',{
             </a>
           </div>
         </div>
-        <div class="col">
+        <div class="col" v-if="location.address">
         	<vue-ctk-date-time-picker label="Slobodni datumi" v-model="datePicker" v-bind:format="format" :only-date="true" v-bind:disabled-dates="disabledDates" v-bind:min-date="minDate" v-bind:max-date="maxDate"  :no-shortcuts ="true">
           </vue-ctk-date-time-picker>
 			 <h4>Cena:<span class="badge badge-primary"> {{apartment.price}}</span></h4>
