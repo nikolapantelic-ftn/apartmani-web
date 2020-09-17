@@ -82,15 +82,21 @@ public class ApartmentService {
 	
 	@DELETE
 	@Path("/{id}")
-	public void delete(@PathParam("id") long id) {
+	public Response delete(@PathParam("id") long id, @Context HttpServletRequest request) {
+		User user = (User)request.getSession().getAttribute("user");
+		if (user == null || (!getHostApartmentsIds(user.getId()).contains(id) && user.getRole() != Role.Admin)) {
+			return Response.status(403).build();
+		}
 		ApartmentRepository apartmentRepository = (ApartmentRepository)ctx.getAttribute("apartmentRepository");
 		try {
 			apartmentRepository.delete(id);
+			return Response.status(200).build();
 		} catch (JsonIOException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return Response.status(400).build();
 	}
 	
 	@GET
@@ -228,6 +234,5 @@ public class ApartmentService {
 		}
 		return Response.status(400).build();
 	}
-	
 	
 }

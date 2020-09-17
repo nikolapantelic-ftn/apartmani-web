@@ -7,6 +7,7 @@ Vue.component('apartment-details',{
 			pictures:[],
 			id:this.$route.params.id,
 			showModal: false,
+			showDeleteModal: false,
 			datePicker:null,
 			amenities:[],
 			avaliableDatesMS:[],
@@ -164,6 +165,18 @@ Vue.component('apartment-details',{
 					alert('Apartman deaktiviran.')
 				})
 				.catch(e => alert('Neuspesno deaktiviranje.'));
+		},
+		deleteApartment: function () {
+			axios
+				.delete('rest/apartments/' + this.id)
+				.then(response => {
+					alert('Apartman obrisan.');
+					router.push('/');
+				})
+				.catch(e => {
+					alert("Greska u brisanju apartmana");
+					console.log(e);
+				})
 		}
 	},
 	template:
@@ -178,8 +191,25 @@ Vue.component('apartment-details',{
       		<button class="btn btn-primary" id="show-modal" @click="showModal = true" v-if="user.role == 'Guest'">Rezervisi</button>
 			<button class="btn btn-success" @click="setActive" v-if="user.role == 'Admin' && apartment.status == 'Inactive'">Aktiviraj</button>
 			<button class="btn btn-danger" @click="setInactive" v-if="user.role == 'Admin' && apartment.status == 'Active'">Deaktiviraj</button>
+			<button class="btn btn-danger" @click="showDeleteModal = true" v-if="canEdit()">Obrisi apartman</button>
 		</div>
       </div>
+		<transition name="modal" v-if="showDeleteModal">
+	    	<div class="modal-mask">
+				<div class="modal-wrapper">
+					<div class="modal-container">
+	
+						<div class="modal-header d-flex justify-content-center">
+							<h6 class="">Da li ste sigurni da zelite da obrisete apartman?</h6>
+						</div>
+						<div class="modal-body d-flex justify-content-center">
+							<button class="btn btn-danger m-2" @click="deleteApartment">Obrisi apartman</button>
+							<button class="btn btn-secondary m-2" @click="showDeleteModal = false">Otkazi</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</transition>
       
       <div class="row">
         <div class="col">
