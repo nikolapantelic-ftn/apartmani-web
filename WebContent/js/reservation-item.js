@@ -104,6 +104,13 @@ Vue.component('reservation-item', {
 					</div><br>
 					<div class="float-right">
 						Cena: {{ reservation.totalPrice }} din.
+						<br>
+						Gost: {{ reservation.guest }} 
+					</div>
+					<div class="float-right">
+						<router-link v-bind:to="'/apartment/'+reservation.apartment"> 	
+		            	<button class="btn btn-primary mb-2">Prikaz apartmana</button>
+						</router-link>
 					</div>
 				</div>
 				<div class="w-100"></div>
