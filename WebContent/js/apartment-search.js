@@ -2,6 +2,7 @@ Vue.component('apartment-search',{
 	data:function(){
 		return{
 			apartmentList:[],
+			apListBack:[],
 			location:this.$route.query.location,
 			startDate:this.$route.query.sDate,
 			endDate:this.$route.query.eDate,
@@ -12,10 +13,11 @@ Vue.component('apartment-search',{
 			amenities:[],
 			checkedAmanities:[],
 			keyI:0,
-			available:true,
 			maxRooms:'',
 			maxGuests:'',
-			type:''
+			type:'',
+			current:Object,
+			apps:[]
 			
 			
 		}
@@ -27,7 +29,8 @@ Vue.component('apartment-search',{
 		axios
 		.get('rest/apartments')
 		.then(response => {
-		this.apartmentList = response.data})
+		this.apartmentList = response.data
+		this.apListBack=response.data})
 		axios
 		.get('rest/amenities')
 		.then(response => {
@@ -54,7 +57,8 @@ Vue.component('apartment-search',{
 	},
     filteredApartments() {
       return this.apartmentList.filter(apartment => {
-		this.checkAvailability(apartment)
+		this.current=apartment;
+		
 		var appAmenities=[];
 		apartment.amenityIds.forEach(a=>{
 			appAmenities.push(a);
@@ -98,7 +102,7 @@ Vue.component('apartment-search',{
 			
 			
 			
-       if(apartment.price<=this.max && apartment.price>=this.min && minRooms && maxRooms && minGuests &&maxGuests && hasAmenities && !apartment.deleted && apartment.status=='Active' && this.available &&location)
+       if(apartment.price<=this.max && apartment.price>=this.min && minRooms && maxRooms && minGuests &&maxGuests && hasAmenities && !apartment.deleted && apartment.status=='Active'  &&location)
 		return apartment;
       })
 
@@ -127,28 +131,30 @@ Vue.component('apartment-search',{
 			this.keyI+=1;
 			},
 		
-		checkAvailability: function (apartment) {
-			var id=apartment.id
+		checkAvailability: function () {
+			this.apartmentList=this.apListBack
+			this.filteredApartments.forEach(a=>{
 			if(this.startDate!='null' && this.endDate!='null'){
+				this.apps=[]
 				var date=new Date(this.startDate)
 				var end=new Date(this.endDate)
 				var diffTime = Math.abs(date - end);
 				var nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 				axios
 				.post('rest/reservations/available', {
-					apartment: id,
+					apartment: a.id,
 					startDate:date,
 					nightsNumber: nights
 				})
 				.then(response => {
-					if (response.data == true) {
-						this.available = true;
-					} else {
-						this.available = false;
-					}
+					if(response.data==true)
+						this.apps.push(a)
 				})
+				this.apartmentList=this.apps
 				
 			}
+			})
+		
 	},
 	
 	},
@@ -178,7 +184,7 @@ Vue.component('apartment-search',{
                          </a> </header>
                      <div class="filter-content collapse show" id="collapse_aside1" style="">
                          <div class="card-body">
-                             <input class="form-control" type="date" v-bind:min="minDate" v-model="startDate">
+                             <input class="form-control" type="date"  v-on:change="checkAvailability" v-bind:min="minDate" v-model="startDate">
                          </div>
                      </div>
                  </article>
@@ -188,7 +194,7 @@ Vue.component('apartment-search',{
                          </a> </header>
                      <div class="filter-content collapse show" id="collapse_aside1-2" style="">
                          <div class="card-body">
-                             <input class="form-control" type="date" v-bind:min="startDate"  v-model="endDate" >
+                             <input class="form-control" v-on:change="checkAvailability" type="date" v-bind:min="startDate"  v-model="endDate" >
                          </div>
                      </div>
                  </article>
